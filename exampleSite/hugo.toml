@@ -1,4 +1,4 @@
-baseURL = 'https://hugo-theme-cards.netlify.app'
+baseURL = 'https://hugo-theme-cards.vercel.app '
 languageCode = 'zh-cn'
 defaultContentLanguage = 'zh-cn'
 title = 'Cards Theme Demo'
