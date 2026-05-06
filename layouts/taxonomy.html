@@ -1,0 +1,791 @@
+{{ define "main" }}
+{{ if eq .Data.Plural "categories" }}
+  {{/* ==================== 归档（分类分组视图） ==================== */}}
+  <div class="center-head-card">
+    <h2 data-i18n="archives">归档</h2>
+    {{ partial "p-center/article-count.html" . }}
+  </div>
+
+  <hr>
+
+  <div class="center-card-content">
+    {{ $articles := where .Site.RegularPages "Type" "posts" }}
+    {{ $categoryMap := dict }}
+
+    {{ range $articles }}
+      {{ $category := "Uncategorized" }}
+      {{ with .Params.categories }}
+        {{ $category = index . 0 }}
+      {{ end }}
+
+      {{ $existing := index $categoryMap $category }}
+      {{ if not $existing }}
+        {{ $existing = slice }}
+      {{ end }}
+      {{ $existing = $existing | append . }}
+      {{ $categoryMap = merge $categoryMap (dict $category $existing) }}
+    {{ end }}
+
+    {{ range $categoryName, $posts := $categoryMap }}
+      <a href="#" data-action="archive:toggle" data-category="{{ $categoryName | urlize }}">
+        <div class="index-center-list-card archive-category-card">
+          <div class="index-center-list-card-header">
+            {{ $categoryName }}
+          </div>
+          <hr>
+          <div class="index-center-list-card-content">
+            <div class="article-meta-info">
+              <span><span data-i18n="articleCount">文章数量</span>: {{ len $posts }}</span>
+            <span class="toggle-text" id="toggle-{{ $categoryName | urlize }}" data-i18n="expand">展开</span>
+            </div>
+          </div>
+        </div>
+      </a>
+
+      <div class="category-posts" id="category-{{ $categoryName | urlize }}" style="display: none;">
+        {{ range $posts }}
+          <a href="{{ .RelPermalink }}" class="post-item">
+            <span class="post-title">{{ .Title }}</span>
+            <span class="post-date">{{ .Date.Format "2006-01-02" }}</span>
+          </a>
+        {{ end }}
+      </div>
+    {{ else }}
+      <div class="empty-message">
+        <p data-i18n="noArticles">暂无文章</p>
+      </div>
+    {{ end }}
+  </div>
+
+  <hr>
+
+  <script>
+  Cards.register('category-archive', {
+    init: function() {
+      Cards.actions['archive:toggle'] = function(e, target) {
+        const categoryId = target.dataset.category;
+        const categoryPosts = document.getElementById('category-' + categoryId);
+        const toggleText = document.getElementById('toggle-' + categoryId);
+
+        if (categoryPosts) {
+          if (categoryPosts.style.display === 'none') {
+            categoryPosts.style.display = 'block';
+            if (toggleText) toggleText.textContent = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang] ? window.i18nTranslations[window.i18nCurrentLang]['collapse'] : '收起';
+          } else {
+            categoryPosts.style.display = 'none';
+            if (toggleText) toggleText.textContent = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang] ? window.i18nTranslations[window.i18nCurrentLang]['expand'] : '展开';
+          }
+        }
+      };
+      return {};
+    },
+    destroy: function() {}
+  });
+  </script>
+
+  <style>
+  .center-head-card {
+    display: flex;
+    justify-content: space-between !important;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .archive-category-card {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    border: 3px solid;
+    transition: all 0.3s ease;
+  }
+
+  .archive-category-card:hover {
+    transform: translateY(-5px);
+    border-width: 4px;
+  }
+
+  .index-center-list-card-header {
+    width: 100%;
+    height: 30px;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .index-center-list-card-content {
+    width: 100%;
+    height: 30px;
+    font-size: 16px;
+    line-height: 1.5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .article-meta-info {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .article-meta-info span {
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+  }
+
+  .category-posts {
+    margin: 10px 0 20px 20px;
+    border-left: 3px solid;
+    padding-left: 20px;
+  }
+
+  .post-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    text-decoration: none;
+    border-bottom: 1px solid;
+    transition: all 0.3s ease;
+  }
+
+  .post-item:hover {
+    padding-left: 10px;
+  }
+
+  .post-title {
+    flex: 1;
+  }
+
+  .post-date {
+    font-size: 0.875rem;
+    opacity: 0.7;
+    margin-left: 20px;
+  }
+  </style>
+
+  <style>
+  .archive-category-card {
+    border-color: var(--common-color-1);
+    background-color: var(--common-bg);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+  }
+
+  .archive-category-card:hover {
+    box-shadow: 0 4px 8px var(--common-shadow);
+  }
+
+  .index-center-list-card-header {
+    color: var(--common-text);
+  }
+
+  .index-center-list-card-content {
+    color: var(--common-text);
+  }
+
+  .article-meta-info span {
+    color: var(--common-text);
+  }
+
+  .category-posts {
+    border-left-color: var(--common-color-1);
+  }
+
+  .post-item {
+    color: var(--common-text);
+    border-bottom-color: var(--common-color-1);
+  }
+
+  .post-item:hover {
+    color: var(--common-hover);
+  }
+
+  .post-date {
+    color: var(--common-text);
+  }
+
+  .empty-message {
+    text-align: center;
+    padding: 50px 0;
+    color: var(--common-text);
+  }
+  </style>
+
+  <style>
+  @media (max-width: 575px) {
+    .archive-category-card {
+      height: auto;
+      min-height: 120px;
+      padding: 15px;
+    }
+
+    .index-center-list-card-header {
+      font-size: 16px;
+      height: auto;
+      margin-bottom: 8px;
+    }
+
+    .index-center-list-card-content {
+      font-size: 14px;
+      height: auto;
+      margin-bottom: 8px;
+    }
+
+    .article-meta-info {
+      flex-direction: column;
+      align-items: flex-start;
+      height: auto;
+      gap: 5px;
+    }
+
+    .article-meta-info span {
+      height: auto;
+      line-height: 1.2;
+      margin-bottom: 5px;
+    }
+
+    .category-posts {
+      margin: 10px 0 15px 10px;
+      padding-left: 10px;
+    }
+
+    .post-item {
+      padding: 6px 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
+
+    .post-date {
+      margin-left: 0;
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .archive-category-card {
+      height: 120px;
+      padding: 10px;
+    }
+
+    .index-center-list-card-header {
+      font-size: 20px;
+    }
+
+    .index-center-list-card-content {
+      font-size: 16px;
+    }
+
+    .article-meta-info {
+      flex-direction: row;
+      align-items: center;
+      height: 30px;
+    }
+
+    .article-meta-info span {
+      height: 30px;
+      line-height: 30px;
+      margin-bottom: 10px;
+    }
+
+    .category-posts {
+      margin: 10px 0 20px 20px;
+      padding-left: 20px;
+    }
+
+    .post-item {
+      padding: 8px 0;
+      flex-direction: row;
+      align-items: center;
+      gap: 0;
+    }
+
+    .post-date {
+      margin-left: 20px;
+      font-size: 0.875rem;
+    }
+  }
+  </style>
+
+{{ else }}
+  {{- /* ==================== 标签云视图 ==================== */ -}}
+  {{- $allPages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+  {{- $totalPages := len $allPages -}}
+  {{- $taxonomyName := "tags" -}}
+
+  {{- $termMap := dict -}}
+  {{- $termArticlesMap := dict -}}
+  {{- range $allPages -}}
+    {{- $pageTaxonomy := index .Params $taxonomyName -}}
+    {{- if $pageTaxonomy -}}
+      {{- $pageTitle := .LinkTitle -}}
+      {{- $pageDate := .Date.Format "2006-01-02" -}}
+      {{- $pageUrl := .RelPermalink -}}
+      {{- range $pageTaxonomy -}}
+        {{- $termName := . -}}
+        {{- $currentCount := index $termMap $termName | default 0 -}}
+        {{- $termMap = merge $termMap (dict $termName (add $currentCount 1)) -}}
+        {{- $currentArticles := index $termArticlesMap $termName | default slice -}}
+        {{- $articleInfo := dict "title" $pageTitle "date" $pageDate "url" $pageUrl -}}
+        {{- $termArticlesMap = merge $termArticlesMap (dict $termName ($currentArticles | append $articleInfo)) -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $terms := slice -}}
+  {{- range $termName, $count := $termMap -}}
+    {{- $terms = $terms | append (dict "Term" $termName "Count" $count) -}}
+  {{- end -}}
+
+  <div class="center-head-card">
+    <h2 data-i18n="tags">标签</h2>
+    {{ partial "p-center/term-count.html" (dict "count" (len $terms) "taxonomy" $taxonomyName) }}
+  </div>
+
+  <hr>
+
+  <div class="center-card-content">
+    <div class="term-search-container">
+      <input
+        type="text"
+        id="term-search-input"
+        data-i18n-placeholder="searchTerms"
+        placeholder="搜索..."
+        class="term-search-input"
+      >
+      <button
+        id="term-clear-button"
+        class="term-clear-button"
+        style="display: none;"
+      >
+        ×
+      </button>
+    </div>
+
+    <div class="term-sort-options">
+      <span class="sort-label" data-i18n="sort">排序:</span>
+      <button class="sort-button active" data-sort="frequency" data-i18n="frequency">频率</button>
+      <button class="sort-button" data-sort="count" data-i18n="count">数量</button>
+      <button class="sort-button" data-sort="recent" data-i18n="recent">最近</button>
+      <button class="sort-button" data-sort="trending" data-i18n="trending">趋势</button>
+    </div>
+
+    <div class="term-cloud" id="term-cloud">
+      {{ range $term := $terms }}
+        {{ $count := $term.Count }}
+        {{ $frequency := div (float $count) (float $totalPages) }}
+        <span
+          class="term"
+          data-term="{{ $term.Term }}"
+          data-count="{{ $count }}"
+          data-frequency="{{ $frequency }}"
+          style="font-size: {{ add 14 (math.Min (div $count 2.0) 10.0) }}px; opacity: {{ add 0.7 (math.Min (mul $frequency 0.3) 0.3) }};"
+          title="{{ printf "%.2f" $frequency }} | {{ $count }}"
+          data-action="term:select"
+          data-term-name="{{ $term.Term }}"
+          data-term-count="{{ $count }}"
+        >
+          {{ $term.Term }} ({{ $count }})
+        </span>
+      {{ end }}
+    </div>
+
+    <div class="term-articles" id="term-articles" style="display: none;">
+      <div class="term-articles-header">
+        <h4 id="selected-term-name"></h4>
+      </div>
+      <div id="term-articles-list"></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <script>
+  window.termArticlesData = {{ $termArticlesMap | jsonify | safeJS }};
+
+  Cards.register('term-cloud', {
+    init: function() {
+      const searchInput = document.getElementById('term-search-input');
+      const clearButton = document.getElementById('term-clear-button');
+      const termCloud = document.getElementById('term-cloud');
+      const sortButtons = document.querySelectorAll('.sort-button');
+
+      let currentSort = 'frequency';
+
+      const sortTerms = function(sortBy) {
+        const terms = Array.from(termCloud.querySelectorAll('.term'));
+
+        terms.sort(function(a, b) {
+          switch(sortBy) {
+            case 'count':
+              return parseInt(b.dataset.count) - parseInt(a.dataset.count);
+            case 'frequency':
+              return parseFloat(b.dataset.frequency) - parseFloat(a.dataset.frequency);
+            case 'recent':
+              return a.dataset.term.localeCompare(b.dataset.term);
+            case 'trending':
+              return parseInt(b.dataset.count) - parseInt(a.dataset.count);
+            default:
+              return 0;
+          }
+        });
+
+        terms.forEach(function(term) {
+          termCloud.appendChild(term);
+        });
+      };
+
+      const searchHandler = function(e) {
+        const query = e.target.value.toLowerCase();
+        const terms = termCloud.querySelectorAll('.term');
+
+        terms.forEach(function(term) {
+          const termName = term.dataset.term.toLowerCase();
+          if (termName.includes(query)) {
+            term.style.display = 'inline-block';
+          } else {
+            term.style.display = 'none';
+          }
+        });
+
+        clearButton.style.display = query ? 'block' : 'none';
+      };
+
+      const clearHandler = function() {
+        searchInput.value = '';
+        clearButton.style.display = 'none';
+        const terms = termCloud.querySelectorAll('.term');
+        terms.forEach(function(term) {
+          term.style.display = 'inline-block';
+        });
+      };
+
+      const sortClickHandlers = [];
+
+      searchInput.addEventListener('input', searchHandler);
+      clearButton.addEventListener('click', clearHandler);
+
+      sortButtons.forEach(function(button) {
+        const sortHandler = function() {
+          sortButtons.forEach(function(btn) { btn.classList.remove('active'); });
+          button.classList.add('active');
+          currentSort = button.dataset.sort;
+          sortTerms(currentSort);
+        };
+        button.addEventListener('click', sortHandler);
+        sortClickHandlers.push({ button: button, handler: sortHandler });
+      });
+
+      Cards.actions['term:select'] = function(e, target) {
+        const termName = target.dataset.termName;
+        const count = parseInt(target.dataset.termCount);
+
+        const termArticlesDiv = document.getElementById('term-articles');
+        const termNameHeader = document.getElementById('selected-term-name');
+        const termArticlesList = document.getElementById('term-articles-list');
+
+        document.querySelectorAll('.term').forEach(function(term) {
+          term.classList.remove('active');
+        });
+        target.classList.add('active');
+
+        termArticlesDiv.style.display = 'block';
+        termNameHeader.textContent = termName + ' (' + count + ')';
+
+        termArticlesList.innerHTML = '';
+
+        const articles = window.termArticlesData[termName] || [];
+
+        if (articles.length === 0) {
+          termArticlesList.innerHTML = '<div class="term-articles-empty">' + (window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang] ? window.i18nTranslations[window.i18nCurrentLang]['noArticlesInTerm'] || '暂无文章' : '暂无文章') + '</div>';
+          return;
+        }
+
+        articles.forEach(function(article) {
+          const item = document.createElement('a');
+          item.href = article.url;
+          item.className = 'term-article-item';
+          item.innerHTML = '<span class="term-article-title">' + article.title + '</span><span class="term-article-date">' + article.date + '</span>';
+          termArticlesList.appendChild(item);
+        });
+      };
+
+      return {
+        searchInput: searchInput,
+        searchHandler: searchHandler,
+        clearButton: clearButton,
+        clearHandler: clearHandler,
+        sortClickHandlers: sortClickHandlers
+      };
+    },
+    destroy: function(instance) {
+      if (instance.searchInput) instance.searchInput.removeEventListener('input', instance.searchHandler);
+      if (instance.clearButton) instance.clearButton.removeEventListener('click', instance.clearHandler);
+      if (instance.sortClickHandlers) {
+        instance.sortClickHandlers.forEach(function(item) {
+          item.button.removeEventListener('click', item.handler);
+        });
+      }
+    }
+  });
+  </script>
+
+  <style>
+  .center-head-card {
+    display: flex;
+    justify-content: space-between !important;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .term-search-container {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .term-search-input {
+    width: 100%;
+    padding: 10px 40px 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: var(--common-bg);
+    color: var(--common-text);
+    border: 1px solid var(--common-color-1);
+  }
+
+  .term-search-input:focus {
+    outline: none;
+    border-color: var(--common-hover);
+  }
+
+  .term-clear-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    color: var(--common-text);
+  }
+
+  .term-clear-button:hover {
+    background-color: var(--common-color-1);
+  }
+
+  .term-sort-options {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 12px;
+    border-radius: 8px;
+    flex-wrap: wrap;
+    background-color: var(--common-bg);
+    border: 1px solid var(--common-color-1);
+  }
+
+  .sort-label {
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--common-text);
+  }
+
+  .sort-button {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    background-color: var(--common-color-1);
+    color: var(--common-text);
+    border: 1px solid var(--common-color-1);
+  }
+
+  .sort-button:hover {
+    background-color: var(--common-hover);
+  }
+
+  .sort-button.active {
+    background-color: var(--common-hover);
+  }
+
+  .term-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 200px;
+    align-content: flex-start;
+    background-color: var(--common-bg);
+    border: 1px solid var(--common-color-1);
+  }
+
+  .term {
+    padding: 6px 12px;
+    border-radius: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: inline-block;
+    background-color: var(--common-color-1);
+    color: var(--common-text);
+    animation: termFadeIn 0.5s ease;
+  }
+
+  .term:hover {
+    transform: scale(1.05);
+    background-color: var(--common-hover);
+  }
+
+  .term.active {
+    background-color: var(--common-hover);
+    font-weight: bold;
+  }
+
+  .term-articles {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--common-color-1);
+  }
+
+  .term-articles-header {
+    margin-bottom: 16px;
+  }
+
+  .term-articles-header h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--common-text);
+  }
+
+  .term-article-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid var(--common-color-1);
+    color: var(--common-text);
+  }
+
+  .term-article-item:hover {
+    padding-left: 12px;
+    background-color: var(--common-hover);
+    border-radius: 6px;
+  }
+
+  .term-article-title {
+    flex: 1;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .term-article-date {
+    font-size: 0.875rem;
+    margin-left: 20px;
+    white-space: nowrap;
+    color: var(--common-text);
+    opacity: 0.7;
+  }
+
+  .term-articles-empty {
+    text-align: center;
+    padding: 40px 20px;
+    font-style: italic;
+    color: var(--common-text);
+  }
+
+  @keyframes termFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  </style>
+
+  <style>
+  @media (max-width: 768px) {
+    .term-cloud {
+      padding: 16px;
+      gap: 8px;
+    }
+
+    .term {
+      font-size: 12px !important;
+      padding: 5px 10px;
+    }
+
+    .term-article-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .term-article-date {
+      margin-left: 0;
+      font-size: 0.8rem;
+    }
+
+    .term-sort-options {
+      flex-wrap: wrap;
+    }
+
+    .term-search-input {
+      padding: 8px 36px 8px 10px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .term-cloud {
+      padding: 12px;
+      gap: 6px;
+    }
+
+    .term {
+      font-size: 11px !important;
+      padding: 4px 8px;
+    }
+
+    .sort-button {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    .term-article-item {
+      padding: 10px 0;
+    }
+
+    .term-article-item:hover {
+      padding-left: 8px;
+    }
+  }
+  </style>
+{{ end }}
+{{ end }}

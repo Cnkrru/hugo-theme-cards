@@ -2,7 +2,7 @@
 {{- if eq .Site.Params.comments.provider "gitalk" -}}
 <div class="comment-section">
   <div class="comment-header">
-    <h3>评论</h3>
+    <h3 data-i18n="commentTitle">评论</h3>
   </div>
   <div id="gitalk-container" class="comment-container"></div>
 </div>
@@ -80,7 +80,7 @@
 
     if (excludedHosts.includes(hostname)) {
       document.getElementById("gitalk-container").innerHTML =
-        "<div style='text-align: center; padding: 20px; color: var(--common-text);'>Gitalk 评论系统在本地预览时不可用</div>";
+        "<div style='text-align: center; padding: 20px; color: var(--common-text);'>" + (window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang] ? window.i18nTranslations[window.i18nCurrentLang]['gitalkUnavailable'] || 'Gitalk 评论系统在本地预览时不可用' : 'Gitalk 评论系统在本地预览时不可用') + "</div>";
       return;
     }
     gitalk.render("gitalk-container");

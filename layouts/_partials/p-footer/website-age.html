@@ -3,52 +3,63 @@
 </div>
 
 <script>
-(function() {
-  // 从配置中读取站点创建时间
-  const siteCreated = '{{ .Site.Params.footer.since | default "2026-03-28T12:00:00" }}';
-  const startTime = new Date(siteCreated).getTime();
+Cards.register('website-age', {
+  init: function() {
+    const siteCreated = '{{ .Site.Params.footer.since | default "2026-03-28T12:00:00" }}';
+    const startTime = new Date(siteCreated).getTime();
 
-  const padZero = (num) => {
-    return num.toString().padStart(2, '0');
-  };
+    const updateAge = function() {
+      const now = Date.now();
+      const diff = now - startTime;
 
-  const updateAge = () => {
-    const now = Date.now();
-    const diff = now - startTime;
+      if (diff < 0) {
+        const el = document.getElementById('website-age');
+        if (el) el.textContent = '即将上线';
+        return;
+      }
 
-    if (diff < 0) {
-      document.getElementById('website-age').textContent = '即将上线';
-      return;
-    }
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      const months = Math.floor(days / 30);
+      const years = Math.floor(months / 12);
 
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30);
-    const years = Math.floor(months / 12);
+      const displayMonths = months % 12;
+      const displayDays = days % 30;
+      const displayHours = hours % 24;
+      const displayMinutes = minutes % 60;
+      const displaySeconds = seconds % 60;
 
-    const displayMonths = months % 12;
-    const displayDays = days % 30;
-    const displayHours = hours % 24;
-    const displayMinutes = minutes % 60;
-    const displaySeconds = seconds % 60;
+      const padZero = function(num) {
+        return num.toString().padStart(2, '0');
+      };
 
-    const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
-    const yearLabel = t ? t['year'] : '年';
-    const monthLabel = t ? t['month'] : '月';
-    const dayLabel = t ? t['day'] : '天';
-    const hourLabel = t ? t['hourShort'] : '时';
-    const minuteLabel = t ? t['minuteShort'] : '分';
-    const secondLabel = t ? t['secondShort'] : '秒';
-    document.getElementById('website-age').textContent =
-      `${years}${yearLabel}${displayMonths}${monthLabel}${displayDays}${dayLabel} ${padZero(displayHours)}${hourLabel}${padZero(displayMinutes)}${minuteLabel}${padZero(displaySeconds)}${secondLabel}`;
-  };
+      const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+      const yearLabel = t ? t['year'] : '年';
+      const monthLabel = t ? t['month'] : '月';
+      const dayLabel = t ? t['day'] : '天';
+      const hourLabel = t ? t['hourShort'] : '时';
+      const minuteLabel = t ? t['minuteShort'] : '分';
+      const secondLabel = t ? t['secondShort'] : '秒';
 
-  // 初始化并启动定时器
-  updateAge();
-  setInterval(updateAge, 1000);
-})();
+      const el = document.getElementById('website-age');
+      if (el) {
+        el.textContent =
+          years + yearLabel + displayMonths + monthLabel + displayDays + dayLabel + ' ' +
+          padZero(displayHours) + hourLabel + padZero(displayMinutes) + minuteLabel + padZero(displaySeconds) + secondLabel;
+      }
+    };
+
+    updateAge();
+    const timerId = setInterval(updateAge, 1000);
+
+    return { timerId: timerId };
+  },
+  destroy: function(instance) {
+    if (instance.timerId) clearInterval(instance.timerId);
+  }
+});
 </script>
 
 <style>

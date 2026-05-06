@@ -5,7 +5,7 @@
     <h3 data-i18n="tableOfContents">文章目录</h3>
     <div class="header-actions">
       <span class="toc-item-count" id="toc-item-count"></span>
-      <button class="toc-close-btn" onclick="toggleToc()">
+      <button class="toc-close-btn" data-action="toc:toggle">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
@@ -17,3 +17,399 @@
   </div>
 </div>
 {{ end }}
+
+<script>
+Cards.register('toc', {
+  init: function() {
+    let tocData = [];
+    let activeId = '';
+    let scrollListener = null;
+    let resizeListener = null;
+
+    const generateHeadingNumber = function(index, level, counters) {
+      counters[level] = (counters[level] || 0) + 1;
+      for (let i = level + 1; i <= 6; i++) {
+        counters[i] = 0;
+      }
+      let number = '';
+      for (let i = 1; i <= level; i++) {
+        if (counters[i]) {
+          number += counters[i] + '.';
+        }
+      }
+      return number ? number.slice(0, -1) : '';
+    };
+
+    const scanAndProcessHeadings = function() {
+      const contentContainer = document.querySelector('.post-content');
+      if (!contentContainer) return;
+
+      const headings = contentContainer.querySelectorAll('h1, h2, h3, h4, h5, h6');
+      const newToc = [];
+      const counters = {};
+
+      headings.forEach(function(heading, index) {
+        const level = parseInt(heading.tagName.substring(1));
+        const text = heading.textContent.trim();
+        const id = 'toc-heading-' + index;
+        heading.id = id;
+        const numbering = generateHeadingNumber(index, level, counters);
+
+        newToc.push({
+          id: id,
+          level: level,
+          text: text,
+          numbering: numbering
+        });
+      });
+
+      tocData = newToc;
+
+      const tocList = document.getElementById('toc-list');
+      const tocItemCount = document.getElementById('toc-item-count');
+
+      if (tocList) {
+        tocList.innerHTML = '';
+        tocData.forEach(function(item) {
+          const li = document.createElement('li');
+          li.className = 'toc-item level-' + item.level;
+          li.id = 'toc-item-' + item.id;
+          const a = document.createElement('a');
+          a.href = '#';
+          a.setAttribute('data-action', 'toc:scroll');
+          a.setAttribute('data-target', item.id);
+          a.title = '跳转到: ' + item.text;
+          a.innerHTML = '<span class="toc-item-number">' + item.numbering + '</span><span class="toc-item-text">' + item.text + '</span>';
+          li.appendChild(a);
+          tocList.appendChild(li);
+        });
+      }
+
+      if (tocItemCount) {
+        tocItemCount.textContent = tocData.length + ' 项';
+      }
+    };
+
+    const scrollToHeading = function(id) {
+      const element = document.getElementById(id);
+      if (!element) return;
+
+      const container = document.querySelector('.center-card-content');
+      if (container) {
+        const rect = element.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const relativeTop = rect.top - containerRect.top;
+        container.scrollTo({
+          top: container.scrollTop + relativeTop - 20,
+          behavior: 'smooth'
+        });
+      } else {
+        element.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    };
+
+    const scrollTocToActiveItem = function(activeElement) {
+      const tocContent = document.getElementById('toc-content');
+      if (!tocContent || !activeElement) return;
+
+      const tocRect = tocContent.getBoundingClientRect();
+      const activeRect = activeElement.getBoundingClientRect();
+      const relativeTop = activeRect.top - tocRect.top;
+
+      tocContent.scrollTop = tocContent.scrollTop + relativeTop - tocRect.height / 2;
+    };
+
+    const detectCurrentPosition = function() {
+      if (tocData.length === 0) return;
+
+      const container = document.querySelector('.center-card-content');
+      if (!container) return;
+
+      let currentId = '';
+      let closestDistance = Infinity;
+
+      for (let i = 0; i < tocData.length; i++) {
+        const item = tocData[i];
+        const element = document.getElementById(item.id);
+        if (element) {
+          const rect = element.getBoundingClientRect();
+          const containerRect = container.getBoundingClientRect();
+          const distance = Math.abs(rect.top - containerRect.top - containerRect.height * 0.3);
+
+          if (distance < closestDistance) {
+            closestDistance = distance;
+            currentId = item.id;
+          }
+        }
+      }
+
+      if (currentId && currentId !== activeId) {
+        activeId = currentId;
+
+        document.querySelectorAll('.toc-item').forEach(function(item) {
+          item.classList.remove('active');
+        });
+        const activeItem = document.getElementById('toc-item-' + currentId);
+        if (activeItem) {
+          activeItem.classList.add('active');
+          scrollTocToActiveItem(activeItem);
+        }
+      }
+    };
+
+    Cards.actions['toc:toggle'] = function() {
+      const tocCard = document.getElementById('toc-card');
+      if (tocCard) tocCard.classList.toggle('active');
+    };
+
+    Cards.actions['toc:scroll'] = function(e, target) {
+      const id = target.dataset.target;
+      if (id) scrollToHeading(id);
+    };
+
+    setTimeout(function() {
+      scanAndProcessHeadings();
+      detectCurrentPosition();
+    }, 500);
+
+    scrollListener = function() {
+      requestAnimationFrame(detectCurrentPosition);
+    };
+    resizeListener = detectCurrentPosition;
+
+    const container = document.querySelector('.center-card-content');
+    if (container) {
+      container.addEventListener('scroll', scrollListener, { passive: true });
+    }
+    window.addEventListener('scroll', scrollListener, { passive: true });
+    window.addEventListener('resize', resizeListener, { passive: true });
+
+    return {
+      scrollListener: scrollListener,
+      resizeListener: resizeListener,
+      container: container
+    };
+  },
+  destroy: function(instance) {
+    if (instance.container) {
+      instance.container.removeEventListener('scroll', instance.scrollListener);
+    }
+    window.removeEventListener('scroll', instance.scrollListener);
+    window.removeEventListener('resize', instance.resizeListener);
+  }
+});
+</script>
+
+<style>
+.toc-card {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translate(100%, -50%);
+  width: 280px;
+  max-height: 70vh;
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  z-index: 999;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toc-card.active {
+  transform: translate(0, -50%);
+}
+
+.toc-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+}
+
+.toc-card-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toc-item-count {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.toc-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.toc-close-btn:hover {
+  transform: rotate(90deg);
+}
+
+.toc-card-content {
+  padding: 15px 20px;
+  max-height: calc(70vh - 60px);
+  overflow-y: auto;
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-item {
+  margin-bottom: 8px;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.toc-item a {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  overflow: hidden;
+}
+
+.toc-item a:hover {
+  transform: translateX(4px);
+}
+
+.toc-item.active a {
+  color: pink;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.toc-item.active a:hover {
+  transform: translateX(0);
+}
+
+.toc-item-number {
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: right;
+}
+
+.toc-item.active .toc-item-number {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.toc-item-text {
+  flex: 1;
+  word-break: break-word;
+}
+
+.toc-item.level-1 a { font-weight: bold; font-size: 15px; }
+.toc-item.level-2 a { padding-left: 24px; font-size: 14px; }
+.toc-item.level-3 a { padding-left: 36px; font-size: 13px; opacity: 0.9; }
+.toc-item.level-4 a { padding-left: 48px; font-size: 12px; opacity: 0.7; }
+
+@keyframes tocSlideIn {
+  from { transform: translate(100%, -50%); opacity: 0; }
+  to { transform: translate(0, -50%); opacity: 1; }
+}
+
+@keyframes tocSlideOut {
+  from { transform: translate(0, -50%); opacity: 1; }
+  to { transform: translate(100%, -50%); opacity: 0; }
+}
+
+.toc-card.active { animation: tocSlideIn 0.3s ease forwards; }
+.toc-card:not(.active) { animation: tocSlideOut 0.3s ease forwards; }
+
+.toc-button-container { display: flex; align-items: center; }
+
+.toc-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.toc-button:hover { transform: translateY(-2px); }
+.toc-button svg { width: 18px; height: 18px; margin-right: 6px; }
+</style>
+
+<style>
+.toc-card { background-color: var(--common-bg); border: 2px solid var(--common-color-1); box-shadow: -4px 4px 12px var(--common-shadow); }
+.toc-card.active { box-shadow: -6px 6px 20px var(--common-shadow); }
+.toc-card-header { border-bottom: 1px solid var(--common-color-1); background-color: var(--common-bg); }
+.toc-card-header h3 { color: var(--common-text); }
+.toc-item-count { color: var(--common-text); border: 1px solid var(--common-color-1); }
+.toc-close-btn { color: var(--common-text); }
+.toc-close-btn:hover { background-color: var(--common-bg); }
+.toc-card-content { background-color: var(--common-bg); }
+.toc-item a { color: var(--common-text); }
+.toc-item a:hover { background-color: var(--common-bg); }
+.toc-item.active a { background-color: var(--common-bg); }
+.toc-item.active a:hover { background-color: var(--common-bg); }
+.toc-item-number { color: var(--common-text); }
+.toc-button { background-color: var(--common-color-1); color: var(--common-content); border: 1px solid var(--common-color-1); }
+.toc-button:hover { background-color: var(--common-hover); }
+.toc-button svg { fill: var(--common-content); }
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .toc-card { width: 240px; max-height: 60vh; }
+  .toc-card-header { padding: 12px 16px; }
+  .toc-card-header h3 { font-size: 14px; }
+  .toc-card-content { padding: 12px 16px; max-height: calc(60vh - 50px); }
+  .toc-button { font-size: 12px; padding: 6px 12px; }
+  .toc-button svg { width: 16px; height: 16px; }
+  .toc-item a { padding: 6px 10px; font-size: 13px; }
+  .toc-item-number { font-size: 11px; min-width: 25px; }
+  .toc-item.level-1 a { font-size: 14px; }
+  .toc-item.level-2 a { padding-left: 20px; font-size: 13px; }
+  .toc-item.level-3 a { padding-left: 30px; font-size: 12px; }
+  .toc-item.level-4 a { padding-left: 40px; font-size: 11px; }
+  .toc-item-count { font-size: 10px; padding: 1px 6px; }
+}
+
+@media (max-width: 576px) {
+  .toc-card { width: 220px; max-height: 50vh; }
+  .toc-card-header { padding: 10px 14px; }
+  .toc-card-header h3 { font-size: 13px; }
+  .toc-card-content { padding: 10px 14px; max-height: calc(50vh - 45px); }
+  .toc-item a { padding: 5px 8px; font-size: 12px; }
+  .toc-item-number { font-size: 10px; min-width: 20px; margin-right: 6px; }
+  .toc-item.level-2 a { padding-left: 16px; }
+  .toc-item.level-3 a { padding-left: 24px; }
+  .toc-item.level-4 a { padding-left: 32px; }
+}
+</style>

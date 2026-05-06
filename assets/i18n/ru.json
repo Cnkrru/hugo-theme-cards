@@ -77,5 +77,19 @@
     "uncategorized": "Без категории",
     "category": "Категория",
     "categoriesLabel": "категорий",
-    "totalTerms": "Всего"
+    "totalTerms": "Всего",
+    "error404Title": "404 - Страница не найдена",
+    "error404Subtitle": "Ой, страница не найдена",
+    "error404Description": "Возможно, страница была удалена, перемещена или временно недоступна.",
+    "error404GoHome": "На главную",
+    "error404BrowseArticles": "Все статьи",
+    "error404TrySearch": "Или попробуйте поиск:",
+    "noLinks": "Ссылок пока нет",
+    "noDescription": "Нет описания",
+    "commentTitle": "Комментарии",
+    "relatedArticles": "Похожие статьи",
+    "gitalkUnavailable": "Система комментариев Gitalk недоступна при локальном просмотре",
+    "skipToContent": "Перейти к содержимому",
+    "prevArticle": "Предыдущая",
+    "nextArticle": "Следующая"
 }

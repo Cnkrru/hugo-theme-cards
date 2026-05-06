@@ -1,24 +1,30 @@
-{{/* 分页导航 - 使用传入的 paginator */}}
-{{ $paginator := . }}
-<div class="page-nav-container">
+{{ $current := .current | default 1 }}
+{{ $total := .total | default 1 }}
+{{ $prefix := .prefix | default "" }}
+
+<div class="page-nav-container" id="{{ $prefix }}page-nav">
   <div class="nav-section">
     <button
       class="nav-btn prev-btn"
-      {{ if not $paginator.HasPrev }}disabled{{ end }}
-      {{ if $paginator.HasPrev }}onclick="window.location.href='{{ $paginator.Prev.URL }}'"{{ end }}
+      id="{{ $prefix }}prev-btn"
+      data-page="{{ $prefix }}"
+      data-delta="-1"
+      {{ if le $current 1 }}disabled{{ end }}
     >
       &lt; <span data-i18n="prev">上一页</span>
     </button>
   </div>
 
   <div class="nav-section page-buttons-section">
-    <div class="page-buttons">
-      {{ range $paginator.Pagers }}
+    <div class="page-buttons" id="{{ $prefix }}page-buttons">
+      {{ range $i := seq $total }}
       <button
-        class="page-btn{{ if eq . $paginator }} active{{ end }}"
-        onclick="window.location.href='{{ .URL }}'"
+        class="page-btn{{ if eq $i $current }} active{{ end }}"
+        id="{{ $prefix }}page-btn-{{ $i }}"
+        data-page="{{ $prefix }}"
+        data-goto="{{ $i }}"
       >
-        {{ .PageNumber }}
+        {{ $i }}
       </button>
       {{ end }}
     </div>
@@ -27,15 +33,17 @@
   <div class="nav-section">
     <button
       class="nav-btn next-btn"
-      {{ if not $paginator.HasNext }}disabled{{ end }}
-      {{ if $paginator.HasNext }}onclick="window.location.href='{{ $paginator.Next.URL }}'"{{ end }}
+      id="{{ $prefix }}next-btn"
+      data-page="{{ $prefix }}"
+      data-delta="1"
+      {{ if ge $current $total }}disabled{{ end }}
     >
       <span data-i18n="next">下一页</span> &gt;
     </button>
   </div>
 
-  <div class="page-info">
-    <span data-i18n="page">第</span> {{ $paginator.PageNumber }} / {{ $paginator.TotalPages }} <span data-i18n="page">页</span>
+  <div class="page-info" id="{{ $prefix }}page-info">
+    <span data-i18n="page">第</span> {{ $current }} / {{ $total }} <span data-i18n="page">页</span>
   </div>
 </div>
 

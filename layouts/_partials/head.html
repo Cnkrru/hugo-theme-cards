@@ -1,16 +1,53 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <meta name="generator" content="Hugo {{ hugo.Version }}">
-<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
 
-{{/* RSS Feed 链接 */}}
-{{- with .OutputFormats.Get "RSS" -}}
-<link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }} RSS Feed" href="{{ .Permalink }}">
+{{/* ─── 资源预计算 ─── */}}
+{{/* 搜索数据 */}}
+{{- $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+{{- $searchResult := slice -}}
+{{- range $pages -}}
+  {{- $searchResult = $searchResult | append (dict
+    "title" .Title
+    "url" .RelPermalink
+    "content" (.Plain | plainify | truncate 200)
+    "date" (.Date.Format "2006-01-02")
+    "tags" .Params.tags
+    "categories" .Params.categories
+  ) -}}
+{{- end -}}
+{{- $searchDataJSON := $searchResult | jsonify -}}
+{{- $searchDataFile := resources.FromString "js/search-data.json" $searchDataJSON -}}
+
+{{/* PWA Manifest */}}
+{{- $manifest := dict
+  "name" .Site.Title
+  "short_name" .Site.Title
+  "description" (.Site.Params.description | default .Site.Title)
+  "start_url" .Site.Home.Permalink
+  "scope" "/"
+  "display" "standalone"
+  "background_color" .Site.Params.colors.light.bg
+  "theme_color" .Site.Params.colors.light.color1
+  "icons" (slice
+    (dict "src" "/images/icons/icon-192.png" "sizes" "192x192" "type" "image/png")
+    (dict "src" "/images/icons/icon-512.png" "sizes" "512x512" "type" "image/png")
+  )
+-}}
+{{- $manifestJSON := $manifest | jsonify -}}
+{{- $manifestFile := resources.FromString "manifest.json" $manifestJSON -}}
+
+{{/* Fuse.js CDN */}}
+{{- $fuseJSCDN := .Site.Params.cdn.fusejs | default "https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js" -}}
+{{- $fuseJS := "" -}}
+{{- if and .Site.Params.cdn.localizeJS (not .Site.IsServer) -}}
+  {{- $fuseJS = resources.GetRemote $fuseJSCDN | resources.Minify | resources.Fingerprint -}}
 {{- end -}}
 
-{{/* 搜索数据 - 内嵌到页面中 */}}
-{{ partial "components-search/search-data.html" . }}
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<meta name="theme-color" content="{{ .Site.Params.colors.light.color1 }}">
+<link rel="manifest" href="{{ $manifestFile.RelPermalink }}">
+<meta name="search-data-url" content="{{ $searchDataFile.RelPermalink }}">
 {{/* Sitemap 链接 */}}
 <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ "sitemap.xml" | absURL }}">
 
@@ -50,6 +87,8 @@
   --common-shadow: {{ .Site.Params.colors.light.shadow | safeCSS }};
   --common-cursor: {{ .Site.Params.colors.light.cursor | safeCSS }};
   --common-gradient: {{ .Site.Params.colors.light.gradient | safeCSS }};
+  --common-code-bg: {{ .Site.Params.colors.light.codeBg | default "#1e1e1e" | safeCSS }};
+  --common-code-text: {{ .Site.Params.colors.light.codeText | default "#d4d4d4" | safeCSS }};
 }
 
 body.dark-theme,
@@ -63,7 +102,53 @@ body.dark-theme,
   --common-shadow: {{ .Site.Params.colors.dark.shadow | safeCSS }};
   --common-cursor: {{ .Site.Params.colors.dark.cursor | safeCSS }};
   --common-gradient: {{ .Site.Params.colors.dark.gradient | safeCSS }};
+  --common-code-bg: {{ .Site.Params.colors.dark.codeBg | default "#1e1e1e" | safeCSS }};
+  --common-code-text: {{ .Site.Params.colors.dark.codeText | default "#d4d4d4" | safeCSS }};
 }
 </style>
 
-<link rel="stylesheet" href="/css/style.css">
+<style>
+:focus-visible {
+  outline: 2px solid var(--common-color-1);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--common-bg);
+  color: var(--common-text);
+  padding: 8px 16px;
+  border: 2px solid var(--common-color-1);
+  border-radius: 8px;
+  z-index: 10000;
+  font-size: 14px;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 8px;
+}
+</style>
+
+{{- $styleCSS := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint -}}
+<link rel="stylesheet" href="{{ $styleCSS.RelPermalink }}" integrity="{{ $styleCSS.Data.Integrity }}">
+{{- $appJS := resources.Get "js/app.js" | resources.Minify | resources.Fingerprint -}}
+<script src="{{ $appJS.RelPermalink }}" integrity="{{ $appJS.Data.Integrity }}"></script>
+{{- $pjaxJS := resources.Get "js/pjax.js" | resources.Minify | resources.Fingerprint -}}
+<script src="{{ $pjaxJS.RelPermalink }}" integrity="{{ $pjaxJS.Data.Integrity }}" defer></script>

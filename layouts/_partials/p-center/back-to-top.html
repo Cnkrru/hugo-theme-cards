@@ -1,50 +1,51 @@
 {{ if .Site.Params.article.backToTop.enabled }}
-<button class="back-to-top-btn" onclick="scrollToTop()" id="back-to-top-btn">
-  <img src="{{ or .Site.Params.article.backToTop.icon "/images/svg/arrow-up.svg" }}" alt="返回顶部">
+<button class="back-to-top-btn" data-action="scroll:top" id="back-to-top-btn" aria-label="返回顶部">
+  <img src="{{ or .Site.Params.article.backToTop.icon "/images/svg/arrow-up.svg" }}" alt="" aria-hidden="true">
 </button>
 {{ end }}
 
 <script>
-const backToTopBtn = document.getElementById('back-to-top-btn');
+Cards.register('back-to-top', {
+  init: function() {
+    const btn = document.getElementById('back-to-top-btn');
+    if (!btn) return {};
 
-const scrollToTop = () => {
-  if (document.body.classList.contains('immersive-reading')) {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
+    const checkImmersiveMode = function() {
+      if (document.body.classList.contains('immersive-reading')) {
+        btn.classList.add('immersive');
+      } else {
+        btn.classList.remove('immersive');
+      }
+    };
+
+    checkImmersiveMode();
+
+    const observer = new MutationObserver(function() {
+      checkImmersiveMode();
     });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+    return { observer: observer };
+  },
+  destroy: function(instance) {
+    if (instance.observer) {
+      instance.observer.disconnect();
+    }
+  }
+});
+
+Cards.actions['scroll:top'] = function() {
+  if (document.body.classList.contains('immersive-reading')) {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   } else {
     const container = document.querySelector('.center-card-content');
     if (container) {
-      container.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      container.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 };
-
-const checkImmersiveMode = () => {
-  if (document.body.classList.contains('immersive-reading')) {
-    backToTopBtn.classList.add('immersive');
-  } else {
-    backToTopBtn.classList.remove('immersive');
-  }
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-  checkImmersiveMode();
-
-  const observer = new MutationObserver(() => {
-    checkImmersiveMode();
-  });
-  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
-});
 </script>
 
 <style>

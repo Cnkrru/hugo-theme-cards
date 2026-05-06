@@ -26,99 +26,93 @@
 </div>
 
 <script>
-(function() {
-  const calculateReadingStats = () => {
-    const contentElement = document.querySelector('.post-content');
-    if (!contentElement) return null;
+Cards.register('reading-time', {
+  init: function() {
+    const calculateReadingStats = function() {
+      const contentElement = document.querySelector('.post-content');
+      if (!contentElement) return null;
 
-    const clone = contentElement.cloneNode(true);
-    const codeBlocks = clone.querySelectorAll('pre, code');
-    let codeText = '';
-    codeBlocks.forEach(block => {
-      codeText += block.textContent + ' ';
-      block.remove();
-    });
+      const clone = contentElement.cloneNode(true);
+      const codeBlocks = clone.querySelectorAll('pre, code');
+      let codeText = '';
+      codeBlocks.forEach(function(block) {
+        codeText += block.textContent + ' ';
+        block.remove();
+      });
 
-    const text = clone.textContent || '';
-    const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
-    const chineseCount = chineseChars.length;
-    const englishWords = text.match(/[a-zA-Z]+/g) || [];
-    const englishCount = englishWords.length;
-    const codeCount = codeText.length;
+      const text = clone.textContent || '';
+      const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+      const chineseCount = chineseChars.length;
+      const englishWords = text.match(/[a-zA-Z]+/g) || [];
+      const englishCount = englishWords.length;
+      const codeCount = codeText.length;
 
-    const wordsPerMinute = 300;
-    const codeWordsPerMinute = 100;
-    const textTime = (chineseCount + englishCount) / wordsPerMinute;
-    const codeTime = codeCount / codeWordsPerMinute;
-    const totalTime = textTime + codeTime;
-    const minutes = Math.max(1, Math.ceil(totalTime));
+      const wordsPerMinute = 300;
+      const codeWordsPerMinute = 100;
+      const textTime = (chineseCount + englishCount) / wordsPerMinute;
+      const codeTime = codeCount / codeWordsPerMinute;
+      const totalTime = textTime + codeTime;
+      const minutes = Math.max(1, Math.ceil(totalTime));
 
-    return {
-      minutes: minutes,
-      chineseCount: chineseCount,
-      englishCount: englishCount,
-      codeCount: codeCount,
-      totalWords: chineseCount + englishCount + codeCount
+      return {
+        minutes: minutes,
+        chineseCount: chineseCount,
+        englishCount: englishCount,
+        codeCount: codeCount,
+        totalWords: chineseCount + englishCount + codeCount
+      };
     };
-  };
 
-  const formatTime = (minutes) => {
-    const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
-    const lessThanOne = t ? t['lessThanOneMinute'] : '小于 1 分钟';
-    const minuteLabel = t ? t['minute'] : '分钟';
-    const hourLabel = t ? t['hour'] : '小时';
+    const formatTime = function(minutes) {
+      const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+      const lessThanOne = t ? t['lessThanOneMinute'] : '小于 1 分钟';
+      const minuteLabel = t ? t['minute'] : '分钟';
+      const hourLabel = t ? t['hour'] : '小时';
 
-    if (minutes < 1) {
-      return lessThanOne;
-    } else if (minutes === 1) {
-      return '1 ' + minuteLabel;
-    } else if (minutes < 60) {
-      return minutes + ' ' + minuteLabel;
-    } else {
+      if (minutes < 1) return lessThanOne;
+      if (minutes === 1) return '1 ' + minuteLabel;
+      if (minutes < 60) return minutes + ' ' + minuteLabel;
       const hours = Math.floor(minutes / 60);
       const remainingMinutes = minutes % 60;
-      if (remainingMinutes === 0) {
-        return hours + ' ' + hourLabel;
-      } else {
-        return hours + ' ' + hourLabel + ' ' + remainingMinutes + ' ' + minuteLabel;
+      if (remainingMinutes === 0) return hours + ' ' + hourLabel;
+      return hours + ' ' + hourLabel + ' ' + remainingMinutes + ' ' + minuteLabel;
+    };
+
+    const updateDisplay = function() {
+      const stats = calculateReadingStats();
+      if (!stats) return;
+
+      const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+      const wordCountText = document.getElementById('word-count-text');
+      const wordCountDetail = document.getElementById('word-count-detail');
+      const readingTimeText = document.getElementById('reading-time-text');
+
+      if (wordCountText) {
+        wordCountText.textContent = t
+          ? t['wordCountLabel'] + ' ' + stats.totalWords + ' ' + t['wordCount']
+          : '字数统计: ' + stats.totalWords + ' 字';
       }
-    }
-  };
 
-  const updateDisplay = () => {
-    const stats = calculateReadingStats();
-    if (!stats) return;
+      if (wordCountDetail) {
+        wordCountDetail.textContent = '(' +
+          stats.chineseCount + (t ? t['chinese'] : '中文') + ' / ' +
+          stats.englishCount + (t ? t['english'] : '英文') + ' / ' +
+          stats.codeCount + (t ? t['code'] : '代码') + ')';
+      }
 
-    const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+      if (readingTimeText) {
+        readingTimeText.textContent = (t ? t['readingTimeLabel'] : '预计阅读时间: ') + formatTime(stats.minutes);
+      }
+    };
 
-    const wordCountText = document.getElementById('word-count-text');
-    const wordCountDetail = document.getElementById('word-count-detail');
-    const readingTimeText = document.getElementById('reading-time-text');
+    const timerId = setTimeout(updateDisplay, 300);
 
-    if (wordCountText) {
-      wordCountText.textContent = t
-        ? t['wordCountLabel'] + ' ' + stats.totalWords + ' ' + t['wordCount']
-        : '字数统计: ' + stats.totalWords + ' 字';
-    }
-
-    if (wordCountDetail) {
-      wordCountDetail.textContent = '(' +
-        stats.chineseCount + (t ? t['chinese'] : '中文') + ' / ' +
-        stats.englishCount + (t ? t['english'] : '英文') + ' / ' +
-        stats.codeCount + (t ? t['code'] : '代码') + ')';
-    }
-
-    if (readingTimeText) {
-      readingTimeText.textContent = (t ? t['readingTimeLabel'] : '预计阅读时间: ') + formatTime(stats.minutes);
-    }
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(updateDisplay, 300));
-  } else {
-    setTimeout(updateDisplay, 300);
+    return { timerId: timerId };
+  },
+  destroy: function(instance) {
+    if (instance.timerId) clearTimeout(instance.timerId);
   }
-})();
+});
 </script>
 
 <style>
@@ -183,25 +177,11 @@
   border: 2px solid var(--common-color-1);
 }
 
-.word-count-icon {
-  color: var(--common-text);
-}
-
-.word-count-text {
-  color: var(--common-text);
-}
-
-.word-count-detail {
-  color: var(--common-text);
-}
-
-.reading-time-icon {
-  color: var(--common-text);
-}
-
-.reading-time-text {
-  color: var(--common-text);
-}
+.word-count-icon { color: var(--common-text); }
+.word-count-text { color: var(--common-text); }
+.word-count-detail { color: var(--common-text); }
+.reading-time-icon { color: var(--common-text); }
+.reading-time-text { color: var(--common-text); }
 </style>
 
 <style>
@@ -221,42 +201,15 @@
     gap: 4px;
   }
 
-  .word-count-detail {
-    font-size: 11px;
-  }
-
-  .word-count-text,
-  .reading-time-text {
-    font-size: 12px;
-  }
-
-  .word-count-icon,
-  .reading-time-icon {
-    width: 14px;
-    height: 14px;
-  }
+  .word-count-detail { font-size: 11px; }
+  .word-count-text, .reading-time-text { font-size: 12px; }
+  .word-count-icon, .reading-time-icon { width: 14px; height: 14px; }
 }
 
 @media (max-width: 768px) {
-  .reading-time-container {
-    padding: 10px 15px;
-    margin: 10px 0;
-    border-radius: 20px;
-  }
-
-  .word-count-detail {
-    font-size: 12px;
-  }
-
-  .word-count-text,
-  .reading-time-text {
-    font-size: 14px;
-  }
-
-  .word-count-icon,
-  .reading-time-icon {
-    width: 16px;
-    height: 16px;
-  }
+  .reading-time-container { padding: 10px 15px; margin: 10px 0; border-radius: 20px; }
+  .word-count-detail { font-size: 12px; }
+  .word-count-text, .reading-time-text { font-size: 14px; }
+  .word-count-icon, .reading-time-icon { width: 16px; height: 16px; }
 }
 </style>

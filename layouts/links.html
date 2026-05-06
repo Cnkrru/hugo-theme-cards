@@ -1,7 +1,7 @@
 {{ define "main" }}
 <!-- 中心卡片头部区域 -->
 <div class="center-head-card">
-  <h2>友情链接</h2>
+  <h2 data-i18n="links">友情链接</h2>
 </div>
 
 <hr>
@@ -14,15 +14,15 @@
 
   <!-- 分页导航 -->
   <div class="links-pagination" id="links-pagination">
-    <button class="page-btn prev-btn" id="prev-btn" onclick="changePage(-1)">
+    <button class="page-btn prev-btn" id="prev-btn" data-action="links:prev">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="15 18 9 12 15 6"></polyline>
       </svg>
-      上一页
+      <span data-i18n="prev">上一页</span>
     </button>
     <span class="page-info" id="page-info">1 / 1</span>
-    <button class="page-btn next-btn" id="next-btn" onclick="changePage(1)">
-      下一页
+    <button class="page-btn next-btn" id="next-btn" data-action="links:next">
+      <span data-i18n="next">下一页</span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="9 18 15 12 9 6"></polyline>
       </svg>
@@ -33,91 +33,95 @@
 <hr>
 
 <script>
-(function() {
-  let categories = [];
-  let currentPage = 0;
+Cards.register('links-pagination', {
+  init: function() {
+    let categories = [];
+    let currentPage = 0;
 
-  const parseLinks = () => {
-    const container = document.getElementById('links-content');
-    if (!container) return;
+    const parseLinks = function() {
+      const container = document.getElementById('links-content');
+      if (!container) return;
 
-    const elements = Array.from(container.children);
-    const cats = [];
-    let currentCat = null;
+      const elements = Array.from(container.children);
+      const cats = [];
+      let currentCat = null;
 
-    elements.forEach(el => {
-      if (el.tagName === 'H2') {
-        if (currentCat) cats.push(currentCat);
-        currentCat = {
-          name: el.textContent.trim(),
-          links: []
-        };
-      } else if (el.tagName === 'UL' && currentCat) {
-        const items = Array.from(el.querySelectorAll('li'));
-        items.forEach(li => {
-          const link = li.querySelector('a');
-          if (link) {
-            currentCat.links.push({
-              name: link.textContent.trim(),
-              url: link.href,
-              description: li.textContent.replace(link.textContent, '').replace(/^\s*[-–—]\s*/, '').trim()
-            });
-          }
-        });
+      elements.forEach(function(el) {
+        if (el.tagName === 'H2') {
+          if (currentCat) cats.push(currentCat);
+          currentCat = { name: el.textContent.trim(), links: [] };
+        } else if (el.tagName === 'UL' && currentCat) {
+          const items = Array.from(el.querySelectorAll('li'));
+          items.forEach(function(li) {
+            const link = li.querySelector('a');
+            if (link) {
+              currentCat.links.push({
+                name: link.textContent.trim(),
+                url: link.href,
+                description: li.textContent.replace(link.textContent, '').replace(/^\s*[-–—]\s*/, '').trim()
+              });
+            }
+          });
+        }
+      });
+
+      if (currentCat) cats.push(currentCat);
+      categories = cats;
+    };
+
+    const renderPage = function() {
+      const container = document.getElementById('links-content');
+      const pageInfo = document.getElementById('page-info');
+      const prevBtn = document.getElementById('prev-btn');
+      const nextBtn = document.getElementById('next-btn');
+
+      if (categories.length === 0) {
+        container.innerHTML = '<p class="empty-message">' + (window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang] ? window.i18nTranslations[window.i18nCurrentLang]['noLinks'] || '暂无友链' : '暂无友链') + '</p>';
+        pageInfo.textContent = '0 / 0';
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        return;
       }
-    });
 
-    if (currentCat) cats.push(currentCat);
-    categories = cats;
-  };
+      const cat = categories[currentPage];
 
-  const renderPage = () => {
-    const container = document.getElementById('links-content');
-    const pageInfo = document.getElementById('page-info');
-    const prevBtn = document.getElementById('prev-btn');
-    const nextBtn = document.getElementById('next-btn');
+      let html = '<div class="links-category-section">';
+      html += '<h2 class="links-category-title">' + cat.name + '</h2>';
+      html += '<div class="links-grid">';
 
-    if (categories.length === 0) {
-      container.innerHTML = '<p class="empty-message">暂无友链</p>';
-      pageInfo.textContent = '0 / 0';
-      prevBtn.disabled = true;
-      nextBtn.disabled = true;
-      return;
-    }
+      cat.links.forEach(function(link) {
+        html += '<a href="' + link.url + '" target="_blank" rel="noopener noreferrer" class="link-card">';
+        html += '<div class="link-name">' + link.name + '</div>';
+        html += '<div class="link-description">' + (link.description || (window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang] ? window.i18nTranslations[window.i18nCurrentLang]['noDescription'] || '暂无描述' : '暂无描述')) + '</div>';
+        html += '</a>';
+      });
 
-    const cat = categories[currentPage];
+      html += '</div></div>';
+      container.innerHTML = html;
 
-    let html = '<div class="links-category-section">';
-    html += '<h2 class="links-category-title">' + cat.name + '</h2>';
-    html += '<div class="links-grid">';
+      pageInfo.textContent = (currentPage + 1) + ' / ' + categories.length;
+      prevBtn.disabled = currentPage === 0;
+      nextBtn.disabled = currentPage === categories.length - 1;
+    };
 
-    cat.links.forEach(link => {
-      html += '<a href="' + link.url + '" target="_blank" rel="noopener noreferrer" class="link-card">';
-      html += '<div class="link-name">' + link.name + '</div>';
-      html += '<div class="link-description">' + (link.description || '暂无描述') + '</div>';
-      html += '</a>';
-    });
+    const changePage = function(delta) {
+      const newPage = currentPage + delta;
+      if (newPage >= 0 && newPage < categories.length) {
+        currentPage = newPage;
+        renderPage();
+      }
+    };
 
-    html += '</div></div>';
-    container.innerHTML = html;
+    Cards.actions['links:prev'] = function() { changePage(-1); };
+    Cards.actions['links:next'] = function() { changePage(1); };
 
-    pageInfo.textContent = (currentPage + 1) + ' / ' + categories.length;
-    prevBtn.disabled = currentPage === 0;
-    nextBtn.disabled = currentPage === categories.length - 1;
-  };
+    parseLinks();
+    renderPage();
 
-  window.changePage = (delta) => {
-    const newPage = currentPage + delta;
-    if (newPage >= 0 && newPage < categories.length) {
-      currentPage = newPage;
-      renderPage();
-    }
-  };
-
-  // 初始化
-  parseLinks();
-  renderPage();
-})();
+    return { changePage: changePage };
+  },
+  destroy: function() {}
+});
 </script>
 
 <style>

@@ -1,0 +1,276 @@
+<main class="index-hero-content">
+  <div class="index-hero-text">
+    <p class="index-hero-subtitle">
+      <span class="index-glow-text">HELLO WORLD</span>
+    </p>
+    <h1 class="index-hero-title">
+      <span class="index-typing-text" id="index-typing-text"></span>
+      <span class="index-cursor-blink">|</span>
+    </h1>
+  </div>
+
+  <div class="index-hero-buttons">
+    <a href="{{ relLangURL "/list/" }}" data-no-pjax class="index-btn index-btn-primary">
+      <span class="index-btn-text" data-i18n="start">开始</span>
+      <span class="index-btn-glow"></span>
+    </a>
+  </div>
+</main>
+
+<script>
+Cards.register('hero-typing', {
+  init: function() {
+    let typingText = '';
+    let typingIndex = 0;
+    let isDeleting = false;
+    let isPausing = false;
+    let lastTime = 0;
+    let animationFrameId = null;
+
+    const text = 'Welcome to Cnkrru\'s Blog';
+    const typingSpeed = 150;
+    const deletingSpeed = 80;
+    const pauseTime = 2000;
+    const loop = true;
+    const randomSpeed = true;
+
+    const targetElement = document.getElementById('index-typing-text');
+    if (!targetElement) return { animationFrameId: null };
+
+    const getRandomSpeed = function(baseSpeed) {
+      if (!randomSpeed) return baseSpeed;
+      return baseSpeed * (0.8 + Math.random() * 0.4);
+    };
+
+    const typeEffect = function(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const elapsed = timestamp - lastTime;
+
+      if (isPausing) {
+        if (elapsed >= pauseTime) {
+          isPausing = false;
+          isDeleting = true;
+          lastTime = timestamp;
+        }
+      } else if (!isDeleting) {
+        const currentSpeed = getRandomSpeed(typingSpeed);
+        if (elapsed >= currentSpeed) {
+          if (typingIndex < text.length) {
+            typingText = text.substring(0, typingIndex + 1);
+            targetElement.textContent = typingText;
+            typingIndex++;
+            lastTime = timestamp;
+          } else if (loop) {
+            isPausing = true;
+            lastTime = timestamp;
+          }
+        }
+      } else {
+        const delSpeed = getRandomSpeed(deletingSpeed);
+        if (elapsed >= delSpeed) {
+          if (typingIndex > 0) {
+            typingIndex--;
+            typingText = text.substring(0, typingIndex);
+            targetElement.textContent = typingText;
+            lastTime = timestamp;
+          } else if (loop) {
+            isDeleting = false;
+            lastTime = timestamp;
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(typeEffect);
+    };
+
+    setTimeout(function() {
+      lastTime = 0;
+      animationFrameId = requestAnimationFrame(typeEffect);
+    }, 300);
+
+    return { animationFrameId: animationFrameId };
+  },
+  destroy: function(instance) {
+    if (instance.animationFrameId) cancelAnimationFrame(instance.animationFrameId);
+  }
+});
+</script>
+
+<style>
+.index-hero-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.index-hero-text {
+  margin-bottom: 3rem;
+}
+
+.index-hero-subtitle {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.index-hero-title {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.index-cursor-blink {
+  display: inline-block;
+  animation: index-cursor-fade 0.8s ease-in-out infinite;
+}
+
+@keyframes index-cursor-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.index-hero-buttons {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.index-btn {
+  position: relative;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: transparent;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.index-btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.index-btn-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.index-btn-primary:hover .index-btn-glow {
+  width: 300px;
+  height: 300px;
+}
+
+.index-btn-text {
+  position: relative;
+  z-index: 2;
+}
+</style>
+
+<style>
+.index-glow-text {
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite, index-hello-glow 2s ease-in-out infinite;
+  text-shadow: 0 0 15px var(--common-color-1);
+}
+
+.index-typing-text {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite, index-typing-glow 2s ease-in-out infinite;
+  text-shadow: 0 0 15px var(--common-color-1);
+}
+
+@keyframes index-hello-glow {
+  0%, 100% { text-shadow: 0 0 15px var(--common-color-1); }
+  50% { text-shadow: 0 0 25px var(--common-color-1); }
+}
+
+@keyframes index-typing-glow {
+  0%, 100% { text-shadow: 0 0 15px var(--common-color-1); }
+  50% { text-shadow: 0 0 25px var(--common-color-1); }
+}
+
+.index-cursor-blink {
+  color: var(--common-color-1);
+}
+
+.index-btn-primary {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  color: white;
+  box-shadow: 0 4px 15px var(--common-color-1);
+  animation: index-gradient-shift 3s ease infinite;
+}
+
+.index-btn-primary:hover {
+  box-shadow: 0 8px 25px var(--common-color-1);
+}
+
+.index-btn-glow {
+  background: var(--common-color-2);
+  opacity: 0.3;
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .index-hero-content {
+    padding: 4rem 1rem;
+  }
+
+  .index-hero-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .index-hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .index-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .index-hero-content {
+    padding: 3rem 0.5rem;
+  }
+
+  .index-hero-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .index-hero-title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+}
+</style>

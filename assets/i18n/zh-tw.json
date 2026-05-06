@@ -77,5 +77,19 @@
     "uncategorized": "未分類",
     "category": "分類",
     "categoriesLabel": "個分類",
-    "totalTerms": "共"
+    "totalTerms": "共",
+    "error404Title": "404 - 頁面未找到",
+    "error404Subtitle": "哎呀，頁面找不到了",
+    "error404Description": "您訪問的頁面可能已被刪除、移動或暫時不可用。",
+    "error404GoHome": "返回首頁",
+    "error404BrowseArticles": "瀏覽文章",
+    "error404TrySearch": "或者嘗試搜尋：",
+    "noLinks": "暫無友鏈",
+    "noDescription": "暫無描述",
+    "commentTitle": "評論",
+    "relatedArticles": "相關文章推薦",
+    "gitalkUnavailable": "Gitalk 評論系統在本地預覽時不可用",
+    "skipToContent": "跳到內容",
+    "prevArticle": "上一篇",
+    "nextArticle": "下一篇"
 }

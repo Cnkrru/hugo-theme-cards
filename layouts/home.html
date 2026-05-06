@@ -1,216 +1,213 @@
-{{ define "main" }}
-<div class="center-head-card">
-  <h2 data-i18n="articleList">{{ .Site.Params.homepagetitle | default "文章列表" }}</h2>
-  {{ if .Site.Params.homepage.showarticlecount }}
-    {{ partial "p-center/article-count.html" . }}
-  {{ end }}
-</div>
-<hr>
+<!DOCTYPE html>
+<html lang="{{ site.Language.LanguageCode }}" dir="{{ or site.Language.LanguageDirection `ltr` }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <meta name="generator" content="Hugo {{ hugo.Version }}">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <title>{{ site.Title }}</title>
 
-<div class="center-card-content">
-  {{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
-  {{ $paginator := .Paginate $pages (.Site.Params.homepage.articlesPerPage | default 5) }}
+  {{- with .OutputFormats.Get "RSS" -}}
+  <link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }} RSS Feed" href="{{ .Permalink }}">
+  {{- end -}}
 
-  {{ if $paginator.Pages }}
-    {{ range $index, $page := $paginator.Pages }}
-      {{ if eq $index 1 }}<hr style="margin: 10px 0">{{ end }}
-      <a href="{{ $page.RelPermalink }}">
-        <div class="index-center-list-card">
-          <div class="index-center-list-card-header">
-            {{ $page.LinkTitle }}
-          </div>
-          <div class="index-center-list-card-content">
-            {{ if .Site.Params.article.listcard.showid }}
-            <div class="article-meta-row">
-              <span class="meta-item">ID: {{ $page.File.ContentBaseName }}</span>
-            </div>
-            {{ end }}
-            {{ if .Site.Params.article.listcard.showcategory }}
-            {{ with $page.Params.categories }}
-            <div class="article-meta-row">
-              <span class="meta-item">分类: {{ delimit . ", " }}</span>
-            </div>
-            {{ end }}
-            {{ end }}
-            {{ if .Site.Params.article.listcard.showtags }}
-            {{ with $page.Params.tags }}
-            <div class="article-meta-row">
-              <span class="meta-item">标签: {{ delimit . ", " }}</span>
-            </div>
-            {{ end }}
-            {{ end }}
-            {{ if .Site.Params.article.listcard.showdate }}
-            <div class="article-meta-row">
-              <span class="meta-item date-item">Date: {{ $page.Date.Format "2006-01-02" }}</span>
-            </div>
-            {{ end }}
-          </div>
-        </div>
-      </a>
-    {{ end }}
-  {{ else }}
-    <div class="empty-message">
-      <p>暂无文章</p>
-    </div>
-  {{ end }}
-</div>
-
-<hr>
-
-<div class="pagination-wrapper">
-  {{ partial "p-center/page-nav.html" $paginator }}
-</div>
-
-<style>
-.center-head-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 10px;
-}
-
-.index-center-list-card {
-  width: 100%;
-  height: auto;
-  min-height: 140px;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: 3px solid;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.index-center-list-card:hover {
-  transform: translateY(-5px);
-  border-width: 4px;
-}
-
-.index-center-list-card-header {
-  width: 100%;
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 1.4;
-}
-
-.index-center-list-card-content {
-  width: 100%;
-  font-size: 16px;
-  line-height: 1.5;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.article-meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.meta-item {
-  font-size: 14px;
-  opacity: 0.8;
-}
-
-.date-item {
-  opacity: 0.6;
-}
-
-.loading-message,
-.error-message,
-.empty-message {
-  text-align: center;
-  padding: 50px 0;
-}
-
-.pagination-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.index-center-list-card {
-  border-color: var(--common-color-1);
-  background-color: var(--common-bg);
-  transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-.index-center-list-card:hover {
-  box-shadow: 0 4px 8px var(--common-shadow);
-}
-
-.index-center-list-card-header {
-  color: var(--common-text);
-}
-
-.index-center-list-card-content {
-  color: var(--common-text);
-}
-
-.meta-item {
-  color: var(--common-text);
-}
-
-.date-item {
-  color: var(--common-text);
-}
-
-.loading-message,
-.error-message,
-.empty-message {
-  color: var(--common-text);
-}
-
-@media (max-width: 575px) {
-  .index-center-list-card {
-    padding: 12px;
-    margin-bottom: 12px;
-    min-height: 130px;
+  <style>
+  :root,
+  [data-scheme="light"] {
+    --common-color-1: {{ .Site.Params.colors.light.color1 | safeCSS }};
+    --common-color-2: {{ .Site.Params.colors.light.color2 | safeCSS }};
+    --common-bg: {{ .Site.Params.colors.light.bg | safeCSS }};
+    --common-text: {{ .Site.Params.colors.light.text | safeCSS }};
+    --common-content: {{ .Site.Params.colors.light.content | safeCSS }};
+    --common-hover: {{ .Site.Params.colors.light.hover | safeCSS }};
+    --common-shadow: {{ .Site.Params.colors.light.shadow | safeCSS }};
+    --common-cursor: {{ .Site.Params.colors.light.cursor | safeCSS }};
+    --common-gradient: {{ .Site.Params.colors.light.gradient | safeCSS }};
+    --common-code-bg: {{ .Site.Params.colors.light.codeBg | default "#1e1e1e" | safeCSS }};
+    --common-code-text: {{ .Site.Params.colors.light.codeText | default "#d4d4d4" | safeCSS }};
   }
 
-  .index-center-list-card-header {
-    font-size: 16px;
+  body.dark-theme,
+  [data-scheme="dark"] {
+    --common-color-1: {{ .Site.Params.colors.dark.color1 | safeCSS }};
+    --common-color-2: {{ .Site.Params.colors.dark.color2 | safeCSS }};
+    --common-bg: {{ .Site.Params.colors.dark.bg | safeCSS }};
+    --common-text: {{ .Site.Params.colors.dark.text | safeCSS }};
+    --common-content: {{ .Site.Params.colors.dark.content | safeCSS }};
+    --common-hover: {{ .Site.Params.colors.dark.hover | safeCSS }};
+    --common-shadow: {{ .Site.Params.colors.dark.shadow | safeCSS }};
+    --common-cursor: {{ .Site.Params.colors.dark.cursor | safeCSS }};
+    --common-gradient: {{ .Site.Params.colors.dark.gradient | safeCSS }};
+    --common-code-bg: {{ .Site.Params.colors.dark.codeBg | default "#1e1e1e" | safeCSS }};
+    --common-code-text: {{ .Site.Params.colors.dark.codeText | default "#d4d4d4" | safeCSS }};
+  }
+  </style>
+
+  <script>
+  (function() {
+    const STORAGE_KEY = 'CardsColorScheme';
+    const getSavedScheme = function() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === 'light' || saved === 'dark' || saved === 'auto') return saved;
+      return 'auto';
+    };
+    const getSystemScheme = function() {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+      return 'light';
+    };
+    const isDark = function(scheme, systemScheme) {
+      return scheme === 'dark' || (scheme === 'auto' && systemScheme === 'dark');
+    };
+    const scheme = getSavedScheme();
+    const systemScheme = getSystemScheme();
+    const actualScheme = isDark(scheme, systemScheme) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-scheme', actualScheme);
+  })();
+  </script>
+
+  {{- $styleCSS := resources.Get "css/style.css" | resources.Minify | resources.Fingerprint -}}
+  <link rel="stylesheet" href="{{ $styleCSS.RelPermalink }}" integrity="{{ $styleCSS.Data.Integrity }}">
+  {{- $appJS := resources.Get "js/app.js" | resources.Minify | resources.Fingerprint -}}
+  <script src="{{ $appJS.RelPermalink }}" integrity="{{ $appJS.Data.Integrity }}"></script>
+  {{- $pjaxJS := resources.Get "js/pjax.js" | resources.Minify | resources.Fingerprint -}}
+  <script src="{{ $pjaxJS.RelPermalink }}" integrity="{{ $pjaxJS.Data.Integrity }}" defer></script>
+</head>
+<body>
+  <div class="index-hero-container">
+    <div class="index-gradient-bg"></div>
+
+    <nav class="index-navbar">
+      {{ partial "page-index/index-logo.html" . }}
+      {{ partial "page-index/index-nav.html" . }}
+    </nav>
+
+    {{ partial "page-index/hero-content.html" . }}
+  </div>
+
+  <style>
+  .index-hero-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    transition: all 0.3s ease;
   }
 
-  .index-center-list-card-content {
-    font-size: 13px;
+  .index-gradient-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transition: all 0.3s ease;
   }
 
-  .article-meta-row {
-    gap: 10px;
+  .index-navbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    z-index: 100;
+  }
+  </style>
+
+  <style>
+  .index-hero-container {
+    background: linear-gradient(to bottom, var(--common-color-1), var(--common-color-2));
   }
 
-  .meta-item {
-    font-size: 12px;
+  .index-gradient-bg {
+    background: linear-gradient(to bottom, var(--common-color-1), var(--common-color-2));
   }
-}
+  </style>
 
-@media (max-width: 768px) {
-  .index-center-list-card {
-    padding: 15px;
-    margin-bottom: 15px;
-    min-height: 150px;
-  }
-
-  .index-center-list-card-header {
-    font-size: 18px;
+  <style>
+  @media (max-width: 768px) {
+    .index-navbar {
+      padding: 1.5rem 1.5rem;
+    }
   }
 
-  .index-center-list-card-content {
-    font-size: 15px;
+  @media (max-width: 576px) {
+    .index-navbar {
+      padding: 1rem 1rem;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .index-hero-container {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
   }
 
-  .article-meta-row {
-    gap: 12px;
-  }
+  @media (max-width: 576px) {
+    .index-hero-container {
+      overflow-x: hidden;
+    }
 
-  .meta-item {
-    font-size: 14px;
+    .index-navbar {
+      flex-wrap: wrap;
+    }
   }
-}
-</style>
-{{ end }}
+  </style>
+<script>
+window.i18nTranslations = {
+    {{- $langs := slice "zh-cn" "zh-tw" "en" "fr" "de" "ru" "id" -}}
+    {{- range $langs }}
+    {{- $r := resources.Get (printf "i18n/%s.json" .) }}
+    {{- $content := $r.Content | transform.Unmarshal }}
+    "{{ . }}": {
+        {{- range $key, $value := $content }}
+        "{{ $key }}": {{ $value | jsonify | safeJS }},
+        {{- end }}
+    },
+    {{- end }}
+};
+
+window.i18nCurrentLang = localStorage.getItem('preferred-language') || '{{ site.Language.LanguageCode | default "zh-cn" }}';
+
+Cards.i18nApply = function(lang) {
+    const translations = window.i18nTranslations[lang];
+    if (!translations) return;
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n');
+        if (translations[key] !== undefined) {
+            el.textContent = translations[key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[key] !== undefined) {
+            el.placeholder = translations[key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-title');
+        if (translations[key] !== undefined) {
+            el.title = translations[key];
+        }
+    });
+
+    localStorage.setItem('preferred-language', lang);
+    window.i18nCurrentLang = lang;
+};
+
+Cards.register('i18n', {
+  init: function() {
+    Cards.i18nApply(window.i18nCurrentLang);
+    return {};
+  },
+  destroy: function() {}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<div class="index-nav-menu-container">
+  <ul class="index-nav-menu">
+    {{ range .Site.Menus.sidebar_links }}
+    {{ if not (or (hasPrefix .URL "index.xml") (hasPrefix .URL "/index.xml") (hasSuffix .URL ".xml")) }}
+    <li class="index-nav-item">
+      <a href="{{ .URL | relLangURL }}" class="index-nav-link">
+        <span class="index-nav-link-text" data-i18n="{{ .Name }}">{{ .Name }}</span>
+        <span class="index-nav-link-underline"></span>
+      </a>
+    </li>
+    {{ end }}
+    {{ end }}
+  </ul>
+</div>
+
+<style>
+.index-nav-menu-container {
+  display: flex;
+  align-items: center;
+}
+
+.index-nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.index-nav-item {
+  position: relative;
+}
+
+.index-nav-link {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+}
+
+.index-nav-link:hover {
+  transform: translateY(-2px);
+}
+
+.index-nav-link-text {
+  position: relative;
+  z-index: 2;
+}
+
+.index-nav-link-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.index-nav-link:hover .index-nav-link-underline {
+  width: 100%;
+}
+</style>
+
+<style>
+.index-nav-link {
+  background: var(--common-color-2);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite;
+  text-shadow: 0 0 10px var(--common-color-1);
+}
+
+.index-nav-link:hover {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px var(--common-color-1);
+  animation: index-gradient-shift 3s ease infinite, index-nav-glow-hover 1s ease-in-out infinite;
+}
+
+@keyframes index-nav-glow-hover {
+  0%, 100% { text-shadow: 0 0 20px var(--common-color-1); }
+  50% { text-shadow: 0 0 30px var(--common-color-1); }
+}
+
+.index-nav-link-underline {
+  background: var(--common-color-1);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .index-nav-menu {
+    gap: 1.5rem;
+  }
+
+  .index-nav-link {
+    font-size: 0.875rem;
+    padding: 0.4rem 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .index-nav-menu {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .index-nav-link {
+    font-size: 0.75rem;
+    padding: 0.3rem 0;
+  }
+
+  .index-nav-item {
+    margin-bottom: 0.25rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .index-nav-link {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .index-nav-link:hover .index-nav-link-underline {
+    width: 0;
+  }
+
+  .index-nav-link:active .index-nav-link-underline {
+    width: 100%;
+  }
+}
+</style>

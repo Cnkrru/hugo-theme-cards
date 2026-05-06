@@ -78,5 +78,19 @@
     "category": "Kategori",
     "languageName": "Bahasa Indonesia",
     "categoriesLabel": "kategori",
-    "totalTerms": "Total"
+    "totalTerms": "Total",
+    "error404Title": "404 - Halaman Tidak Ditemukan",
+    "error404Subtitle": "Ups, halaman tidak ditemukan",
+    "error404Description": "Halaman yang Anda cari mungkin telah dihapus, dipindahkan, atau sementara tidak tersedia.",
+    "error404GoHome": "Kembali ke Beranda",
+    "error404BrowseArticles": "Jelajahi Artikel",
+    "error404TrySearch": "Atau coba cari:",
+    "noLinks": "Belum ada tautan",
+    "noDescription": "Tidak ada deskripsi",
+    "commentTitle": "Komentar",
+    "relatedArticles": "Artikel Terkait",
+    "gitalkUnavailable": "Sistem komentar Gitalk tidak tersedia dalam pratinjau lokal",
+    "skipToContent": "Langsung ke konten",
+    "prevArticle": "Sebelumnya",
+    "nextArticle": "Berikutnya"
 }

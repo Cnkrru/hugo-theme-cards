@@ -1,255 +1,135 @@
-{{ if .Site.Params.article.pageNav.showPrevNext }}
-<div class="post-nav-container">
-  <button
-    class="post-nav-btn prev {{ if not .PrevInSection }}disabled{{ end }}"
-    {{ if .PrevInSection }}onclick="window.location.href='{{ .PrevInSection.RelPermalink }}'"{{ end }}
-    {{ if not .PrevInSection }}disabled{{ end }}
-  >
-    <span class="post-nav-btn-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 18 9 12 15 6"></polyline>
-      </svg>
-    </span>
-    <div class="post-nav-btn-text">
-      <span class="post-nav-btn-label" data-i18n="prev">上一篇</span>
-      <span class="post-nav-btn-title">{{ with .PrevInSection }}{{ .LinkTitle }}{{ else }}<span data-i18n="none">暂无</span>{{ end }}</span>
+<div class="article-navigation">
+  {{ if .Site.Params.article.pageNav.showPrevNext }}
+    <div class="prev-article">
+      {{ range .Site.RegularPages }}
+        {{ if eq .Permalink $.Permalink }}
+          {{ if .PrevInSection }}
+            <a href="{{ .PrevInSection.Permalink }}" class="prev-link" aria-label="上一篇: {{ .PrevInSection.LinkTitle }}">
+              <span class="nav-label" data-i18n="prevArticle">上一篇</span>
+              <span class="nav-title">{{ .PrevInSection.LinkTitle }}</span>
+            </a>
+          {{ end }}
+        {{ end }}
+      {{ end }}
     </div>
-  </button>
 
-  <button
-    class="post-nav-btn next {{ if not .NextInSection }}disabled{{ end }}"
-    {{ if .NextInSection }}onclick="window.location.href='{{ .NextInSection.RelPermalink }}'"{{ end }}
-    {{ if not .NextInSection }}disabled{{ end }}
-  >
-    <div class="post-nav-btn-text">
-      <span class="post-nav-btn-label" data-i18n="next">下一篇</span>
-      <span class="post-nav-btn-title">{{ with .NextInSection }}{{ .LinkTitle }}{{ else }}<span data-i18n="none">暂无</span>{{ end }}</span>
+    <div class="next-article">
+      {{ range .Site.RegularPages }}
+        {{ if eq .Permalink $.Permalink }}
+          {{ if .NextInSection }}
+            <a href="{{ .NextInSection.Permalink }}" class="next-link" aria-label="下一篇: {{ .NextInSection.LinkTitle }}">
+              <span class="nav-label" data-i18n="nextArticle">下一篇</span>
+              <span class="nav-title">{{ .NextInSection.LinkTitle }}</span>
+            </a>
+          {{ end }}
+        {{ end }}
+      {{ end }}
     </div>
-    <span class="post-nav-btn-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="9 18 15 12 9 6"></polyline>
-      </svg>
-    </span>
-  </button>
+  {{ end }}
 </div>
 
 <script>
-document.addEventListener('keydown', (e) => {
-  {{ if .PrevInSection }}
-  if (e.key === 'ArrowLeft') {
-    window.location.href = '{{ .PrevInSection.RelPermalink }}';
+Cards.register('article-nav', {
+  init: function() {
+    const keyHandler = function(e) {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
+      if (e.key === 'ArrowLeft') {
+        const prevLink = document.querySelector('.prev-link');
+        if (prevLink) prevLink.click();
+      } else if (e.key === 'ArrowRight') {
+        const nextLink = document.querySelector('.next-link');
+        if (nextLink) nextLink.click();
+      }
+    };
+    document.addEventListener('keydown', keyHandler);
+    return { keyHandler: keyHandler };
+  },
+  destroy: function(instance) {
+    document.removeEventListener('keydown', instance.keyHandler);
   }
-  {{ end }}
-  {{ if .NextInSection }}
-  if (e.key === 'ArrowRight') {
-    window.location.href = '{{ .NextInSection.RelPermalink }}';
-  }
-  {{ end }}
 });
 </script>
 
 <style>
-.post-nav-container {
-  position: relative;
-  width: 100%;
-  margin: 30px 0;
-  padding: 8px;
+.article-navigation {
   display: flex;
   justify-content: space-between;
-  gap: 16px;
-  border-radius: 16px;
-}
-
-.post-nav-btn {
-  flex: 1;
-  display: flex;
   align-items: center;
-  padding: 16px 20px;
-  border-radius: 12px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  user-select: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  min-height: 72px;
-  border: none;
+  padding: 20px 0;
+  gap: 10px;
 }
 
-.post-nav-btn.prev {
-  justify-content: flex-start;
-  gap: 12px;
+.prev-article, .next-article {
+  max-width: 45%;
 }
 
-.post-nav-btn.next {
-  justify-content: flex-end;
-  gap: 12px;
-}
-
-.post-nav-btn-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  transition: transform 0.3s ease;
-}
-
-.post-nav-btn-text {
-  flex: 1;
+.prev-link, .next-link {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  overflow: hidden;
-  min-width: 0;
+  padding: 12px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-.post-nav-btn.prev .post-nav-btn-text {
-  align-items: flex-start;
-  text-align: left;
-}
-
-.post-nav-btn.next .post-nav-btn-text {
-  align-items: flex-end;
-  text-align: right;
-}
-
-.post-nav-btn-label {
+.nav-label {
   font-size: 12px;
-  font-weight: 500;
-  opacity: 0.7;
-  letter-spacing: 0.5px;
+  opacity: 0.6;
+  font-weight: 400;
 }
 
-.post-nav-btn-title {
+.nav-title {
   font-size: 14px;
   font-weight: 500;
-  line-height: 1.5;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
+  max-width: 300px;
 }
 
-.post-nav-btn.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.prev-article .nav-label {
+  text-align: left;
 }
 
-.post-nav-btn:not(.disabled):hover .post-nav-btn-icon {
-  transform: scale(1.1);
+.next-article .nav-label {
+  text-align: right;
 }
 
-.post-nav-btn:not(.disabled):hover {
-  transform: translateY(-2px);
+.next-article {
+  text-align: right;
 }
 
-.post-nav-btn:not(.disabled):active {
-  transform: translateY(-1px);
-}
+@media (max-width: 576px) {
+  .article-navigation {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-.post-nav-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+  .prev-article, .next-article {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .prev-link, .next-link {
+    font-size: 13px;
+    padding: 10px 14px;
+  }
 }
 </style>
 
 <style>
-.post-nav-container {
-  background: var(--common-bg);
+.prev-link, .next-link {
+  color: var(--common-text);
+  background-color: var(--common-bg);
   border: 1px solid var(--common-color-1);
 }
 
-.post-nav-btn {
-  background-color: var(--common-color-1);
-  border: 2px solid var(--common-color-2);
-  color: var(--common-content);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
-.post-nav-btn:hover {
+.prev-link:hover, .next-link:hover {
   background-color: var(--common-hover);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
-.post-nav-btn:not(.disabled):active {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.post-nav-btn-label,
-.post-nav-btn-title {
-  color: var(--common-content);
-}
+.nav-label { color: var(--common-text); }
+.nav-title { color: var(--common-text); }
 </style>
-
-<style>
-@media (max-width: 576px) {
-  .post-nav-container {
-    flex-direction: column;
-    gap: 8px;
-    padding: 6px;
-  }
-
-  .post-nav-btn {
-    padding: 12px 15px;
-    min-height: 60px;
-  }
-
-  .post-nav-btn-label {
-    font-size: 11px;
-  }
-
-  .post-nav-btn-title {
-    font-size: 12px;
-  }
-
-  .post-nav-btn-icon {
-    width: 20px;
-    height: 20px;
-  }
-}
-
-@media (min-width: 576px) and (max-width: 768px) {
-  .post-nav-container {
-    gap: 12px;
-    padding: 6px;
-  }
-
-  .post-nav-btn {
-    padding: 14px 18px;
-    min-height: 68px;
-  }
-
-  .post-nav-btn-label {
-    font-size: 12px;
-  }
-
-  .post-nav-btn-title {
-    font-size: 13px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 1024px) {
-  .post-nav-btn {
-    padding: 15px 22px;
-    min-height: 70px;
-  }
-
-  .post-nav-btn-title {
-    font-size: 13.5px;
-  }
-}
-
-@media (min-width: 1200px) and (max-width: 1440px) {
-  .post-nav-btn {
-    padding: 18px 24px;
-    min-height: 76px;
-  }
-
-  .post-nav-btn-title {
-    font-size: 14.5px;
-  }
-}
-</style>
-
-{{ end }}

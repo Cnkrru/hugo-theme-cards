@@ -1,7 +1,8 @@
 {{ if or .Params.math .Site.Params.article.math }}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+{{- $katexCDN := .Site.Params.cdn.katex | default "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist" -}}
+<link rel="stylesheet" href="{{ $katexCDN }}/katex.min.css" crossorigin="anonymous">
+<script defer src="{{ $katexCDN }}/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="{{ $katexCDN }}/contrib/auto-render.min.js" crossorigin="anonymous"></script>
 <script>
     window.addEventListener("DOMContentLoaded", () => {
         const contentElement = document.querySelector('.post-content');

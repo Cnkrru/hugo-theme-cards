@@ -54,13 +54,14 @@
 
 {{ if not (.Page.Store.Get "photoswipeLoaded") }}
 {{ .Page.Store.Set "photoswipeLoaded" true }}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist/photoswipe.css">
+{{- $pswpCDN := .Page.Site.Params.cdn.photoswipe | default "https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist" -}}
+<link rel="stylesheet" href="{{ $pswpCDN }}/photoswipe.css">
 <script type="module">
-    import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist/photoswipe-lightbox.esm.min.js';
+    import PhotoSwipeLightbox from '{{ $pswpCDN }}/photoswipe-lightbox.esm.min.js';
     const lightbox = new PhotoSwipeLightbox({
         gallery: '.post-content',
         children: 'a[data-pswp-width]',
-        pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist/photoswipe.esm.min.js')
+        pswpModule: () => import('{{ $pswpCDN }}/photoswipe.esm.min.js')
     });
     lightbox.init();
 </script>

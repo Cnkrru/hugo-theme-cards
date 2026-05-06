@@ -411,9 +411,8 @@ class AdvancedSearch {
           const item = result.item;
           const resultItem = document.createElement('div');
           resultItem.className = 'search-result-item';
-          resultItem.onclick = () => {
-            window.location.href = item.permalink;
-          };
+          resultItem.setAttribute('data-action', 'advanced-search:navigate');
+          resultItem.setAttribute('data-url', item.permalink);
 
           const titleDiv = document.createElement('div');
           titleDiv.className = 'result-title';
@@ -492,8 +491,16 @@ class AdvancedSearch {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  new AdvancedSearch();
+Cards.register('advanced-search', {
+  init: function() {
+    const instance = new AdvancedSearch();
+    Cards.actions['advanced-search:navigate'] = function(e, target) {
+      const url = target.dataset.url;
+      if (url) window.location.href = url;
+    };
+    return { instance: instance };
+  },
+  destroy: function() {}
 });
 </script>
 {{ end }}

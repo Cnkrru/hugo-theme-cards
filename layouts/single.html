@@ -1,0 +1,144 @@
+{{ define "main" }}
+<!-- 中心卡片头部区域 -->
+<div class="center-head-card">
+  <h2>{{ .Title }}</h2>
+  <div class="center-head-card-tools">
+    {{ partial "p-center/back-to-top.html" . }}
+    {{ partial "p-center/post-menu.html" . }}
+    {{ if .Site.Params.article.tocButton.enabled }}
+    <div class="toc-button-container">
+      <button class="toc-button" data-action="toc:toggle" aria-label="显示/隐藏目录" role="button" data-i18n-title="toggleToc">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
+        </svg>
+        <span class="toc-button-text" data-i18n="tableOfContents">目录</span>
+      </button>
+    </div>
+    {{ end }}
+  </div>
+</div>
+
+{{ partial "p-center/toc.html" . }}
+
+<hr>
+
+<!-- 文章内容区域 -->
+<div class="center-card-content">
+  {{- if .Site.Params.article.page.showReadingTime -}}
+  {{ partial "p-center/reading-time.html" . }}
+  {{- end -}}
+
+  <!-- 文章内容 -->
+  <article class="post-content">
+    {{ .Content }}
+  </article>
+
+  <hr>
+
+  <!-- 社交分享按钮 -->
+  {{ partial "p-center/share-buttons.html" . }}
+
+  <hr>
+
+  <!-- 上一篇/下一篇导航 -->
+  {{ partial "p-center/article-nav.html" . }}
+
+  <hr>
+
+  <!-- 相关文章推荐 -->
+  {{ if .Site.Params.article.page.showRelatedArticles }}
+    {{ partial "p-center/related-articles.html" . }}
+  {{ end }}
+
+  <hr>
+
+  <!-- 页脚版权 -->
+  <div class="read-center-card-footer">
+    <p><span data-i18n="copyright">©</span> {{ now.Year }} {{ site.Title }} <span data-i18n="allRightsReserved">. All rights reserved.</span></p>
+    {{- if .Site.Params.article.license.enabled -}}
+    <p class="article-license">{{ .Site.Params.article.license.default }}</p>
+    {{- end -}}
+  </div>
+
+  <hr>
+
+  <!-- 评论区域 -->
+  {{ if .Site.Params.article.page.showComments }}
+    {{ partial "components-comment/comments.html" . }}
+  {{ end }}
+</div>
+<hr>
+
+{{ partial "p-center/content-style.html" (dict "class" "post-content") }}
+
+<style>
+.center-head-card {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.center-head-card-tools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.read-center-card-footer {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  opacity: 0.8;
+  color: var(--common-text);
+}
+
+.post-content .highlight {
+  background-color: var(--common-code-bg);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.post-content .highlight pre {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 16px;
+}
+
+.post-content .highlight code {
+  background: none;
+  color: var(--common-code-text);
+}
+</style>
+
+<style>
+@media (max-width: 576px) {
+  .center-head-card-tools {
+    width: auto;
+    justify-content: flex-end;
+    flex-shrink: 0;
+  }
+
+  .center-head-card {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 4px;
+  }
+
+  .center-head-card h2 {
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: normal;
+    flex: 1;
+    min-width: 0;
+  }
+}
+</style>
+
+{{ partial "markup/render-katex.html" . }}
+{{ end }}

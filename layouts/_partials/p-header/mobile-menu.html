@@ -1,10 +1,10 @@
 <div class="mobile-menu-container">
-  <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileMenu()">
-    <img src="/images/svg/order.svg" alt="菜单">
+  <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle" data-action="menu:toggle" role="button" tabindex="0" aria-label="菜单" aria-expanded="false">
+    <img src="/images/svg/order.svg" alt="" aria-hidden="true">
   </div>
 </div>
 
-<div class="mobile-sidebar-overlay" id="mobile-menu-overlay" onclick="handleMobileOverlayClick(event)"></div>
+<div class="mobile-sidebar-overlay" id="mobile-menu-overlay" data-action="menu:close"></div>
 
 <aside class="mobile-sidebar" id="mobile-sidebar">
   <div class="mobile-sidebar-card">
@@ -21,33 +21,53 @@
 </aside>
 
 <script>
-const toggleMobileMenu = () => {
+Cards.register('mobile-menu', {
+  init: function() {
+    const closeMenu = function() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      const sidebar = document.getElementById('mobile-sidebar');
+      if (overlay) overlay.classList.remove('active');
+      if (sidebar) sidebar.classList.remove('active');
+      const toggle = document.getElementById('mobile-menu-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    const escapeListener = function(event) {
+      if (event.key === 'Escape') closeMenu();
+    };
+
+    document.addEventListener('keydown', escapeListener);
+
+    return { closeMenu: closeMenu, escapeListener: escapeListener };
+  },
+  destroy: function(instance) {
+    document.removeEventListener('keydown', instance.escapeListener);
+    instance.closeMenu();
+  }
+});
+
+Cards.actions['menu:toggle'] = function() {
   const overlay = document.getElementById('mobile-menu-overlay');
   const sidebar = document.getElementById('mobile-sidebar');
   const isOpen = overlay.classList.toggle('active');
   sidebar.classList.toggle('active', isOpen);
+  const toggle = document.getElementById('mobile-menu-toggle');
+  if (toggle) toggle.setAttribute('aria-expanded', isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
-}
+};
 
-const closeMobileMenu = () => {
-  const overlay = document.getElementById('mobile-menu-overlay');
-  const sidebar = document.getElementById('mobile-sidebar');
-  overlay.classList.remove('active');
-  sidebar.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-const handleMobileOverlayClick = (event) => {
-  if (event.target.id === 'mobile-menu-overlay') {
-    closeMobileMenu();
+Cards.actions['menu:close'] = function(e) {
+  if (e.target.id === 'mobile-menu-overlay') {
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const sidebar = document.getElementById('mobile-sidebar');
+    overlay.classList.remove('active');
+    sidebar.classList.remove('active');
+    const toggle = document.getElementById('mobile-menu-toggle');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
   }
-}
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    closeMobileMenu();
-  }
-});
+};
 </script>
 
 <style>

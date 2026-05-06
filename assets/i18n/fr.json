@@ -77,5 +77,19 @@
     "uncategorized": "Non classé",
     "category": "Catégorie",
     "categoriesLabel": "catégories",
-    "totalTerms": "Total"
+    "totalTerms": "Total",
+    "error404Title": "404 - Page introuvable",
+    "error404Subtitle": "Oups, page introuvable",
+    "error404Description": "La page que vous recherchez a peut-être été supprimée, déplacée ou est temporairement indisponible.",
+    "error404GoHome": "Retour à l'accueil",
+    "error404BrowseArticles": "Parcourir les articles",
+    "error404TrySearch": "Ou essayez de rechercher :",
+    "noLinks": "Aucun lien pour l'instant",
+    "noDescription": "Aucune description",
+    "commentTitle": "Commentaires",
+    "relatedArticles": "Articles connexes",
+    "gitalkUnavailable": "Le système de commentaires Gitalk n'est pas disponible en aperçu local",
+    "skipToContent": "Aller au contenu",
+    "prevArticle": "Précédent",
+    "nextArticle": "Suivant"
 }

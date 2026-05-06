@@ -77,5 +77,19 @@
     "uncategorized": "Nicht kategorisiert",
     "category": "Kategorie",
     "categoriesLabel": "Kategorien",
-    "totalTerms": "Gesamt"
+    "totalTerms": "Gesamt",
+    "error404Title": "404 - Seite nicht gefunden",
+    "error404Subtitle": "Hoppla, Seite nicht gefunden",
+    "error404Description": "Die gesuchte Seite wurde möglicherweise gelöscht, verschoben oder ist vorübergehend nicht verfügbar.",
+    "error404GoHome": "Zurück zur Startseite",
+    "error404BrowseArticles": "Artikel durchsuchen",
+    "error404TrySearch": "Oder versuchen Sie zu suchen:",
+    "noLinks": "Noch keine Links",
+    "noDescription": "Keine Beschreibung",
+    "commentTitle": "Kommentare",
+    "relatedArticles": "Ähnliche Artikel",
+    "gitalkUnavailable": "Gitalk-Kommentarsystem ist in der lokalen Vorschau nicht verfügbar",
+    "skipToContent": "Zum Inhalt springen",
+    "prevArticle": "Vorherige",
+    "nextArticle": "Nächste"
 }

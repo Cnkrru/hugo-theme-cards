@@ -1,11 +1,11 @@
-<div class="button-style" onclick="toggleImmersiveReading()">
-  <img src="/images/svg/book.svg" alt="沉浸式阅读">
+<div class="button-style" data-action="reading:toggle" role="button" tabindex="0" aria-label="沉浸式阅读">
+  <img src="/images/svg/book.svg" alt="" aria-hidden="true">
 </div>
 
 <script>
-const toggleImmersiveReading = () => {
+Cards.actions['reading:toggle'] = function() {
   document.body.classList.toggle('immersive-reading');
-}
+};
 </script>
 
 <style>

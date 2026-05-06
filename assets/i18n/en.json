@@ -77,5 +77,19 @@
     "uncategorized": "Uncategorized",
     "category": "Category",
     "categoriesLabel": "categories",
-    "totalTerms": "Total"
+    "totalTerms": "Total",
+    "error404Title": "404 - Page Not Found",
+    "error404Subtitle": "Oops, page not found",
+    "error404Description": "The page you are looking for may have been deleted, moved, or is temporarily unavailable.",
+    "error404GoHome": "Back to Home",
+    "error404BrowseArticles": "Browse Articles",
+    "error404TrySearch": "Or try searching:",
+    "noLinks": "No links yet",
+    "noDescription": "No description",
+    "commentTitle": "Comments",
+    "relatedArticles": "Related Articles",
+    "gitalkUnavailable": "Gitalk comment system is not available in local preview",
+    "skipToContent": "Skip to content",
+    "prevArticle": "Previous",
+    "nextArticle": "Next"
 }

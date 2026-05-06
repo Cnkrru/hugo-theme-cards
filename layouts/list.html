@@ -1,0 +1,332 @@
+{{ define "main" }}
+{{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+{{ $articlesPerPage := .Site.Params.homepage.articlesPerPage | default 5 }}
+
+{{ $totalPages := 0 }}
+{{ if gt (len $pages) 0 }}
+  {{ $totalPages = add (div (sub (len $pages) 1) $articlesPerPage) 1 }}
+{{ end }}
+
+<div class="center-head-card">
+  <h2 data-i18n="articleList">{{ .Site.Params.homepagetitle | default "文章列表" }}</h2>
+  {{ if .Site.Params.homepage.showarticlecount }}
+    {{ partial "p-center/article-count.html" . }}
+  {{ end }}
+</div>
+<hr>
+
+<div class="center-card-content" id="list-articles-container">
+  {{ range $index, $page := $pages }}
+    {{ if eq $index 1 }}<hr class="list-inner-separator" style="margin: 10px 0">{{ end }}
+    <a href="{{ $page.RelPermalink }}" class="list-article-link" data-index="{{ $index }}">
+      <div class="index-center-list-card">
+        <div class="index-center-list-card-header">
+          {{ $page.LinkTitle }}
+        </div>
+        <div class="index-center-list-card-content">
+          {{ if $.Site.Params.article.listcard.showid }}
+          <div class="article-meta-row">
+            <span class="meta-item">ID: {{ $page.File.ContentBaseName }}</span>
+          </div>
+          {{ end }}
+          {{ if $.Site.Params.article.listcard.showcategory }}
+          {{ with $page.Params.categories }}
+          <div class="article-meta-row">
+            <span class="meta-item"><span data-i18n="category">分类</span>: {{ delimit . ", " }}</span>
+          </div>
+          {{ end }}
+          {{ end }}
+          {{ if $.Site.Params.article.listcard.showtags }}
+          {{ with $page.Params.tags }}
+          <div class="article-meta-row">
+            <span class="meta-item"><span data-i18n="tags">标签</span>: {{ delimit . ", " }}</span>
+          </div>
+          {{ end }}
+          {{ end }}
+          {{ if $.Site.Params.article.listcard.showdate }}
+          <div class="article-meta-row">
+            <span class="meta-item date-item">Date: {{ $page.Date.Format "2006-01-02" }}</span>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </a>
+  {{ else }}
+    <div class="empty-message">
+      <p data-i18n="noArticles">暂无文章</p>
+    </div>
+  {{ end }}
+</div>
+
+<hr>
+
+{{ partial "p-center/page-nav.html" (dict "current" 1 "total" $totalPages "prefix" "list") }}
+
+<script>
+Cards.register('list-pagination', {
+  init: function() {
+    const articlesPerPage = {{ $articlesPerPage }};
+    const totalPages = {{ $totalPages }};
+    let currentPage = 1;
+
+    const allLinks = document.querySelectorAll('.list-article-link');
+    const container = document.getElementById('list-articles-container');
+    const linksArray = Array.from(allLinks);
+
+    const updatePagination = function() {
+      const prevBtn = document.getElementById('listprev-btn');
+      const nextBtn = document.getElementById('listnext-btn');
+      const pageInfo = document.getElementById('listpage-info');
+      const pageButtons = document.getElementById('listpage-buttons');
+
+      if (prevBtn) prevBtn.disabled = currentPage <= 1;
+      if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+
+      const textEl = pageInfo ? pageInfo.querySelector('span') : null;
+      if (pageInfo && textEl) {
+        pageInfo.innerHTML = textEl.outerHTML + ' ' + currentPage + ' / ' + totalPages + ' ' + textEl.outerHTML;
+      }
+
+      const btns = pageButtons ? pageButtons.querySelectorAll('.page-btn') : [];
+      btns.forEach(function(btn, i) {
+        if (i + 1 === currentPage) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    };
+
+    const renderPage = function() {
+      linksArray.forEach(function(link) {
+        link.style.display = 'none';
+      });
+
+      const start = (currentPage - 1) * articlesPerPage;
+      const end = Math.min(start + articlesPerPage, linksArray.length);
+
+      for (let i = start; i < end; i++) {
+        if (linksArray[i]) linksArray[i].style.display = '';
+      }
+
+      updatePagination();
+
+      const separators = container.querySelectorAll('.list-inner-separator');
+      separators.forEach(function(sep) { sep.style.display = 'none'; });
+      if (start > 0) {
+        const firstVisible = container.querySelector('.list-article-link[style=""]');
+        if (firstVisible) {
+          const prevSep = firstVisible.previousElementSibling;
+          if (prevSep && prevSep.classList.contains('list-inner-separator')) {
+            prevSep.style.display = '';
+          }
+        }
+      }
+    };
+
+    const paginationClickHandler = function(e) {
+      const btn = e.target.closest('[data-page="list"]');
+      if (!btn) return;
+      const delta = btn.dataset.delta;
+      const goto = btn.dataset.goto;
+      if (delta !== undefined) changePage(parseInt(delta));
+      if (goto !== undefined) goToPage(parseInt(goto));
+    };
+
+    document.addEventListener('click', paginationClickHandler);
+
+    const changePage = function(delta) {
+      const newPage = currentPage + delta;
+      if (newPage >= 1 && newPage <= totalPages) {
+        currentPage = newPage;
+        renderPage();
+        container.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    const goToPage = function(pageNum) {
+      if (pageNum >= 1 && pageNum <= totalPages) {
+        currentPage = pageNum;
+        renderPage();
+        container.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+    if (totalPages === 0) {
+      const nav = document.getElementById('listpage-nav');
+      if (nav) nav.style.display = 'none';
+    } else {
+      updatePagination();
+      renderPage();
+    }
+
+    return { changePage: changePage, goToPage: goToPage, paginationClickHandler: paginationClickHandler };
+  },
+  destroy: function(instance) {
+    document.removeEventListener('click', instance.paginationClickHandler);
+  }
+});
+</script>
+
+<style>
+.center-head-card {
+  display: flex;
+  justify-content: space-between !important;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+.index-center-list-card {
+  width: 100%;
+  height: auto;
+  min-height: 140px;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 3px solid;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.index-center-list-card:hover {
+  transform: translateY(-5px);
+  border-width: 4px;
+}
+
+.index-center-list-card-header {
+  width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.index-center-list-card-content {
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.article-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.meta-item {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+.date-item {
+  opacity: 0.6;
+}
+
+.list-article-link {
+  text-decoration: none;
+  display: block;
+}
+
+.loading-message,
+.error-message,
+.empty-message {
+  text-align: center;
+  padding: 50px 0;
+}
+
+.list-inner-separator {
+  border: none;
+  border-top: 1px solid var(--common-color-1);
+  opacity: 0.3;
+}
+</style>
+
+<style>
+.index-center-list-card {
+  border-color: var(--common-color-1);
+  background-color: var(--common-bg);
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.index-center-list-card:hover {
+  box-shadow: 0 4px 8px var(--common-shadow);
+}
+
+.index-center-list-card-header {
+  color: var(--common-text);
+}
+
+.index-center-list-card-content {
+  color: var(--common-text);
+}
+
+.meta-item {
+  color: var(--common-text);
+}
+
+.date-item {
+  color: var(--common-text);
+}
+
+.loading-message,
+.error-message,
+.empty-message {
+  color: var(--common-text);
+}
+</style>
+
+<style>
+@media (max-width: 575px) {
+  .index-center-list-card {
+    padding: 12px;
+    margin-bottom: 12px;
+    min-height: 130px;
+  }
+
+  .index-center-list-card-header {
+    font-size: 16px;
+  }
+
+  .index-center-list-card-content {
+    font-size: 13px;
+  }
+
+  .article-meta-row {
+    gap: 10px;
+  }
+
+  .meta-item {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .index-center-list-card {
+    padding: 15px;
+    margin-bottom: 15px;
+    min-height: 150px;
+  }
+
+  .index-center-list-card-header {
+    font-size: 18px;
+  }
+
+  .index-center-list-card-content {
+    font-size: 15px;
+  }
+
+  .article-meta-row {
+    gap: 12px;
+  }
+
+  .meta-item {
+    font-size: 14px;
+  }
+}
+</style>
+{{ end }}

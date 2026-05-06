@@ -1,0 +1,73 @@
+<a href="{{ relLangURL "/" }}" class="index-nav-logo">
+  <span class="index-logo-text">{{ .Site.Params.header.logo.text | default .Site.Title }}</span>
+  <span class="index-logo-dot">.</span>
+</a>
+
+<style>
+.index-nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.index-logo-text {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.index-logo-dot {
+  font-size: 2rem;
+  font-weight: 800;
+}
+</style>
+
+<style>
+.index-logo-text {
+  background: var(--common-color-2);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite, index-pulse 2s ease-in-out infinite;
+  text-shadow: 0 0 20px var(--common-color-1);
+}
+
+.index-logo-text:hover {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px var(--common-color-1);
+  animation: index-gradient-shift 3s ease infinite, index-nav-glow-hover 1s ease-in-out infinite;
+}
+
+@keyframes index-gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes index-pulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 20px var(--common-color-1); }
+  50% { opacity: 0.9; text-shadow: 0 0 30px var(--common-color-1); }
+}
+
+.index-logo-dot {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite;
+}
+</style>
+
+<style>
+@media (max-width: 576px) {
+  .index-logo-text {
+    font-size: 1.25rem;
+  }
+}
+</style>

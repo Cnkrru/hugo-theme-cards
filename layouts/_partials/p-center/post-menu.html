@@ -1,6 +1,6 @@
 <div class="post-menu-container">
   <div class="post-menu-btn-container">
-    <button class="post-menu-btn" onclick="togglePostMenu()">
+    <button class="post-menu-btn" data-action="post-menu:toggle">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
         <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
       </svg>
@@ -11,7 +11,7 @@
   <div class="post-menu-card" id="post-menu-card">
     <div class="post-menu-card-header">
       <h3 data-i18n="articleMenu">文章菜单</h3>
-      <button class="post-menu-close-btn" onclick="togglePostMenu()">
+      <button class="post-menu-close-btn" data-action="post-menu:toggle" aria-label="关闭菜单">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="20" height="20">
           <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
         </svg>
@@ -23,18 +23,17 @@
           <input
             type="text"
             id="post-menu-search"
-            oninput="filterPostMenu()"
             data-i18n-placeholder="searchArticle"
             placeholder="搜索文章..."
             class="menu-search-input"
           />
-          <button id="post-menu-clear" onclick="clearPostMenuSearch()" class="menu-clear-search-btn" style="display:none">×</button>
+          <button id="post-menu-clear" data-action="post-menu:clear" class="menu-clear-search-btn" style="display:none">×</button>
         </div>
       </div>
       <ul class="post-list" id="post-menu-list">
         {{ $pages := where .Site.RegularPages "Type" "posts" }}
         {{ range $index, $page := $pages }}
-        <li class="post-list-item" onclick="window.location.href='{{ $page.RelPermalink }}'; togglePostMenu()">
+        <li class="post-list-item" data-action="post-menu:navigate" data-url="{{ $page.RelPermalink }}">
           <span class="post-id">#{{ add $index 1 }}</span>
           <span class="post-title">{{ $page.LinkTitle }}</span>
           <span class="post-date">{{ $page.Date.Format "2006-01-02" }}</span>
@@ -46,29 +45,61 @@
 </div>
 
 <script>
-const togglePostMenu = () => {
+Cards.register('post-menu', {
+  init: function() {
+    const input = document.getElementById('post-menu-search');
+    const clearBtn = document.getElementById('post-menu-clear');
+
+    const filterMenu = function() {
+      const query = input.value.toLowerCase();
+      if (clearBtn) clearBtn.style.display = query ? 'block' : 'none';
+      const items = document.querySelectorAll('#post-menu-list .post-list-item');
+      items.forEach(function(item) {
+        const title = item.querySelector('.post-title').textContent.toLowerCase();
+        item.style.display = title.includes(query) ? '' : 'none';
+      });
+    };
+
+    const closeMenu = function() {
+      const card = document.getElementById('post-menu-card');
+      if (card) card.classList.remove('active');
+      if (input) input.value = '';
+      filterMenu();
+    };
+
+    closeMenu();
+
+    if (input) input.addEventListener('input', filterMenu);
+
+    return { input: input, filterMenu: filterMenu, closeMenu: closeMenu };
+  },
+  destroy: function(instance) {
+    if (instance.input) instance.input.removeEventListener('input', instance.filterMenu);
+    instance.closeMenu();
+  }
+});
+
+Cards.actions['post-menu:toggle'] = function() {
   const card = document.getElementById('post-menu-card');
-  card.classList.toggle('active');
-}
+  if (card) card.classList.toggle('active');
+};
 
-const filterPostMenu = () => {
+Cards.actions['post-menu:clear'] = function() {
   const input = document.getElementById('post-menu-search');
-  const clearBtn = document.getElementById('post-menu-clear');
-  const query = input.value.toLowerCase();
-  clearBtn.style.display = query ? 'block' : 'none';
-  
-  const items = document.querySelectorAll('#post-menu-list .post-list-item');
-  items.forEach(item => {
-    const title = item.querySelector('.post-title').textContent.toLowerCase();
-    item.style.display = title.includes(query) ? '' : 'none';
-  });
-}
+  if (input) {
+    input.value = '';
+    input.dispatchEvent(new Event('input'));
+  }
+};
 
-const clearPostMenuSearch = () => {
-  const input = document.getElementById('post-menu-search');
-  input.value = '';
-  filterPostMenu();
-}
+Cards.actions['post-menu:navigate'] = function(e, target) {
+  const url = target.dataset.url;
+  if (url) {
+    const card = document.getElementById('post-menu-card');
+    if (card) card.classList.remove('active');
+    window.location.href = url;
+  }
+};
 </script>
 
 <style>
@@ -81,19 +112,17 @@ const clearPostMenuSearch = () => {
   max-height: 70vh;
   border-right: none;
   border-radius: 12px 0 0 12px;
-  z-index: 999;
+  z-index: 998;
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .post-menu-card.active {
   transform: translate(0, -50%);
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from { transform: translate(100%, -50%); opacity: 0; }
-  to { transform: translate(0, -50%); opacity: 1; }
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .post-menu-card-header {
@@ -147,7 +176,6 @@ const clearPostMenuSearch = () => {
 
 .menu-search-input:focus {
   outline: none;
-  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
 }
 
 .menu-clear-search-btn {
@@ -241,18 +269,35 @@ const clearPostMenuSearch = () => {
 <style>
 .post-menu-card {
   background-color: var(--common-bg);
-  border: 1px solid var(--common-color-1);
-  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid var(--common-color-1);
+  box-shadow: -4px 4px 12px var(--common-shadow);
+}
+
+.post-menu-card.active {
+  box-shadow: -6px 6px 20px var(--common-shadow);
+}
+
+.post-menu-card-header {
+  border-bottom: 1px solid var(--common-color-1);
+  background-color: var(--common-bg);
 }
 
 .post-menu-card-header h3 {
   color: var(--common-text);
 }
 
+.post-menu-card-content {
+  background-color: var(--common-bg);
+}
+
 .menu-search-input {
   background-color: var(--common-bg);
   color: var(--common-text);
   border: 1px solid var(--common-color-1);
+}
+
+.menu-search-input:focus {
+  box-shadow: 0 0 0 2px var(--common-color-1);
 }
 
 .menu-clear-search-btn {
@@ -287,6 +332,14 @@ const clearPostMenuSearch = () => {
 
 .post-menu-btn svg {
   fill: var(--common-content);
+}
+
+.post-menu-close-btn {
+  color: var(--common-text);
+}
+
+.post-menu-close-btn:hover {
+  background-color: var(--common-hover);
 }
 
 .post-menu-close-btn svg {

@@ -3,68 +3,84 @@
 </div>
 
 <script>
-let progress = 0;
-let targetElement = null;
-let observer = null;
-let cachedContentCard = null;
+Cards.register('reading-progress', {
+  init: function() {
+    let targetElement = null;
+    let cachedContentCard = null;
+    let observer = null;
 
-const findContentCard = () => {
-  if (cachedContentCard) {
-    return cachedContentCard;
-  }
-  cachedContentCard = document.querySelector('.center-card-content');
-  return cachedContentCard;
-}
+    const findContentCard = function() {
+      if (cachedContentCard) return cachedContentCard;
+      cachedContentCard = document.querySelector('.center-card-content');
+      return cachedContentCard;
+    };
 
-const handleScroll = () => {
-  const progressBar = document.getElementById('reading-progress-bar');
-  if (!progressBar) return;
+    const handleScroll = function() {
+      const progressBar = document.getElementById('reading-progress-bar');
+      if (!progressBar) return;
 
-  if (targetElement) {
-    const scrollTop = targetElement.scrollTop;
-    const scrollHeight = targetElement.scrollHeight;
-    const clientHeight = targetElement.clientHeight;
-    const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
-    progress = Math.min(scrollPercent, 100);
-  } else {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const scrollPercent = (scrollTop / docHeight) * 100;
-    progress = Math.min(scrollPercent, 100);
-  }
-  progressBar.style.width = `${progress}%`;
-}
+      let progress;
+      if (targetElement) {
+        const scrollTop = targetElement.scrollTop;
+        const scrollHeight = targetElement.scrollHeight;
+        const clientHeight = targetElement.clientHeight;
+        const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+        progress = Math.min(scrollPercent, 100);
+      } else {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        progress = Math.min(scrollPercent, 100);
+      }
+      progressBar.style.width = progress + '%';
+    };
 
-const updateTargetElement = () => {
-  const newElement = findContentCard();
-  if (newElement !== targetElement) {
+    const updateTargetElement = function() {
+      const newElement = findContentCard();
+      if (newElement !== targetElement) {
+        if (targetElement) {
+          targetElement.removeEventListener('scroll', handleScroll);
+        }
+        targetElement = newElement;
+        if (targetElement) {
+          targetElement.addEventListener('scroll', handleScroll);
+        }
+        handleScroll();
+      }
+    };
+
+    updateTargetElement();
+
+    window.addEventListener('hashchange', updateTargetElement);
+    window.addEventListener('popstate', updateTargetElement);
+
     if (targetElement) {
-      targetElement.removeEventListener('scroll', handleScroll);
+      observer = new ResizeObserver(function() { handleScroll(); });
+      observer.observe(targetElement);
+    } else {
+      window.addEventListener('resize', handleScroll);
     }
-    targetElement = newElement;
-    if (targetElement) {
-      targetElement.addEventListener('scroll', handleScroll);
-    }
+
     handleScroll();
+
+    return {
+      targetElement: targetElement,
+      observer: observer,
+      handleScroll: handleScroll,
+      updateTargetElement: updateTargetElement
+    };
+  },
+  destroy: function(instance) {
+    if (instance.targetElement) {
+      instance.targetElement.removeEventListener('scroll', instance.handleScroll);
+    }
+    if (instance.observer) {
+      instance.observer.disconnect();
+    }
+    window.removeEventListener('hashchange', instance.updateTargetElement);
+    window.removeEventListener('popstate', instance.updateTargetElement);
+    window.removeEventListener('resize', instance.handleScroll);
   }
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-  updateTargetElement();
-
-  window.addEventListener('hashchange', updateTargetElement);
-  window.addEventListener('popstate', updateTargetElement);
-
-  if (targetElement) {
-    observer = new ResizeObserver(() => {
-      handleScroll();
-    });
-    observer.observe(targetElement);
-  } else {
-    window.addEventListener('resize', handleScroll);
-  }
-
-  handleScroll();
 });
 </script>
 

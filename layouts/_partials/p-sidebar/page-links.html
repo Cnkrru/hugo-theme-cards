@@ -2,7 +2,7 @@
 <div class="page-list-card">
   <ul>
     {{ range .Site.Menus.sidebar_links }}
-    <li><a href="{{ .URL | relLangURL }}" class="page-card" {{ if hasPrefix .URL "index.xml" }}target="_blank" rel="noopener noreferrer" {{ end }}><span data-i18n="{{ .Name }}">{{ T .Name }}</span></a></li>
+    <li><a href="{{ .URL | relLangURL }}" class="page-card" {{ if or (hasPrefix .URL "index.xml") (hasPrefix .URL "/index.xml") (hasSuffix .URL ".xml") }}target="_blank" rel="noopener noreferrer" {{ end }}><span data-i18n="{{ .Name }}">{{ .Name }}</span></a></li>
     {{ end }}
   </ul>
 </div>

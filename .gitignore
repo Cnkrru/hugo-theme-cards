@@ -1,23 +1,12 @@
 # Hugo build output
-public/
-resources/_gen/
-
-# Theme directory (should be added as module or symlink)
-themes/
+exampleSite/public/
+exampleSite/.hugo_build.lock
+exampleSite/resources/
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# Editor files
-.vscode/
+# Editor
 .idea/
-*.swp
-*.swo
-*~
-
-# Logs
-*.log
-
-# Node modules (if any)
-node_modules/
+.vscode/

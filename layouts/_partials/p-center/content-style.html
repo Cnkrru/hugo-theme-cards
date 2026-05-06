@@ -1,0 +1,133 @@
+{{- $class := .class | default "md-content" -}}
+
+<style>
+.{{ $class }} {
+  line-height: 1.8;
+  font-size: 16px;
+  color: var(--common-text);
+}
+
+.{{ $class }} h1,
+.{{ $class }} h2,
+.{{ $class }} h3,
+.{{ $class }} h4,
+.{{ $class }} h5,
+.{{ $class }} h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.{{ $class }} h1 {
+  font-size: 28px;
+  border-bottom: 2px solid var(--common-color-1);
+  padding-bottom: 8px;
+}
+
+.{{ $class }} h2 {
+  font-size: 24px;
+  border-bottom: 1px solid var(--common-color-1);
+  padding-bottom: 6px;
+}
+
+.{{ $class }} h3 {
+  font-size: 20px;
+}
+
+.{{ $class }} p {
+  margin-bottom: 16px;
+}
+
+.{{ $class }} a {
+  color: var(--common-hover);
+  text-decoration: underline;
+}
+
+.{{ $class }} a:hover {
+  opacity: 0.8;
+}
+
+.{{ $class }} ul,
+.{{ $class }} ol {
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+
+.{{ $class }} li {
+  margin-bottom: 4px;
+}
+
+.{{ $class }} blockquote {
+  border-left: 4px solid var(--common-color-1);
+  padding-left: 16px;
+  margin: 16px 0;
+  color: var(--common-text);
+  opacity: 0.9;
+}
+
+.{{ $class }} code {
+  background-color: rgba(58, 170, 231, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: var(--common-text);
+}
+
+.{{ $class }} pre {
+  background-color: var(--common-code-bg);
+  border: 1px solid var(--common-color-1);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.{{ $class }} pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: var(--common-code-text);
+}
+
+.{{ $class }} img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.{{ $class }} table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.{{ $class }} th,
+.{{ $class }} td {
+  border: 1px solid var(--common-color-1);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.{{ $class }} th {
+  background-color: var(--common-color-1);
+  opacity: 0.3;
+  font-weight: 600;
+}
+</style>
+
+<style>
+@media (max-width: 576px) {
+  .{{ $class }} h1 { font-size: 22px; }
+  .{{ $class }} h2 { font-size: 20px; }
+  .{{ $class }} h3 { font-size: 18px; }
+  .{{ $class }} { font-size: 14px; }
+}
+
+@media (max-width: 768px) {
+  .{{ $class }} h1 { font-size: 24px; }
+  .{{ $class }} h2 { font-size: 22px; }
+  .{{ $class }} h3 { font-size: 19px; }
+}
+</style>

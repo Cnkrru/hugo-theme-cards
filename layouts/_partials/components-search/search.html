@@ -181,177 +181,185 @@
 }
 </style>
 
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
+{{- if .Site.Params.cdn.localizeJS -}}
+{{- $fuseJS := resources.GetRemote (.Site.Params.cdn.fusejs | default "https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js") | resources.Minify | resources.Fingerprint -}}
+<script src="{{ $fuseJS.RelPermalink }}" integrity="{{ $fuseJS.Data.Integrity }}"></script>
+{{- else -}}
+<script src="{{ .Site.Params.cdn.fusejs | default "https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js" }}"></script>
+{{- end -}}
 <script>
-let searchData = null;
-let fuse = null;
-let searchInput = null;
-let searchResultsPanel = null;
+Cards.register('search', {
+  init: function() {
+    let searchData = null;
+    let fuse = null;
+    let debounceTimer = null;
+    let searchInput = null;
+    let searchResultsPanel = null;
+    let outsideClickListener = null;
 
-const escapeHtml = (text) => {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-};
+    const escapeHtml = function(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    };
 
-const highlightMatch = (text, query) => {
-  if (!query || !text) return text;
-  const escapedQuery = escapeHtml(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const regex = new RegExp('(' + escapedQuery + ')', 'gi');
-  return text.replace(regex, '<mark>$1</mark>');
-};
+    const highlightMatch = function(text, query) {
+      if (!query || !text) return text;
+      const escapedQuery = escapeHtml(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+      const regex = new RegExp('(' + escapedQuery + ')', 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    };
 
-const getSearchData = async () => {
-  if (!searchData) {
-    try {
-      if (window.searchIndexData) {
-        searchData = window.searchIndexData;
-      } else {
-        const response = await fetch('/index.json');
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
+    const getSearchData = async function() {
+      if (fuse) return fuse;
+      if (!searchData) {
+        const metaUrl = document.querySelector('meta[name="search-data-url"]');
+        if (metaUrl) {
+          try {
+            const resp = await fetch(metaUrl.content);
+            searchData = await resp.json();
+          } catch (e) {
+            searchData = [];
+          }
         }
-        searchData = await response.json();
       }
-
-      const options = {
-        keys: [
-          { name: 'title', weight: 0.4 },
-          { name: 'content', weight: 0.3 },
-          { name: 'tags', weight: 0.2 },
-          { name: 'category', weight: 0.1 }
-        ],
-        includeScore: true,
-        includeMatches: true,
-        threshold: 0.4,
-        minMatchCharLength: 1
-      };
-      fuse = new Fuse(searchData, options);
-    } catch (err) {
-      console.error('Failed to load search data:', err);
-      searchData = [];
-    }
-  }
-  return { searchData, fuse };
-};
-
-const performSearch = async (query) => {
-  if (!query || query.trim() === '') {
-    hideSearchResults();
-    return;
-  }
-
-  query = query.trim();
-  const { fuse } = await getSearchData();
-
-  if (!fuse) {
-    console.error('Fuse.js not initialized');
-    return;
-  }
-
-  const results = fuse.search(query);
-  displayResults(results, query);
-};
-
-const displayResults = (results, query) => {
-  const panel = document.getElementById('search-results-panel');
-  const emptyDiv = document.getElementById('search-empty');
-  const contentDiv = document.getElementById('search-content');
-  const countSpan = document.getElementById('search-count');
-  const listDiv = document.getElementById('search-results-list');
-  const querySpan = document.getElementById('search-query');
-
-  if (!panel) return;
-
-  panel.style.display = 'block';
-
-  if (results.length === 0) {
-    emptyDiv.style.display = 'block';
-    contentDiv.style.display = 'none';
-    if (querySpan) querySpan.textContent = escapeHtml(query);
-  } else {
-    emptyDiv.style.display = 'none';
-    contentDiv.style.display = 'block';
-    if (countSpan) countSpan.textContent = results.length;
-
-    if (listDiv) {
-      listDiv.innerHTML = '';
-      results.forEach(result => {
-        const item = result.item;
-        const resultItem = document.createElement('div');
-        resultItem.className = 'search-result-item';
-        resultItem.onclick = () => {
-          window.location.href = item.permalink;
+      if (searchData && searchData.length > 0 && window.Fuse) {
+        const options = {
+          keys: [
+            { name: 'title', weight: 0.4 },
+            { name: 'content', weight: 0.3 },
+            { name: 'tags', weight: 0.2 },
+            { name: 'category', weight: 0.1 }
+          ],
+          includeScore: true,
+          includeMatches: true,
+          threshold: 0.4,
+          minMatchCharLength: 1
         };
-
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'result-title';
-        titleDiv.innerHTML = highlightMatch(item.title, query);
-
-        const metaDiv = document.createElement('div');
-        metaDiv.className = 'result-meta';
-        var t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
-        const categoryText = item.category || (t ? t['uncategorized'] : '未分类');
-        const idText = item.permalink ? item.permalink.split('/').filter(Boolean).pop() : '';
-        metaDiv.innerHTML = (t ? t['category'] : '分类') + ': ' + highlightMatch(categoryText, query) +
-                           ' | ID: ' + highlightMatch(idText, query);
-
-        resultItem.appendChild(titleDiv);
-        resultItem.appendChild(metaDiv);
-
-        if (item.tags && item.tags.length > 0) {
-          const tagsDiv = document.createElement('div');
-          tagsDiv.className = 'result-tags';
-          item.tags.forEach(tag => {
-            const tagSpan = document.createElement('span');
-            tagSpan.className = 'tag';
-            tagSpan.textContent = tag;
-            tagsDiv.appendChild(tagSpan);
-          });
-          resultItem.appendChild(tagsDiv);
-        }
-
-        listDiv.appendChild(resultItem);
-      });
-    }
-  }
-};
-
-const hideSearchResults = () => {
-  const panel = document.getElementById('search-results-panel');
-  if (panel) {
-    panel.style.display = 'none';
-  }
-};
-
-document.addEventListener('DOMContentLoaded', () => {
-  getSearchData();
-
-  searchInput = document.querySelector('.search-card input');
-  searchResultsPanel = document.getElementById('search-results-panel');
-
-  if (searchInput) {
-    let debounceTimer;
-    searchInput.addEventListener('input', (e) => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        performSearch(e.target.value);
-      }, 300);
-    });
-
-    searchInput.addEventListener('focus', (e) => {
-      if (e.target.value.trim()) {
-        performSearch(e.target.value);
+        fuse = new Fuse(searchData, options);
       }
-    });
-  }
+      return fuse;
+    };
 
-  document.addEventListener('click', (e) => {
-    if (searchResultsPanel && searchInput &&
-        !searchResultsPanel.contains(e.target) &&
-        !searchInput.contains(e.target)) {
-      hideSearchResults();
+    const hideSearchResults = function() {
+      const panel = document.getElementById('search-results-panel');
+      if (panel) panel.style.display = 'none';
+    };
+
+    const displayResults = function(results, query) {
+      const panel = document.getElementById('search-results-panel');
+      const emptyDiv = document.getElementById('search-empty');
+      const contentDiv = document.getElementById('search-content');
+      const countSpan = document.getElementById('search-count');
+      const listDiv = document.getElementById('search-results-list');
+      const querySpan = document.getElementById('search-query');
+
+      if (!panel) return;
+      panel.style.display = 'block';
+
+      if (results.length === 0) {
+        emptyDiv.style.display = 'block';
+        contentDiv.style.display = 'none';
+        if (querySpan) querySpan.textContent = escapeHtml(query);
+      } else {
+        emptyDiv.style.display = 'none';
+        contentDiv.style.display = 'block';
+        if (countSpan) countSpan.textContent = results.length;
+
+        if (listDiv) {
+          listDiv.innerHTML = '';
+          results.forEach(function(result) {
+            const item = result.item;
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.setAttribute('data-action', 'search:navigate');
+            resultItem.setAttribute('data-url', item.url);
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'result-title';
+            titleDiv.innerHTML = highlightMatch(item.title, query);
+
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'result-meta';
+            const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+            const categoryText = (item.categories && item.categories[0]) || (t ? t['uncategorized'] : '未分类');
+            const idText = item.url ? item.url.split('/').filter(Boolean).pop() : '';
+            metaDiv.innerHTML = (t ? t['category'] : '分类') + ': ' + highlightMatch(categoryText, query) +
+                              ' | ID: ' + highlightMatch(idText, query);
+
+            resultItem.appendChild(titleDiv);
+            resultItem.appendChild(metaDiv);
+
+            if (item.tags && item.tags.length > 0) {
+              const tagsDiv = document.createElement('div');
+              tagsDiv.className = 'result-tags';
+              item.tags.forEach(function(tag) {
+                const tagSpan = document.createElement('span');
+                tagSpan.className = 'tag';
+                tagSpan.textContent = tag;
+                tagsDiv.appendChild(tagSpan);
+              });
+              resultItem.appendChild(tagsDiv);
+            }
+
+            listDiv.appendChild(resultItem);
+          });
+        }
+      }
+    };
+
+    const performSearch = async function(query) {
+      query = (query || '').trim();
+      if (!query) {
+        hideSearchResults();
+        return;
+      }
+      const f = await getSearchData();
+      if (!f) return;
+      const results = f.search(query);
+      displayResults(results, query);
+    };
+
+    Cards.actions['search:navigate'] = function(e, target) {
+      const url = target.dataset.url;
+      if (url) window.location.href = url;
+    };
+
+    searchInput = document.querySelector('.search-card input');
+    searchResultsPanel = document.getElementById('search-results-panel');
+
+    if (searchInput) {
+      const inputHandler = function(e) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function() {
+          performSearch(e.target.value);
+        }, 300);
+      };
+      const focusHandler = function(e) {
+        if (e.target.value.trim()) performSearch(e.target.value);
+      };
+      searchInput.addEventListener('input', inputHandler);
+      searchInput.addEventListener('focus', focusHandler);
     }
-  });
+
+    outsideClickListener = function(e) {
+      if (searchResultsPanel && searchInput &&
+          !searchResultsPanel.contains(e.target) &&
+          !searchInput.contains(e.target)) {
+        hideSearchResults();
+      }
+    };
+    document.addEventListener('click', outsideClickListener);
+
+    return {
+      searchInput: searchInput,
+      outsideClickListener: outsideClickListener,
+      debounceTimer: debounceTimer
+    };
+  },
+  destroy: function(instance) {
+    if (instance.debounceTimer) clearTimeout(instance.debounceTimer);
+    if (instance.outsideClickListener) document.removeEventListener('click', instance.outsideClickListener);
+  }
 });
 </script>

@@ -40,7 +40,7 @@
 {{ if .Site.Params.article.related.enabled }}
 <div class="related-articles-wrapper">
   <div class="related-articles-container">
-    <h3 class="related-articles-title">{{ .Site.Params.article.related.title | default "相关文章推荐" }}</h3>
+    <h3 class="related-articles-title" data-i18n="relatedArticles">{{ .Site.Params.article.related.title | default "相关文章推荐" }}</h3>
     <div class="related-articles-list">
       {{ range $index, $article := $related }}
       <div class="related-article-item" style="animation-delay: {{ mul $index 0.05 }}s;">

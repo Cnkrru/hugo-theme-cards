@@ -6,8 +6,9 @@
   {{ partial "seo.html" . }}
 </head>
 <body>
+  <a href="#main-content" class="skip-to-content" data-i18n="skipToContent">跳到内容</a>
   {{ partial "header.html" . }}
-  <main class="mid-flex">
+  <main class="mid-flex" id="main-content">
     {{ partial "sidebar.html" . }}
     <section class="center-S">
       <div class="center-container">
