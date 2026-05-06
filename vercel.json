@@ -1,0 +1,6 @@
+{
+  "framework": "hugo",
+  "buildCommand": "cd exampleSite && hugo --themesDir .. --gc --minify",
+  "outputDirectory": "exampleSite/public",
+  "installCommand": ""
+}
