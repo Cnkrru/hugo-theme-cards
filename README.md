@@ -2,7 +2,7 @@
 
 A clean, card-based Hugo theme with multi-language support, dark mode, and customizable colors.
 
-![screenshot](https://raw.githubusercontent.com/yourname/hugo-theme-cards/main/images/screenshot.png)
+![screenshot](https://raw.githubusercontent.com/Cnkrru/hugo-theme-cards/main/images/screenshot.png)
 
 ## Features
 
