@@ -97,46 +97,6 @@
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/categories/%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2026-05-05T10:04:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/tags/%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2026-05-05T10:04:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/tags/%E5%A4%9A%E8%AF%AD%E8%A8%80/</loc>
-    <lastmod>2026-05-05T10:04:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/posts/test-multilingual/</loc>
-    <lastmod>2026-05-05T10:04:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/tags/%E5%9B%BE%E7%89%87/</loc>
-    <lastmod>2026-05-05T10:03:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/posts/test-images/</loc>
-    <lastmod>2026-05-05T10:03:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/posts/test-katex/</loc>
-    <lastmod>2026-05-05T10:02:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/posts/test-mermaid/</loc>
-    <lastmod>2026-05-05T10:01:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
     <loc>http://localhost:1313/tags/gallery/</loc>
     <lastmod>2026-05-05T10:00:00+08:00</lastmod>
     <changefreq>weekly</changefreq>
@@ -147,18 +107,8 @@
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>
-    <loc>http://localhost:1313/posts/test-markdown/</loc>
-    <lastmod>2026-05-05T10:00:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
     <loc>http://localhost:1313/posts/image-gallery/</loc>
     <lastmod>2026-05-05T10:00:00+08:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.5</priority>
-  </url><url>
-    <loc>http://localhost:1313/posts/verify-test/</loc>
-    <lastmod>2026-05-05T04:37:57+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
   </url><url>

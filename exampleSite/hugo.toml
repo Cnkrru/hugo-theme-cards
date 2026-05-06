@@ -2,35 +2,39 @@ baseURL = 'https://hugo-theme-cards.netlify.app'
 languageCode = 'zh-cn'
 defaultContentLanguage = 'zh-cn'
 title = 'Cards Theme Demo'
-theme = 'cards'
+theme = 'hugo-theme-cards'
 
 [module]
     [[module.mounts]]
         source = 'content'
         target = 'content'
 
-# 主菜单导航
-[menu]
-    [[menu.main]]
-        name = '首页'
+# 侧边栏导航（使用 i18n 键名）
+[menus]
+    [[menus.sidebar_links]]
+        name = 'home'
         url = '/'
-        weight = 10
-    [[menu.main]]
-        name = '归档'
+        weight = 1
+    [[menus.sidebar_links]]
+        name = 'archives'
         url = '/archives/'
-        weight = 20
-    [[menu.main]]
-        name = '标签'
+        weight = 2
+    [[menus.sidebar_links]]
+        name = 'tags'
         url = '/tags/'
-        weight = 30
-    [[menu.main]]
-        name = '友链'
+        weight = 3
+    [[menus.sidebar_links]]
+        name = 'links'
         url = '/links/'
-        weight = 40
-    [[menu.main]]
-        name = '关于'
+        weight = 4
+    [[menus.sidebar_links]]
+        name = 'about'
         url = '/about/'
-        weight = 50
+        weight = 5
+    [[menus.sidebar_links]]
+        name = 'rss'
+        url = '/index.xml'
+        weight = 6
 
 # 分类系统
 [taxonomies]
@@ -49,6 +53,16 @@ enableRobotsTXT = true
 # 输出格式
 [outputs]
     home = ['HTML', 'RSS', 'ROBOTS']
+
+[mediaTypes]
+    [mediaTypes."application/json"]
+        suffixes = ["json"]
+
+[outputFormats]
+    [outputFormats.JSON]
+        mediaType = "application/json"
+        baseName = "feed"
+        isPlainText = true
 
 [params]
     # 站点信息
@@ -233,10 +247,59 @@ enableRobotsTXT = true
     provider = 'giscus'
     title = '评论'
 
+    [params.comments.giscus]
+        repo = ''
+        repoId = ''
+        category = ''
+        categoryId = ''
+        mapping = 'pathname'
+        strict = '0'
+        reactionsEnabled = '1'
+        emitMetadata = '0'
+        inputPosition = 'bottom'
+        lang = 'zh-CN'
+
+    [params.comments.waline]
+        serverURL = ''
+        lang = 'zh-CN'
+        visitor = true
+        emoji = ['https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo']
+        requiredMeta = ['nick', 'mail']
+        wordLimit = 0
+        pageSize = 10
+
+    [params.comments.twikoo]
+        envId = ''
+        region = 'ap-guangzhou'
+        path = 'window.location.pathname'
+        lang = 'zh-CN'
+
+    [params.comments.disqus]
+        shortname = ''
+
+    [params.comments.utterances]
+        repo = ''
+        issueTerm = 'pathname'
+        label = ''
+
+    [params.comments.gitalk]
+        clientID = ''
+        clientSecret = ''
+        repo = ''
+        owner = ''
+        admin = ''
+        proxy = ''
+
 [params.analytics]
     # 分析功能（演示站点关闭）
     enabled = false
     provider = 'google'
+
+    [params.analytics.google]
+        trackingID = ''
+
+    [params.analytics.baidu]
+        trackingID = ''
 
 [params.seo]
     # SEO
