@@ -1,0 +1,23 @@
+# Hugo build output
+public/
+resources/_gen/
+
+# Theme directory (should be added as module or symlink)
+themes/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Node modules (if any)
+node_modules/

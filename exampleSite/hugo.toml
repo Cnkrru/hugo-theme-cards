@@ -1,20 +1,192 @@
-baseURL = 'https://example.com'
+baseURL = 'https://hugo-theme-cards.netlify.app'
 languageCode = 'zh-cn'
 defaultContentLanguage = 'zh-cn'
-title = 'My Blog'
+title = 'Cards Theme Demo'
 theme = 'cards'
-themesDir = '../../../themes'
 
 [module]
     [[module.mounts]]
-        source = 'themes/cards/content'
+        source = 'content'
         target = 'content'
 
-[params]
-    author = 'Your Name'
-    description = 'A blog built with Hugo Cards theme'
+# 主菜单导航
+[menu]
+    [[menu.main]]
+        name = '首页'
+        url = '/'
+        weight = 10
+    [[menu.main]]
+        name = '归档'
+        url = '/archives/'
+        weight = 20
+    [[menu.main]]
+        name = '标签'
+        url = '/tags/'
+        weight = 30
+    [[menu.main]]
+        name = '友链'
+        url = '/links/'
+        weight = 40
+    [[menu.main]]
+        name = '关于'
+        url = '/about/'
+        weight = 50
 
+# 分类系统
+[taxonomies]
+    tag = 'tags'
+    category = 'categories'
+
+# robots.txt
+enableRobotsTXT = true
+
+# 站点地图
+[sitemap]
+    filename = "sitemap.xml"
+    changefreq = "weekly"
+    priority = 0.5
+
+# 输出格式
+[outputs]
+    home = ['HTML', 'RSS', 'ROBOTS']
+
+[params]
+    # 站点信息
+    author = 'Cards Theme'
+    description = 'A clean, card-based Hugo theme with multi-language support, dark mode, and customizable colors.'
+
+    # 主要文章目录
+    mainSections = ['posts']
+
+    # 首页标题
+    homepageTitle = '文章列表'
+
+    # 首页配置
+    [params.homepage]
+        showArticleCount = true
+        articlesPerPage = 6
+
+    [params.homepage.articleCountBtn]
+        enabled = true
+        text = '共 {{ . }} 篇文章'
+
+[params.header]
+    # Logo 配置
+    [params.header.logo]
+        enabled = true
+        text = 'Cards'
+        font = 'Arial'
+
+    # 阅读进度条
+    [params.header.readingProgress]
+        enabled = true
+
+[params.sidebar]
+    # 紧凑模式
+    compact = false
+
+    # 头像配置
+    [params.sidebar.avatar]
+        enabled = true
+        src = '/images/avator.jpg'
+
+    # 欢迎语配置
+    [params.sidebar.welcome]
+        enabled = true
+        subtitle = 'Welcome to Cards Theme'
+
+    # 页面链接配置
+    [params.sidebar.links]
+        enabled = true
+        links = []
+
+[params.footer]
+    # 站点创建时间
+    since = '2026-01-01T00:00:00'
+
+    # 显示站点年龄
+    showWebsiteAge = true
+
+    # 页脚自定义文本
+    customText = 'Built with Hugo Cards Theme'
+
+    # 版权信息
+    [params.footer.copyright]
+        enabled = true
+        text = '© {{ now.Year }} Cards Theme'
+
+[params.article]
+    # 阅读时间
+    readingTime = true
+
+    # 数学公式
+    math = true
+
+    # 文章列表卡片
+    [params.article.listCard]
+        showCategory = true
+        showTags = true
+        showDate = true
+        showId = false
+
+    # 文章页面元信息
+    [params.article.pageMeta]
+        showId = false
+        showCategory = true
+        showTags = true
+        showDate = true
+
+    # 文章页面配置
+    [params.article.page]
+        showToc = true
+        showReadingTime = true
+        showWordCount = true
+        showRelatedArticles = true
+        showComments = false
+        showShare = true
+
+    # 目录配置
+    [params.article.toc]
+        enabled = true
+        collapsed = false
+        maxDepth = 3
+
+    # 目录按钮
+    [params.article.tocButton]
+        enabled = true
+        icon = '/images/svg/toc.svg'
+
+    # 返回顶部
+    [params.article.backToTop]
+        enabled = true
+        icon = '/images/svg/arrow-up.svg'
+
+    # 文章导航
+    [params.article.pageNav]
+        showPrevNext = true
+        showArticleCount = true
+
+    # 分享功能
+    [params.article.share]
+        enabled = true
+
+    # 版权信息
+    [params.article.license]
+        enabled = true
+        default = 'CC BY-NC-SA 4.0'
+
+    # 相关文章
+    [params.article.related]
+        enabled = true
+        title = 'Related Articles'
+
+[params.colorScheme]
+    # 默认主题: auto, light, dark
+    default = 'auto'
+
+# 颜色配置
 [params.colors]
+    # 亮色主题
     [params.colors.light]
         color1 = 'rgba(255, 192, 203, 1)'
         color2 = 'white'
@@ -25,6 +197,7 @@ themesDir = '../../../themes'
         shadow = 'rgba(0, 0, 0, 0.1)'
         cursor = 'rgba(255, 192, 203, 1)'
         gradient = 'linear-gradient(90deg, #45b7d1, #4ecd8d, #feb47b, #4ecd8d, #45b7d1)'
+    # 暗色主题
     [params.colors.dark]
         color1 = '#3aaae7'
         color2 = '#1a237e'
@@ -37,50 +210,54 @@ themesDir = '../../../themes'
         gradient = 'linear-gradient(90deg, #cc45d1, #654ecd, #7b97fe, #654ecd, #cc45d1)'
 
 [params.search]
+    # 启用搜索
     enable = true
+    # 搜索模式: fuse, advanced
+    mode = 'fuse'
+    placeholder = '搜索文章...'
+
+    [params.search.results]
+        showCategory = true
+        showTags = true
+        showDate = false
+        maxResults = 20
+
+    [params.search.input]
+        placeholder = '搜索'
+        width = '400px'
+        minWidth = '120px'
 
 [params.comments]
+    # 评论功能（演示站点关闭）
     enabled = false
     provider = 'giscus'
+    title = '评论'
 
-[params.sidebar]
-    welcomeSaying = 'Welcome to my blog'
+[params.analytics]
+    # 分析功能（演示站点关闭）
+    enabled = false
+    provider = 'google'
 
-[params.article]
-    [params.article.related]
+[params.seo]
+    # SEO
+    enabled = true
+    description = 'Cards Theme - A clean Hugo theme'
+    author = 'Cards Theme'
+    logo = '/images/avator.jpg'
+
+    [params.seo.twitter]
+        site = ''
+        card = 'summary'
+
+[params.opengraph]
+    [params.opengraph.twitter]
+        site = ''
+        card = 'summary_large_image'
+
+[params.imageProcessing]
+    content = true
+
+[params.mobile]
+    [params.mobile.sidebarWidgets]
         enabled = true
-        title = 'Related Articles'
-    [params.article.license]
-        enabled = false
-        default = 'CC BY-NC-SA 4.0'
-
-[menu]
-    [[menu.main]]
-        name = 'Home'
-        url = '/'
-        weight = 10
-    [[menu.main]]
-        name = 'Archives'
-        url = '/archives/'
-        weight = 20
-    [[menu.main]]
-        name = 'Tags'
-        url = '/tags/'
-        weight = 30
-    [[menu.main]]
-        name = 'Links'
-        url = '/links/'
-        weight = 40
-    [[menu.main]]
-        name = 'About'
-        url = '/about/'
-        weight = 50
-
-[taxonomies]
-    tag = 'tags'
-    category = 'categories'
-
-[outputs]
-    home = ['HTML', 'RSS', 'ROBOTS']
-
-enableRobotsTXT = true
+        widgets = ['avatar', 'welcome', 'links']
