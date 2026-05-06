@@ -1,0 +1,366 @@
+baseURL = 'https://example.org/'
+languageCode = 'zh-cn'
+title = 'My Site'
+theme = 'cards'
+defaultContentLanguage = 'zh-cn'
+
+[module]
+    [[module.mounts]]
+        source = 'content'
+        target = 'content'
+    [[module.mounts]]
+        source = 'themes/cards/content'
+        target = 'content'
+
+# 侧边栏导航（使用 i18n 键名）
+[menus]
+    [[menus.sidebar_links]]
+        name = 'home'
+        url = '/'
+        weight = 1
+
+    [[menus.sidebar_links]]
+        name = 'about'
+        url = '/about/'
+        weight = 2
+
+    [[menus.sidebar_links]]
+        name = 'archives'
+        url = '/archives/'
+        weight = 3
+
+    [[menus.sidebar_links]]
+        name = 'tags'
+        url = '/tags/'
+        weight = 4
+
+    [[menus.sidebar_links]]
+        name = 'links'
+        url = '/links/'
+        weight = 5
+
+    [[menus.sidebar_links]]
+        name = 'rss'
+        url = '/index.xml'
+        weight = 6
+
+[taxonomies]
+    tag = 'tags'
+    category = 'categories'
+
+# Sitemap 配置
+[sitemap]
+    filename = "sitemap.xml"
+    changefreq = "weekly"
+    priority = 0.5
+    sitemaps = true
+
+# robots.txt 配置
+enableRobotsTXT = true
+
+[params]
+    # 文章位置
+    mainSections = ['posts']
+
+    # 站点信息
+    description = 'My Site'
+    author = 'Cnkrru'
+
+    # 首页标题
+    homepageTitle = '文章列表'
+
+    # 首页配置
+    [params.homepage]
+        showArticleCount = true
+        articlesPerPage = 6
+
+    # 文章数量统计
+    [params.homepage.articleCountBtn]
+        enabled = true
+        text = '共 {{ . }} 篇文章'
+
+[params.footer]
+    # 站点创建时间，用于计算运行时间
+    # 格式: YYYY-MM-DDTHH:MM:SS
+    since = '2026-01-01T00:00:00'
+
+    # 是否显示站点年龄
+    showWebsiteAge = true
+
+    # 页脚自定义文本（显示在版权信息下方）
+    customText = '🔧 测试自定义文本'
+
+    # 版权信息
+    [params.footer.copyright]
+        enabled = true
+        text = '🎉 测试版权 © {{ now.Year }} {{ site.Title }}'
+
+[params.sidebar]
+    # 是否使用紧凑模式
+    compact = false
+
+    # 头像配置
+    [params.sidebar.avatar]
+        enabled = true
+        src = '/images/avator.jpg'
+
+    # 欢迎语配置
+    [params.sidebar.welcome]
+        enabled = true
+        subtitle = '欢迎来到我的个人博客'
+
+    # 页面链接配置
+    [params.sidebar.links]
+        enabled = true
+        # 链接列表（如果为空则使用菜单 main）
+        links = []
+
+[params.article]
+    # 是否显示阅读时间
+    readingTime = true
+
+    # 是否启用数学公式
+    math = true
+
+    # 版权信息配置
+    [params.article.license]
+        enabled = true
+        default = '🔧 测试版权信息 - CC BY-NC-SA 4.0'
+
+    # 相关文章配置
+    [params.article.related]
+        enabled = true
+        title = '🔥 测试相关文章'
+
+    # 文章页面配置
+    [params.article.page]
+        showToc = true
+        showReadingTime = true
+        showWordCount = true
+        showRelatedArticles = true
+        showComments = true
+        showShare = true
+
+    # 分享功能配置
+    [params.article.share]
+        enabled = true
+
+    # TOC 目录配置
+    [params.article.toc]
+        enabled = true
+        collapsed = false
+        maxDepth = 3
+
+    # TOC 按钮配置
+    [params.article.tocButton]
+        enabled = true
+        icon = '/images/svg/toc.svg'
+
+    # 返回顶部按钮配置
+    [params.article.backToTop]
+        enabled = true
+        icon = '/images/svg/arrow-up.svg'
+
+    # 文章列表卡片配置
+    [params.article.listCard]
+        showCategory = true
+        showTags = true
+        showDate = true
+        showId = false
+
+    # 文章页面元信息配置
+    [params.article.pageMeta]
+        showId = false
+        showCategory = true
+        showTags = true
+        showDate = true
+
+    # 文章页面导航配置
+    [params.article.pageNav]
+        showPrevNext = true
+        showArticleCount = true
+
+[params.colorScheme]
+    # 默认主题模式: auto(跟随系统), light(亮色), dark(暗色)
+    default = 'auto'
+
+# 颜色配置
+[params.colors]
+    # 亮色主题
+    [params.colors.light]
+        color1 = 'rgba(255, 192, 203, 1)'
+        color2 = 'white'
+        bg = 'white'
+        text = '#333'
+        content = 'white'
+        hover = 'rgba(255, 192, 203, 1)'
+        shadow = 'rgba(0, 0, 0, 0.1)'
+        cursor = 'rgba(255, 192, 203, 1)'
+        gradient = 'linear-gradient(90deg, #45b7d1, #4ecd8d, #feb47b, #4ecd8d, #45b7d1)'
+    # 暗色主题
+    [params.colors.dark]
+        color1 = '#3aaae7'
+        color2 = '#1a237e'
+        bg = '#15073c'
+        text = 'white'
+        hover = '#3aaae7'
+        content = '#333'
+        shadow = 'rgba(0, 0, 0, 0.3)'
+        cursor = '#3aaae7'
+        gradient = 'linear-gradient(90deg, #cc45d1, #654ecd, #7b97fe, #654ecd, #cc45d1)'
+
+[params.header]
+    # 阅读进度条配置
+    [params.header.readingProgress]
+        enabled = false
+
+    # Logo 配置
+    [params.header.logo]
+        enabled = true
+        text = '🎨 测试博客'
+        font = 'Arial'
+
+[params.mobile]
+    # 移动端侧边栏小部件
+    [params.mobile.sidebarWidgets]
+        enabled = true
+        widgets = ['avatar', 'welcome', 'links']
+
+[params.search]
+    # 是否启用搜索
+    enable = true
+
+    # 搜索模式: fuse(使用Fuse.js), advanced(使用原生搜索引擎)
+    mode = 'fuse'
+
+    # 搜索框占位符
+    placeholder = '搜索'
+
+    # 搜索结果配置
+    [params.search.results]
+        showCategory = true
+        showTags = true
+        showDate = false
+        maxResults = 20
+
+    # 搜索框配置
+    [params.search.input]
+        placeholder = '搜索'
+        width = '400px'
+        minWidth = '120px'
+
+[params.comments]
+    # 是否启用评论
+    enabled = true
+
+    # 评论提供商: giscus, disqus, utterances, gitalk, waline, twikoo
+    provider = 'giscus'
+
+    # 评论区域标题
+    title = '评论'
+
+    [params.comments.giscus]
+        repo = 'Cnkrru/Blog'
+        repoId = 'R_kgDORzTTCQ'
+        category = 'Announcements'
+        categoryId = 'DIC_kwDORzTTCc4C5e-m'
+        mapping = 'pathname'
+        strict = '0'
+        reactionsEnabled = '1'
+        emitMetadata = '0'
+        inputPosition = 'bottom'
+        lang = 'zh-CN'
+
+    [params.comments.waline]
+        serverURL = ''
+        lang = 'zh-CN'
+        visitor = true
+        emoji = ['https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo']
+        requiredMeta = ['nick', 'mail']
+        wordLimit = 0
+        pageSize = 10
+
+    [params.comments.twikoo]
+        envId = ''
+        region = 'ap-guangzhou'
+        path = 'window.location.pathname'
+        lang = 'zh-CN'
+
+    [params.comments.disqus]
+        shortname = ''
+
+    [params.comments.utterances]
+        repo = ''
+        issueTerm = 'pathname'
+        label = ''
+
+    [params.comments.gitalk]
+        clientID = ''
+        clientSecret = ''
+        repo = ''
+        owner = ''
+        admin = ''
+        proxy = ''
+
+[params.analytics]
+    # 是否启用分析
+    enabled = true
+
+    # 分析提供商: google, vercel, baidu
+    provider = 'vercel'
+
+    [params.analytics.google]
+        trackingID = ''
+
+    [params.analytics.baidu]
+        trackingID = ''
+
+[params.seo]
+    # 是否启用SEO优化
+    enabled = true
+
+    # 站点描述
+    description = 'My New Hugo Site'
+
+    # 作者
+    author = ''
+
+    # 站点Logo
+    logo = '/logo.png'
+
+    [params.seo.twitter]
+        # Twitter用户名
+        site = ''
+
+        # 卡片类型: summary, summary_large_image
+        card = 'summary'
+
+[params.opengraph]
+    [params.opengraph.twitter]
+        # Twitter用户名
+        site = ''
+
+        # 卡片类型: summary, summary_large_image
+        card = 'summary_large_image'
+
+[params.imageProcessing]
+    # 是否启用内容图片处理（响应式、懒加载等）
+    content = true
+
+[params.widgets.sidebar]
+    # 侧边栏小部件
+    enabled = true
+    widgets = ['avatar', 'welcome', 'links', 'stats']
+
+[outputs]
+    home = ['HTML', 'RSS', 'ROBOTS']
+
+[mediaTypes]
+    [mediaTypes."application/json"]
+        suffixes = ["json"]
+
+[outputFormats]
+    [outputFormats.JSON]
+        mediaType = "application/json"
+        baseName = "feed"
+        isPlainText = true
