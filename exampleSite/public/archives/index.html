@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <meta name="generator" content="Hugo 0.155.1">
-<title>Archives | My Blog</title>
 
 
-<script>
-window.searchIndexData = [];
-</script>
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<meta name="theme-color" content="rgba(255, 192, 203, 1)">
+<link rel="manifest" href="/manifest.json">
+<meta name="search-data-url" content="/js/search-data.json">
 
-<link rel="sitemap" type="application/xml" title="Sitemap" href="https://example.com/sitemap.xml">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="http://localhost:1313/sitemap.xml">
 
 
 <script>
@@ -49,6 +49,8 @@ window.searchIndexData = [];
   --common-shadow: rgba(0, 0, 0, 0.1);
   --common-cursor: rgba(255, 192, 203, 1);
   --common-gradient: linear-gradient(90deg, #45b7d1, #4ecd8d, #feb47b, #4ecd8d, #45b7d1);
+  --common-code-bg: #1e1e1e;
+  --common-code-text: #d4d4d4;
 }
 
 body.dark-theme,
@@ -62,47 +64,202 @@ body.dark-theme,
   --common-shadow: rgba(0, 0, 0, 0.3);
   --common-cursor: #3aaae7;
   --common-gradient: linear-gradient(90deg, #cc45d1, #654ecd, #7b97fe, #654ecd, #cc45d1);
+  --common-code-bg: #1e1e1e;
+  --common-code-text: #d4d4d4;
 }
 </style>
 
-<link rel="stylesheet" href="/css/style.css">
+<style>
+:focus-visible {
+  outline: 2px solid var(--common-color-1);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--common-bg);
+  color: var(--common-text);
+  padding: 8px 16px;
+  border: 2px solid var(--common-color-1);
+  border-radius: 8px;
+  z-index: 10000;
+  font-size: 14px;
+  transition: top 0.2s ease;
+}
+
+.skip-to-content:focus {
+  top: 8px;
+}
+</style><link rel="stylesheet" href="/css/style.min.f7d6d2149a33cb69b9f0d7b1e49f6a9b607789e0974b5e0e7f61955002015cbe.css" integrity="sha256-99bSFJozy2m58Nex5J9qm2B3ieCXS14Of2GVUAIBXL4="><script src="/js/app.min.f52eca53a6fa05751271ab530a04b24287aab1c8fd52472ea398e38c9840b11d.js" integrity="sha256-9S7KU6b6BXUScatTCgSyQoeqscj9Ukcuo5jjjJhAsR0="></script><script src="/js/pjax.min.b0c7ba5490bacd8ae972868b008c2f1bb2c1b26e0bb774cfc5619e023871859f.js" integrity="sha256-sMe6VJC6zYrpcoaLAIwvG7LBsm4Lt3TPxWGeAjhxhZ8=" defer></script>
 
   
   
-<meta property="og:title" content="Archives - My Blog">
-<meta property="og:description" content="Article archives page.">
-<meta property="og:url" content="https://example.com/archives/">
-<meta property="og:site_name" content="My Blog">
+<meta property="og:title" content="归档 - Cards Demo">
+<meta property="og:description" content="文章归档页面。">
+<meta property="og:url" content="http://localhost:1313/archives/">
+<meta property="og:site_name" content="Cards Demo">
 <meta property="og:type" content="article">
-<meta property="og:locale" content="zh-cn"><meta property="article:published_time" content="2026-01-01T00:00:00&#43;08:00"><meta property="article:modified_time" content="2026-01-01T00:00:00&#43;08:00"><meta property="article:section" content=""><meta name="twitter:title" content="Archives - My Blog">
-<meta name="twitter:description" content="Article archives page.">
-<meta name="twitter:card" content="summary">
+<meta property="og:locale" content="zh-cn"><meta property="article:published_time" content="2026-01-01T00:00:00&#43;08:00"><meta property="article:modified_time" content="2026-01-01T00:00:00&#43;08:00"><meta property="article:section" content=""><meta name="twitter:title" content="归档 - Cards Demo">
+<meta name="twitter:description" content="文章归档页面。">
+<meta name="twitter:card" content="summary_large_image">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Archives",
-  "description": "\u003cp\u003eArticle archives page.\u003c\/p\u003e",
-  "url": "https:\/\/example.com\/archives\/",
+  "headline": "归档",
+  "description": "\u003cp\u003e文章归档页面。\u003c\/p\u003e",
+  "url": "http:\/\/localhost:1313\/archives\/",
   "datePublished": "2026-01-01T00:00:00\u002b08:00",
   "dateModified": "2026-01-01T00:00:00\u002b08:00",
   "author": {
     "@type": "Person",
-    "name": "My Blog"
+    "name": "Cards Demo"
   },
   "publisher": {
     "@type": "Organization",
-    "name": "My Blog",
+    "name": "Cards Demo",
     "logo": {
       "@type": "ImageObject",
-      "url": "https:\/\/example.com\/logo.png"
+      "url": "http:\/\/localhost:1313\/images\/avatar.jpg"
     }
   }}
 </script>
 </head>
 <body>
+  <a href="#main-content" class="skip-to-content" data-i18n="skipToContent">跳到内容</a>
   
+  <div class="reading-progress-container">
+  <div class="reading-progress-bar" id="reading-progress-bar"></div>
+</div>
+
+<script>
+Cards.register('reading-progress', {
+  init: function() {
+    let targetElement = null;
+    let cachedContentCard = null;
+    let observer = null;
+
+    const findContentCard = function() {
+      if (cachedContentCard) return cachedContentCard;
+      cachedContentCard = document.querySelector('.center-card-content');
+      return cachedContentCard;
+    };
+
+    const handleScroll = function() {
+      const progressBar = document.getElementById('reading-progress-bar');
+      if (!progressBar) return;
+
+      let progress;
+      if (targetElement) {
+        const scrollTop = targetElement.scrollTop;
+        const scrollHeight = targetElement.scrollHeight;
+        const clientHeight = targetElement.clientHeight;
+        const scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100;
+        progress = Math.min(scrollPercent, 100);
+      } else {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        progress = Math.min(scrollPercent, 100);
+      }
+      progressBar.style.width = progress + '%';
+    };
+
+    const updateTargetElement = function() {
+      const newElement = findContentCard();
+      if (newElement !== targetElement) {
+        if (targetElement) {
+          targetElement.removeEventListener('scroll', handleScroll);
+        }
+        targetElement = newElement;
+        if (targetElement) {
+          targetElement.addEventListener('scroll', handleScroll);
+        }
+        handleScroll();
+      }
+    };
+
+    updateTargetElement();
+
+    window.addEventListener('hashchange', updateTargetElement);
+    window.addEventListener('popstate', updateTargetElement);
+
+    if (targetElement) {
+      observer = new ResizeObserver(function() { handleScroll(); });
+      observer.observe(targetElement);
+    } else {
+      window.addEventListener('resize', handleScroll);
+    }
+
+    handleScroll();
+
+    return {
+      targetElement: targetElement,
+      observer: observer,
+      handleScroll: handleScroll,
+      updateTargetElement: updateTargetElement
+    };
+  },
+  destroy: function(instance) {
+    if (instance.targetElement) {
+      instance.targetElement.removeEventListener('scroll', instance.handleScroll);
+    }
+    if (instance.observer) {
+      instance.observer.disconnect();
+    }
+    window.removeEventListener('hashchange', instance.updateTargetElement);
+    window.removeEventListener('popstate', instance.updateTargetElement);
+    window.removeEventListener('resize', instance.handleScroll);
+  }
+});
+</script>
+
+<style>
+.reading-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 1001;
+}
+
+.reading-progress-bar {
+  height: 100%;
+  transition: width 0.2s ease;
+  border-radius: 0 3px 3px 0;
+}
+</style>
+
+<style>
+.reading-progress-container {
+  background-color: transparent;
+}
+
+.reading-progress-bar {
+  background: var(--common-gradient);
+  box-shadow: 0 0 8px var(--common-shadow);
+}
+</style>
+
+
 
 <header class="header-flex">
   <div class="header-S">
@@ -110,7 +267,7 @@ body.dark-theme,
       <div class="header-card">
         
           <div class="logo-card">
-  <a href="https://example.com/"><h1 data-i18n="siteTitle">🎨 测试博客</h1></a>
+  <h1><a href="http://localhost:1313/" data-i18n="siteTitle">Cards Blog</a></h1>
 </div>
 
 <style>
@@ -125,13 +282,18 @@ body.dark-theme,
 
 .logo-card h1 {
   font-size: 24px;
-  font-family: "Arial", sans-serif;
+  font-family: "Georgia, serif", sans-serif;
   white-space: nowrap;
+  margin: 0;
+}
+
+.logo-card h1 a {
+  text-decoration: none;
 }
 </style>
 
 <style>
-.logo-card h1 {
+.logo-card h1 a {
   color: var(--common-color-1);
 }
 </style>
@@ -156,7 +318,6 @@ body.dark-theme,
     <input type="text" data-i18n-placeholder="search" placeholder="搜索" id="header-search-input">
   </div>
 
-  
   <div id="search-results-panel" class="search-results" style="display: none;">
     <div id="search-empty" class="search-empty" style="display: none;">
       <span data-i18n="search">搜索</span>: "<span id="search-query"></span>" - <span data-i18n="searchNoResult">未找到结果</span>
@@ -208,45 +369,32 @@ body.dark-theme,
   border-radius: 8px;
   overflow-y: auto;
   z-index: 9999;
-  background-color: var(--common-bg);
-  border: 2px solid var(--common-color-1);
 }
 
 .search-empty {
   padding: 16px;
   text-align: center;
-  color: var(--common-text);
 }
 
 .search-counter {
   padding: 8px 16px;
   font-size: 12px;
-  color: var(--common-text);
-  border-bottom: 1px solid var(--common-color-1);
 }
 
 .search-result-item {
   padding: 12px 16px;
   transition: background-color 0.2s ease;
   cursor: pointer;
-  background-color: var(--common-bg);
-  color: var(--common-text);
-}
-
-.search-result-item:hover {
-  background-color: var(--common-hover);
 }
 
 .result-title {
   font-weight: bold;
   margin-bottom: 4px;
-  color: var(--common-text);
 }
 
 .result-meta {
   font-size: 13px;
   margin-bottom: 4px;
-  color: var(--common-text);
 }
 
 .result-tags {
@@ -260,8 +408,6 @@ body.dark-theme,
   font-size: 11px;
   margin-right: 4px;
   display: inline-block;
-  background-color: var(--common-color-1);
-  color: var(--common-text);
 }
 
 @media (max-width: 768px) {
@@ -280,6 +426,42 @@ body.dark-theme,
 .search-card input {
   color: var(--common-text);
   background-color: transparent;
+}
+
+.search-results {
+  background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
+}
+
+.search-empty {
+  color: var(--common-text);
+}
+
+.search-counter {
+  color: var(--common-text);
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.search-result-item {
+  background-color: var(--common-bg);
+  color: var(--common-text);
+}
+
+.search-result-item:hover {
+  background-color: var(--common-hover);
+}
+
+.result-title {
+  color: var(--common-text);
+}
+
+.result-meta {
+  color: var(--common-text);
+}
+
+.result-tags .tag {
+  background-color: var(--common-color-1);
+  color: var(--common-text);
 }
 </style>
 
@@ -308,213 +490,200 @@ body.dark-theme,
     max-width: 600px;
   }
 }
-</style>
+</style><script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script><script>
+Cards.register('search', {
+  init: function() {
+    let searchData = null;
+    let fuse = null;
+    let debounceTimer = null;
+    let searchInput = null;
+    let searchResultsPanel = null;
+    let outsideClickListener = null;
 
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
-<script>
+    const escapeHtml = function(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    };
 
-let searchData = null;
-let fuse = null;
-let searchInput = null;
-let searchResultsPanel = null;
+    const highlightMatch = function(text, query) {
+      if (!query || !text) return text;
+      const escapedQuery = escapeHtml(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+      const regex = new RegExp('(' + escapedQuery + ')', 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    };
 
-
-const escapeHtml = (text) => {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-};
-
-
-const highlightMatch = (text, query) => {
-  if (!query || !text) return text;
-  const escapedQuery = escapeHtml(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const regex = new RegExp('(' + escapedQuery + ')', 'gi');
-  return text.replace(regex, '<mark>$1</mark>');
-};
-
-
-const getSearchData = async () => {
-  if (!searchData) {
-    try {
-      
-      if (window.searchIndexData) {
-        searchData = window.searchIndexData;
-      } else {
-        
-        const response = await fetch('/index.json');
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
+    const getSearchData = async function() {
+      if (fuse) return fuse;
+      if (!searchData) {
+        const metaUrl = document.querySelector('meta[name="search-data-url"]');
+        if (metaUrl) {
+          try {
+            const resp = await fetch(metaUrl.content);
+            searchData = await resp.json();
+          } catch (e) {
+            searchData = [];
+          }
         }
-        searchData = await response.json();
       }
-
-      
-      const options = {
-        keys: [
-          { name: 'title', weight: 0.4 },
-          { name: 'content', weight: 0.3 },
-          { name: 'tags', weight: 0.2 },
-          { name: 'category', weight: 0.1 }
-        ],
-        includeScore: true,
-        includeMatches: true,
-        threshold: 0.4,
-        minMatchCharLength: 1
-      };
-      fuse = new Fuse(searchData, options);
-    } catch (err) {
-      console.error('Failed to load search data:', err);
-      searchData = [];
-    }
-  }
-  return { searchData, fuse };
-};
-
-
-const performSearch = async (query) => {
-  if (!query || query.trim() === '') {
-    hideSearchResults();
-    return;
-  }
-
-  query = query.trim();
-  const { fuse } = await getSearchData();
-
-  if (!fuse) {
-    console.error('Fuse.js not initialized');
-    return;
-  }
-
-  const results = fuse.search(query);
-  displayResults(results, query);
-};
-
-
-const displayResults = (results, query) => {
-  const panel = document.getElementById('search-results-panel');
-  const emptyDiv = document.getElementById('search-empty');
-  const contentDiv = document.getElementById('search-content');
-  const countSpan = document.getElementById('search-count');
-  const listDiv = document.getElementById('search-results-list');
-  const querySpan = document.getElementById('search-query');
-
-  if (!panel) return;
-
-  panel.style.display = 'block';
-
-  if (results.length === 0) {
-    emptyDiv.style.display = 'block';
-    contentDiv.style.display = 'none';
-    if (querySpan) querySpan.textContent = escapeHtml(query);
-  } else {
-    emptyDiv.style.display = 'none';
-    contentDiv.style.display = 'block';
-    if (countSpan) countSpan.textContent = results.length;
-
-    if (listDiv) {
-      listDiv.innerHTML = '';
-      results.forEach(result => {
-        const item = result.item;
-        const resultItem = document.createElement('div');
-        resultItem.className = 'search-result-item';
-        resultItem.onclick = () => {
-          window.location.href = item.permalink;
+      if (searchData && searchData.length > 0 && window.Fuse) {
+        const options = {
+          keys: [
+            { name: 'title', weight: 0.4 },
+            { name: 'content', weight: 0.3 },
+            { name: 'tags', weight: 0.2 },
+            { name: 'category', weight: 0.1 }
+          ],
+          includeScore: true,
+          includeMatches: true,
+          threshold: 0.4,
+          minMatchCharLength: 1
         };
-
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'result-title';
-        titleDiv.innerHTML = highlightMatch(item.title, query);
-
-        const metaDiv = document.createElement('div');
-        metaDiv.className = 'result-meta';
-        var t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
-        const categoryText = item.category || (t ? t['uncategorized'] : '未分类');
-        const idText = item.permalink ? item.permalink.split('/').filter(Boolean).pop() : '';
-        metaDiv.innerHTML = (t ? t['category'] : '分类') + ': ' + highlightMatch(categoryText, query) +
-                           ' | ID: ' + highlightMatch(idText, query);
-
-        resultItem.appendChild(titleDiv);
-        resultItem.appendChild(metaDiv);
-
-        if (item.tags && item.tags.length > 0) {
-          const tagsDiv = document.createElement('div');
-          tagsDiv.className = 'result-tags';
-          item.tags.forEach(tag => {
-            const tagSpan = document.createElement('span');
-            tagSpan.className = 'tag';
-            tagSpan.textContent = tag;
-            tagsDiv.appendChild(tagSpan);
-          });
-          resultItem.appendChild(tagsDiv);
-        }
-
-        listDiv.appendChild(resultItem);
-      });
-    }
-  }
-};
-
-
-const hideSearchResults = () => {
-  const panel = document.getElementById('search-results-panel');
-  if (panel) {
-    panel.style.display = 'none';
-  }
-};
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  
-  getSearchData();
-
-  searchInput = document.querySelector('.search-card input');
-  searchResultsPanel = document.getElementById('search-results-panel');
-
-  if (searchInput) {
-    let debounceTimer;
-    searchInput.addEventListener('input', (e) => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        performSearch(e.target.value);
-      }, 300);
-    });
-
-    searchInput.addEventListener('focus', (e) => {
-      if (e.target.value.trim()) {
-        performSearch(e.target.value);
+        fuse = new Fuse(searchData, options);
       }
-    });
-  }
+      return fuse;
+    };
 
-  
-  document.addEventListener('click', (e) => {
-    if (searchResultsPanel && searchInput &&
-        !searchResultsPanel.contains(e.target) &&
-        !searchInput.contains(e.target)) {
-      hideSearchResults();
+    const hideSearchResults = function() {
+      const panel = document.getElementById('search-results-panel');
+      if (panel) panel.style.display = 'none';
+    };
+
+    const displayResults = function(results, query) {
+      const panel = document.getElementById('search-results-panel');
+      const emptyDiv = document.getElementById('search-empty');
+      const contentDiv = document.getElementById('search-content');
+      const countSpan = document.getElementById('search-count');
+      const listDiv = document.getElementById('search-results-list');
+      const querySpan = document.getElementById('search-query');
+
+      if (!panel) return;
+      panel.style.display = 'block';
+
+      if (results.length === 0) {
+        emptyDiv.style.display = 'block';
+        contentDiv.style.display = 'none';
+        if (querySpan) querySpan.textContent = escapeHtml(query);
+      } else {
+        emptyDiv.style.display = 'none';
+        contentDiv.style.display = 'block';
+        if (countSpan) countSpan.textContent = results.length;
+
+        if (listDiv) {
+          listDiv.innerHTML = '';
+          results.forEach(function(result) {
+            const item = result.item;
+            const resultItem = document.createElement('div');
+            resultItem.className = 'search-result-item';
+            resultItem.setAttribute('data-action', 'search:navigate');
+            resultItem.setAttribute('data-url', item.url);
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'result-title';
+            titleDiv.innerHTML = highlightMatch(item.title, query);
+
+            const metaDiv = document.createElement('div');
+            metaDiv.className = 'result-meta';
+            const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+            const categoryText = (item.categories && item.categories[0]) || (t ? t['uncategorized'] : '未分类');
+            const idText = item.url ? item.url.split('/').filter(Boolean).pop() : '';
+            metaDiv.innerHTML = (t ? t['category'] : '分类') + ': ' + highlightMatch(categoryText, query) +
+                              ' | ID: ' + highlightMatch(idText, query);
+
+            resultItem.appendChild(titleDiv);
+            resultItem.appendChild(metaDiv);
+
+            if (item.tags && item.tags.length > 0) {
+              const tagsDiv = document.createElement('div');
+              tagsDiv.className = 'result-tags';
+              item.tags.forEach(function(tag) {
+                const tagSpan = document.createElement('span');
+                tagSpan.className = 'tag';
+                tagSpan.textContent = tag;
+                tagsDiv.appendChild(tagSpan);
+              });
+              resultItem.appendChild(tagsDiv);
+            }
+
+            listDiv.appendChild(resultItem);
+          });
+        }
+      }
+    };
+
+    const performSearch = async function(query) {
+      query = (query || '').trim();
+      if (!query) {
+        hideSearchResults();
+        return;
+      }
+      const f = await getSearchData();
+      if (!f) return;
+      const results = f.search(query);
+      displayResults(results, query);
+    };
+
+    Cards.actions['search:navigate'] = function(e, target) {
+      const url = target.dataset.url;
+      if (url) window.location.href = url;
+    };
+
+    searchInput = document.querySelector('.search-card input');
+    searchResultsPanel = document.getElementById('search-results-panel');
+
+    if (searchInput) {
+      const inputHandler = function(e) {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(function() {
+          performSearch(e.target.value);
+        }, 300);
+      };
+      const focusHandler = function(e) {
+        if (e.target.value.trim()) performSearch(e.target.value);
+      };
+      searchInput.addEventListener('input', inputHandler);
+      searchInput.addEventListener('focus', focusHandler);
     }
-  });
+
+    outsideClickListener = function(e) {
+      if (searchResultsPanel && searchInput &&
+          !searchResultsPanel.contains(e.target) &&
+          !searchInput.contains(e.target)) {
+        hideSearchResults();
+      }
+    };
+    document.addEventListener('click', outsideClickListener);
+
+    return {
+      searchInput: searchInput,
+      outsideClickListener: outsideClickListener,
+      debounceTimer: debounceTimer
+    };
+  },
+  destroy: function(instance) {
+    if (instance.debounceTimer) clearTimeout(instance.debounceTimer);
+    if (instance.outsideClickListener) document.removeEventListener('click', instance.outsideClickListener);
+  }
 });
 </script>
 
         
         <div class="button-class-card">
           <div class="mobile-menu-container">
-  <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileMenu()">
-    <img src="/images/svg/order.svg" alt="菜单">
+  <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle" data-action="menu:toggle" role="button" tabindex="0" aria-label="菜单" aria-expanded="false">
+    <img src="/images/svg/order.svg" alt="" aria-hidden="true">
   </div>
 </div>
 
-<div class="mobile-sidebar-overlay" id="mobile-menu-overlay" onclick="handleMobileOverlayClick(event)"></div>
+<div class="mobile-sidebar-overlay" id="mobile-menu-overlay" data-action="menu:close"></div>
 
 <aside class="mobile-sidebar" id="mobile-sidebar">
   <div class="mobile-sidebar-card">
     
       
 <div class="avator-card">
-  <a href="https://example.com/">
-    <img src="/images/avator.jpg" alt="头像">
+  <a href="http://localhost:1313/">
+    <img src="/images/avatar.jpg" alt="头像">
   </a>
 </div>
 
@@ -549,7 +718,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     
       <div class="welcome-saying-card">
-  <a href="https://example.com/" class="welcome-link">
+  <a href="http://localhost:1313/" class="welcome-link">
     <p data-i18n="welcome">欢迎来到我的个人博客</p>
   </a>
 </div>
@@ -599,17 +768,15 @@ document.addEventListener('DOMContentLoaded', () => {
 <div class="page-list-card">
   <ul>
     
-    <li><a href="/" class="page-card" >首页</a></li>
+    <li><a href="/list/" class="page-card" ><span data-i18n="home">home</span></a></li>
     
-    <li><a href="/about/" class="page-card" >关于</a></li>
+    <li><a href="/about/" class="page-card" ><span data-i18n="about">about</span></a></li>
     
-    <li><a href="/archives/" class="page-card" >归档</a></li>
+    <li><a href="/categories/" class="page-card" ><span data-i18n="archives">archives</span></a></li>
     
-    <li><a href="/tags/" class="page-card" >标签</a></li>
+    <li><a href="/tags/" class="page-card" ><span data-i18n="tags">tags</span></a></li>
     
-    <li><a href="/links/" class="page-card" >友链</a></li>
-    
-    <li><a href="/index.xml" class="page-card" >RSS</a></li>
+    <li><a href="/links/" class="page-card" ><span data-i18n="links">links</span></a></li>
     
   </ul>
 </div>
@@ -659,13 +826,13 @@ document.addEventListener('DOMContentLoaded', () => {
   background-color: var(--common-color-1);
   border: 2px solid var(--common-color-2);
   box-shadow: var(--common-shadow);
-  color: white;
+  color: var(--common-content);
 }
 
 .page-card:hover {
   box-shadow: var(--common-shadow);
   background-color: var(--common-hover);
-  color: white;
+  color: var(--common-content);
 }
 </style>
 
@@ -674,33 +841,53 @@ document.addEventListener('DOMContentLoaded', () => {
 </aside>
 
 <script>
-const toggleMobileMenu = () => {
+Cards.register('mobile-menu', {
+  init: function() {
+    const closeMenu = function() {
+      const overlay = document.getElementById('mobile-menu-overlay');
+      const sidebar = document.getElementById('mobile-sidebar');
+      if (overlay) overlay.classList.remove('active');
+      if (sidebar) sidebar.classList.remove('active');
+      const toggle = document.getElementById('mobile-menu-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    };
+
+    const escapeListener = function(event) {
+      if (event.key === 'Escape') closeMenu();
+    };
+
+    document.addEventListener('keydown', escapeListener);
+
+    return { closeMenu: closeMenu, escapeListener: escapeListener };
+  },
+  destroy: function(instance) {
+    document.removeEventListener('keydown', instance.escapeListener);
+    instance.closeMenu();
+  }
+});
+
+Cards.actions['menu:toggle'] = function() {
   const overlay = document.getElementById('mobile-menu-overlay');
   const sidebar = document.getElementById('mobile-sidebar');
   const isOpen = overlay.classList.toggle('active');
   sidebar.classList.toggle('active', isOpen);
+  const toggle = document.getElementById('mobile-menu-toggle');
+  if (toggle) toggle.setAttribute('aria-expanded', isOpen);
   document.body.style.overflow = isOpen ? 'hidden' : '';
-}
+};
 
-const closeMobileMenu = () => {
-  const overlay = document.getElementById('mobile-menu-overlay');
-  const sidebar = document.getElementById('mobile-sidebar');
-  overlay.classList.remove('active');
-  sidebar.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-const handleMobileOverlayClick = (event) => {
-  if (event.target.id === 'mobile-menu-overlay') {
-    closeMobileMenu();
+Cards.actions['menu:close'] = function(e) {
+  if (e.target.id === 'mobile-menu-overlay') {
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const sidebar = document.getElementById('mobile-sidebar');
+    overlay.classList.remove('active');
+    sidebar.classList.remove('active');
+    const toggle = document.getElementById('mobile-menu-toggle');
+    if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
   }
-}
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    closeMobileMenu();
-  }
-});
+};
 </script>
 
 <style>
@@ -809,80 +996,16 @@ document.addEventListener('keydown', (event) => {
 </style>
 
           <div class="language-selector">
-  <select name="language" class="language-select" id="language-switcher">
+  <select name="language" class="language-select" id="language-switcher" aria-label="选择语言">
     <option value="zh-cn" selected>简体中文</option>
     <option value="zh-tw">繁體中文</option>
     <option value="en">English</option>
     <option value="fr">Français</option>
     <option value="ru">Русский</option>
     <option value="de">Deutsch</option>
+    <option value="id">Bahasa Indonesia</option>
   </select>
 </div>
-
-<script>
-window.i18nTranslations = {
-    "zh-cn": {
-    },
-    "zh-tw": {
-    },
-    "en": {
-    },
-    "fr": {
-    },
-    "de": {
-    },
-    "ru": {
-    },
-};
-
-window.i18nCurrentLang = localStorage.getItem('preferred-language') || 'zh-cn';
-
-function i18nApplyTranslations(lang) {
-    const translations = window.i18nTranslations[lang];
-    if (!translations) return;
-
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-        const key = el.getAttribute('data-i18n');
-        if (translations[key] !== undefined) {
-            el.textContent = translations[key];
-        }
-    });
-
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-        const key = el.getAttribute('data-i18n-placeholder');
-        if (translations[key] !== undefined) {
-            el.placeholder = translations[key];
-        }
-    });
-
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
-        const key = el.getAttribute('data-i18n-title');
-        if (translations[key] !== undefined) {
-            el.title = translations[key];
-        }
-    });
-
-    localStorage.setItem('preferred-language', lang);
-    window.i18nCurrentLang = lang;
-}
-
-function i18nSwitchLanguage(lang) {
-    i18nApplyTranslations(lang);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    i18nApplyTranslations(window.i18nCurrentLang);
-
-    const selector = document.getElementById('language-switcher');
-    if (selector) {
-        selector.value = window.i18nCurrentLang;
-        selector.addEventListener('change', function(e) {
-            i18nSwitchLanguage(e.target.value);
-        });
-    }
-});
-</script>
-
 
 <style>
 .language-selector {
@@ -898,8 +1021,6 @@ document.addEventListener('DOMContentLoaded', function() {
   border-radius: 8px;
   font-size: 14px;
   font-weight: bold;
-  background-color: var(--common-color-1);
-  color: var(--common-content);
   border: 1px solid var(--common-color-1);
   cursor: pointer;
   transition: all 0.3s ease;
@@ -912,6 +1033,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
 .language-select:hover {
   transform: translateY(-2px);
+}
+</style>
+
+<style>
+.language-select {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+}
+
+.language-select:hover {
   background-color: var(--common-hover);
 }
 
@@ -919,44 +1050,817 @@ document.addEventListener('DOMContentLoaded', function() {
   outline: none;
   box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3);
 }
+</style>
 
+<style>
 @media (max-width: 768px) {
   .language-select {
     padding: 6px 28px 6px 12px;
     font-size: 12px;
     min-width: 80px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   }
 }
 </style>
+
+<script>
+window.i18nTranslations = {
+    "zh-cn": {
+        "about": "关于",
+        "allRightsReserved": "版权所有",
+        "archives": "归档",
+        "articleBack": "返回列表",
+        "articleCount": "文章数量",
+        "articleList": "文章列表",
+        "articleMenu": "文章菜单",
+        "articles": "篇文章",
+        "calculating": "计算中...",
+        "categoriesLabel": "个分类",
+        "category": "分类",
+        "chinese": "中文",
+        "code": "代码",
+        "collapse": "收起",
+        "commentTitle": "评论",
+        "comments": "留言",
+        "copyright": "©",
+        "count": "数量",
+        "customText": "自定义",
+        "darkMode": "夜晚模式",
+        "day": "天",
+        "english": "英文",
+        "error404BrowseArticles": "浏览文章",
+        "error404Description": "您访问的页面可能已被删除、移动或暂时不可用。",
+        "error404GoHome": "返回首页",
+        "error404Subtitle": "哎呀，页面找不到了",
+        "error404Title": "404 - 页面未找到",
+        "error404TrySearch": "或者尝试搜索：",
+        "expand": "展开",
+        "frequency": "频率",
+        "gitalkUnavailable": "Gitalk 评论系统在本地预览时不可用",
+        "home": "首页",
+        "hour": "小时",
+        "hourShort": "时",
+        "lessThanOneMinute": "小于 1 分钟",
+        "lightMode": "日间模式",
+        "links": "友链",
+        "loadArticlesFailed": "加载文章失败",
+        "minute": "分钟",
+        "minuteShort": "分",
+        "month": "月",
+        "more": "更多",
+        "next": "下一页",
+        "nextArticle": "下一篇",
+        "noArticles": "暂无文章",
+        "noArticlesInTag": "该标签下暂无文章",
+        "noDescription": "暂无描述",
+        "noLinks": "暂无友链",
+        "noTitle": "无标题",
+        "none": "暂无",
+        "page": "页",
+        "prev": "上一页",
+        "prevArticle": "上一篇",
+        "readingTime": "分钟阅读",
+        "readingTimeLabel": "预计阅读时间:",
+        "recent": "最近",
+        "recentPosts": "最新文章",
+        "relatedArticles": "相关文章推荐",
+        "rss": "RSS",
+        "search": "搜索",
+        "searchArticle": "搜索文章...",
+        "searchNoResult": "未找到结果",
+        "searchResults": "个结果",
+        "searchTags": "搜索标签...",
+        "secondShort": "秒",
+        "shareCopyFailed": "复制失败，请手动复制链接: ",
+        "shareEmail": "通过邮件分享",
+        "shareFacebook": "分享到 Facebook",
+        "shareLinkedin": "分享到 LinkedIn",
+        "shareQQ": "分享到QQ",
+        "shareReddit": "分享到 Reddit",
+        "shareText": "分享",
+        "shareTwitter": "分享到 Twitter",
+        "shareWechat": "分享到微信",
+        "shareWechatCopied": "链接已复制，请粘贴到微信进行分享",
+        "shareWeibo": "分享到微博",
+        "siteTitle": "我的博客",
+        "skipToContent": "跳到内容",
+        "sort": "排序:",
+        "tableOfContents": "目录",
+        "tags": "标签",
+        "tagsLabel": "个标签",
+        "toggleMenu": "菜单",
+        "toggleToc": "显示/隐藏目录",
+        "totalArticles": "共",
+        "totalTerms": "共",
+        "trending": "趋势",
+        "uncategorized": "未分类",
+        "websiteAge": "本站已建立",
+        "welcome": "欢迎来到我的个人博客",
+        "wordCount": "字",
+        "wordCountLabel": "字数统计:",
+        "year": "年",
+    },
+    "zh-tw": {
+        "about": "關於",
+        "allRightsReserved": "版權所有",
+        "archives": "歸檔",
+        "articleBack": "返回列表",
+        "articleCount": "文章數量",
+        "articleList": "文章列表",
+        "articleMenu": "文章選單",
+        "articles": "篇文章",
+        "calculating": "計算中...",
+        "categoriesLabel": "個分類",
+        "category": "分類",
+        "chinese": "中文",
+        "code": "程式碼",
+        "collapse": "收起",
+        "commentTitle": "評論",
+        "comments": "留言",
+        "copyright": "©",
+        "count": "數量",
+        "customText": "自訂",
+        "darkMode": "夜晚模式",
+        "day": "天",
+        "english": "英文",
+        "error404BrowseArticles": "瀏覽文章",
+        "error404Description": "您訪問的頁面可能已被刪除、移動或暫時不可用。",
+        "error404GoHome": "返回首頁",
+        "error404Subtitle": "哎呀，頁面找不到了",
+        "error404Title": "404 - 頁面未找到",
+        "error404TrySearch": "或者嘗試搜尋：",
+        "expand": "展開",
+        "frequency": "頻率",
+        "gitalkUnavailable": "Gitalk 評論系統在本地預覽時不可用",
+        "home": "首頁",
+        "hour": "小時",
+        "hourShort": "時",
+        "lessThanOneMinute": "小於 1 分鐘",
+        "lightMode": "日間模式",
+        "links": "友鏈",
+        "loadArticlesFailed": "載入文章失敗",
+        "minute": "分鐘",
+        "minuteShort": "分",
+        "month": "月",
+        "more": "更多",
+        "next": "下一頁",
+        "nextArticle": "下一篇",
+        "noArticles": "暫無文章",
+        "noArticlesInTag": "該標籤下暫無文章",
+        "noDescription": "暫無描述",
+        "noLinks": "暫無友鏈",
+        "noTitle": "無標題",
+        "none": "暫無",
+        "page": "頁",
+        "prev": "上一頁",
+        "prevArticle": "上一篇",
+        "readingTime": "分鐘閱讀",
+        "readingTimeLabel": "預計閱讀時間:",
+        "recent": "最近",
+        "recentPosts": "最新文章",
+        "relatedArticles": "相關文章推薦",
+        "rss": "RSS",
+        "search": "搜尋",
+        "searchArticle": "搜尋文章...",
+        "searchNoResult": "未找到結果",
+        "searchResults": "個結果",
+        "searchTags": "搜尋標籤...",
+        "secondShort": "秒",
+        "shareCopyFailed": "複製失敗，請手動複製連結: ",
+        "shareEmail": "透過郵件分享",
+        "shareFacebook": "分享到 Facebook",
+        "shareLinkedin": "分享到 LinkedIn",
+        "shareQQ": "分享到QQ",
+        "shareReddit": "分享到 Reddit",
+        "shareText": "分享",
+        "shareTwitter": "分享到 Twitter",
+        "shareWechat": "分享到微信",
+        "shareWechatCopied": "連結已複製，請貼到微信進行分享",
+        "shareWeibo": "分享到微博",
+        "siteTitle": "我的部落格",
+        "skipToContent": "跳到內容",
+        "sort": "排序:",
+        "tableOfContents": "目錄",
+        "tags": "標籤",
+        "tagsLabel": "個標籤",
+        "toggleMenu": "選單",
+        "toggleToc": "顯示/隱藏目錄",
+        "totalArticles": "共",
+        "totalTerms": "共",
+        "trending": "趨勢",
+        "uncategorized": "未分類",
+        "websiteAge": "本站已建立",
+        "welcome": "歡迎來到我的個人部落格",
+        "wordCount": "字",
+        "wordCountLabel": "字數統計:",
+        "year": "年",
+    },
+    "en": {
+        "about": "About",
+        "allRightsReserved": ". All rights reserved.",
+        "archives": "Archives",
+        "articleBack": "Back to list",
+        "articleCount": "Articles",
+        "articleList": "Articles",
+        "articleMenu": "Article Menu",
+        "articles": "articles",
+        "calculating": "Calculating...",
+        "categoriesLabel": "categories",
+        "category": "Category",
+        "chinese": "CN",
+        "code": "code",
+        "collapse": "Collapse",
+        "commentTitle": "Comments",
+        "comments": "Comments",
+        "copyright": "©",
+        "count": "Count",
+        "customText": "Custom",
+        "darkMode": "Dark Mode",
+        "day": "d",
+        "english": "EN",
+        "error404BrowseArticles": "Browse Articles",
+        "error404Description": "The page you are looking for may have been deleted, moved, or is temporarily unavailable.",
+        "error404GoHome": "Back to Home",
+        "error404Subtitle": "Oops, page not found",
+        "error404Title": "404 - Page Not Found",
+        "error404TrySearch": "Or try searching:",
+        "expand": "Expand",
+        "frequency": "Frequency",
+        "gitalkUnavailable": "Gitalk comment system is not available in local preview",
+        "home": "Home",
+        "hour": "hr",
+        "hourShort": "h",
+        "lessThanOneMinute": "Less than 1 minute",
+        "lightMode": "Light Mode",
+        "links": "Links",
+        "loadArticlesFailed": "Failed to load articles",
+        "minute": "min",
+        "minuteShort": "m",
+        "month": "mo",
+        "more": "More",
+        "next": "Next",
+        "nextArticle": "Next",
+        "noArticles": "No articles yet",
+        "noArticlesInTag": "No articles in this tag",
+        "noDescription": "No description",
+        "noLinks": "No links yet",
+        "noTitle": "No title",
+        "none": "None",
+        "page": "Page",
+        "prev": "Previous",
+        "prevArticle": "Previous",
+        "readingTime": "min read",
+        "readingTimeLabel": "Estimated reading time:",
+        "recent": "Recent",
+        "recentPosts": "Recent Posts",
+        "relatedArticles": "Related Articles",
+        "rss": "RSS",
+        "search": "Search",
+        "searchArticle": "Search articles...",
+        "searchNoResult": "No results found",
+        "searchResults": "results",
+        "searchTags": "Search tags...",
+        "secondShort": "s",
+        "shareCopyFailed": "Copy failed, please manually copy the link: ",
+        "shareEmail": "Share via Email",
+        "shareFacebook": "Share on Facebook",
+        "shareLinkedin": "Share on LinkedIn",
+        "shareQQ": "Share on QQ",
+        "shareReddit": "Share on Reddit",
+        "shareText": "Share",
+        "shareTwitter": "Share on Twitter",
+        "shareWechat": "Share on WeChat",
+        "shareWechatCopied": "Link copied! Paste in WeChat to share.",
+        "shareWeibo": "Share on Weibo",
+        "siteTitle": "My Blog",
+        "skipToContent": "Skip to content",
+        "sort": "Sort:",
+        "tableOfContents": "Table of Contents",
+        "tags": "Tags",
+        "tagsLabel": "tags",
+        "toggleMenu": "Menu",
+        "toggleToc": "Show/Hide Table of Contents",
+        "totalArticles": "",
+        "totalTerms": "Total",
+        "trending": "Trending",
+        "uncategorized": "Uncategorized",
+        "websiteAge": "Site established",
+        "welcome": "Welcome to my blog",
+        "wordCount": "words",
+        "wordCountLabel": "Word count:",
+        "year": "y",
+    },
+    "fr": {
+        "about": "À propos",
+        "allRightsReserved": ". Tous droits réservés.",
+        "archives": "Archives",
+        "articleBack": "Retour à la liste",
+        "articleCount": "Articles",
+        "articleList": "Articles",
+        "articleMenu": "Menu d'article",
+        "articles": "articles",
+        "calculating": "Calcul...",
+        "categoriesLabel": "catégories",
+        "category": "Catégorie",
+        "chinese": "CN",
+        "code": "code",
+        "collapse": "Réduire",
+        "commentTitle": "Commentaires",
+        "comments": "Commentaires",
+        "copyright": "©",
+        "count": "Nombre",
+        "customText": "Personnalisé",
+        "darkMode": "Mode sombre",
+        "day": "j",
+        "english": "EN",
+        "error404BrowseArticles": "Parcourir les articles",
+        "error404Description": "La page que vous recherchez a peut-être été supprimée, déplacée ou est temporairement indisponible.",
+        "error404GoHome": "Retour à l'accueil",
+        "error404Subtitle": "Oups, page introuvable",
+        "error404Title": "404 - Page introuvable",
+        "error404TrySearch": "Ou essayez de rechercher :",
+        "expand": "Développer",
+        "frequency": "Fréquence",
+        "gitalkUnavailable": "Le système de commentaires Gitalk n'est pas disponible en aperçu local",
+        "home": "Accueil",
+        "hour": "h",
+        "hourShort": "h",
+        "lessThanOneMinute": "Moins d'une minute",
+        "lightMode": "Mode clair",
+        "links": "Liens",
+        "loadArticlesFailed": "Échec du chargement des articles",
+        "minute": "min",
+        "minuteShort": "m",
+        "month": "mo",
+        "more": "Plus",
+        "next": "Suivant",
+        "nextArticle": "Suivant",
+        "noArticles": "Aucun article",
+        "noArticlesInTag": "Aucun article dans cette étiquette",
+        "noDescription": "Aucune description",
+        "noLinks": "Aucun lien pour l'instant",
+        "noTitle": "Sans titre",
+        "none": "Aucun",
+        "page": "Page",
+        "prev": "Précédent",
+        "prevArticle": "Précédent",
+        "readingTime": "min de lecture",
+        "readingTimeLabel": "Temps de lecture estimé:",
+        "recent": "Récent",
+        "recentPosts": "Articles récents",
+        "relatedArticles": "Articles connexes",
+        "rss": "RSS",
+        "search": "Rechercher",
+        "searchArticle": "Rechercher des articles...",
+        "searchNoResult": "Aucun résultat trouvé",
+        "searchResults": "résultats",
+        "searchTags": "Rechercher des étiquettes...",
+        "secondShort": "s",
+        "shareCopyFailed": "Échec de la copie, veuillez copier manuellement le lien: ",
+        "shareEmail": "Partager par e-mail",
+        "shareFacebook": "Partager sur Facebook",
+        "shareLinkedin": "Partager sur LinkedIn",
+        "shareQQ": "Partager sur QQ",
+        "shareReddit": "Partager sur Reddit",
+        "shareText": "Partager",
+        "shareTwitter": "Partager sur Twitter",
+        "shareWechat": "Partager sur WeChat",
+        "shareWechatCopied": "Lien copié ! Collez dans WeChat pour partager.",
+        "shareWeibo": "Partager sur Weibo",
+        "siteTitle": "Mon Blog",
+        "skipToContent": "Aller au contenu",
+        "sort": "Trier:",
+        "tableOfContents": "Table des matières",
+        "tags": "Étiquettes",
+        "tagsLabel": "étiquettes",
+        "toggleMenu": "Menu",
+        "toggleToc": "Afficher/Masquer la table des matières",
+        "totalArticles": "",
+        "totalTerms": "Total",
+        "trending": "Tendance",
+        "uncategorized": "Non classé",
+        "websiteAge": "Site créé",
+        "welcome": "Bienvenue sur mon blog",
+        "wordCount": "mots",
+        "wordCountLabel": "Nombre de mots:",
+        "year": "a",
+    },
+    "de": {
+        "about": "Über mich",
+        "allRightsReserved": ". Alle Rechte vorbehalten.",
+        "archives": "Archive",
+        "articleBack": "Zurück zur Liste",
+        "articleCount": "Artikel",
+        "articleList": "Artikel",
+        "articleMenu": "Artikelmenü",
+        "articles": "Artikel",
+        "calculating": "Berechnung...",
+        "categoriesLabel": "Kategorien",
+        "category": "Kategorie",
+        "chinese": "CN",
+        "code": "Code",
+        "collapse": "Reduzieren",
+        "commentTitle": "Kommentare",
+        "comments": "Kommentare",
+        "copyright": "©",
+        "count": "Anzahl",
+        "customText": "Benutzerdefiniert",
+        "darkMode": "Dunkelmodus",
+        "day": "T",
+        "english": "EN",
+        "error404BrowseArticles": "Artikel durchsuchen",
+        "error404Description": "Die gesuchte Seite wurde möglicherweise gelöscht, verschoben oder ist vorübergehend nicht verfügbar.",
+        "error404GoHome": "Zurück zur Startseite",
+        "error404Subtitle": "Hoppla, Seite nicht gefunden",
+        "error404Title": "404 - Seite nicht gefunden",
+        "error404TrySearch": "Oder versuchen Sie zu suchen:",
+        "expand": "Erweitern",
+        "frequency": "Häufigkeit",
+        "gitalkUnavailable": "Gitalk-Kommentarsystem ist in der lokalen Vorschau nicht verfügbar",
+        "home": "Startseite",
+        "hour": "Std",
+        "hourShort": "h",
+        "lessThanOneMinute": "Weniger als 1 Minute",
+        "lightMode": "Hellmodus",
+        "links": "Links",
+        "loadArticlesFailed": "Artikel konnten nicht geladen werden",
+        "minute": "Min",
+        "minuteShort": "m",
+        "month": "Mo",
+        "more": "Mehr",
+        "next": "Nächste",
+        "nextArticle": "Nächste",
+        "noArticles": "Keine Artikel",
+        "noArticlesInTag": "Keine Artikel in diesem Tag",
+        "noDescription": "Keine Beschreibung",
+        "noLinks": "Noch keine Links",
+        "noTitle": "Kein Titel",
+        "none": "Keine",
+        "page": "Seite",
+        "prev": "Vorherige",
+        "prevArticle": "Vorherige",
+        "readingTime": "Minuten Lesezeit",
+        "readingTimeLabel": "Geschätzte Lesezeit:",
+        "recent": "Kürzlich",
+        "recentPosts": "Neueste Artikel",
+        "relatedArticles": "Ähnliche Artikel",
+        "rss": "RSS",
+        "search": "Suche",
+        "searchArticle": "Artikel durchsuchen...",
+        "searchNoResult": "Keine Ergebnisse gefunden",
+        "searchResults": "Ergebnisse",
+        "searchTags": "Tags durchsuchen...",
+        "secondShort": "s",
+        "shareCopyFailed": "Kopieren fehlgeschlagen, bitte kopieren Sie den Link manuell: ",
+        "shareEmail": "Per E-Mail teilen",
+        "shareFacebook": "Auf Facebook teilen",
+        "shareLinkedin": "Auf LinkedIn teilen",
+        "shareQQ": "Auf QQ teilen",
+        "shareReddit": "Auf Reddit teilen",
+        "shareText": "Teilen",
+        "shareTwitter": "Auf Twitter teilen",
+        "shareWechat": "Auf WeChat teilen",
+        "shareWechatCopied": "Link kopiert! In WeChat einfügen zum Teilen.",
+        "shareWeibo": "Auf Weibo teilen",
+        "siteTitle": "Mein Blog",
+        "skipToContent": "Zum Inhalt springen",
+        "sort": "Sortieren:",
+        "tableOfContents": "Inhaltsverzeichnis",
+        "tags": "Tags",
+        "tagsLabel": "Tags",
+        "toggleMenu": "Menü",
+        "toggleToc": "Inhaltsverzeichnis anzeigen/verbergen",
+        "totalArticles": "",
+        "totalTerms": "Gesamt",
+        "trending": "Trend",
+        "uncategorized": "Nicht kategorisiert",
+        "websiteAge": "Website erstellt",
+        "welcome": "Willkommen auf meinem Blog",
+        "wordCount": "Wörter",
+        "wordCountLabel": "Wortanzahl:",
+        "year": "J",
+    },
+    "ru": {
+        "about": "Обо мне",
+        "allRightsReserved": ". Все права защищены.",
+        "archives": "Архивы",
+        "articleBack": "Назад к списку",
+        "articleCount": "Статьи",
+        "articleList": "Статьи",
+        "articleMenu": "Меню статьи",
+        "articles": "статей",
+        "calculating": "Вычисление...",
+        "categoriesLabel": "категорий",
+        "category": "Категория",
+        "chinese": "КИТ",
+        "code": "код",
+        "collapse": "Свернуть",
+        "commentTitle": "Комментарии",
+        "comments": "Комментарии",
+        "copyright": "©",
+        "count": "Количество",
+        "customText": "Настраиваемый",
+        "darkMode": "Темный режим",
+        "day": "д",
+        "english": "АНГЛ",
+        "error404BrowseArticles": "Все статьи",
+        "error404Description": "Возможно, страница была удалена, перемещена или временно недоступна.",
+        "error404GoHome": "На главную",
+        "error404Subtitle": "Ой, страница не найдена",
+        "error404Title": "404 - Страница не найдена",
+        "error404TrySearch": "Или попробуйте поиск:",
+        "expand": "Развернуть",
+        "frequency": "Частота",
+        "gitalkUnavailable": "Система комментариев Gitalk недоступна при локальном просмотре",
+        "home": "Главная",
+        "hour": "ч",
+        "hourShort": "ч",
+        "lessThanOneMinute": "Меньше 1 минуты",
+        "lightMode": "Светлый режим",
+        "links": "Ссылки",
+        "loadArticlesFailed": "Не удалось загрузить статьи",
+        "minute": "мин",
+        "minuteShort": "м",
+        "month": "мес",
+        "more": "Ещё",
+        "next": "Следующая",
+        "nextArticle": "Следующая",
+        "noArticles": "Нет статей",
+        "noArticlesInTag": "В этом теге нет статей",
+        "noDescription": "Нет описания",
+        "noLinks": "Ссылок пока нет",
+        "noTitle": "Без названия",
+        "none": "Нет",
+        "page": "Страница",
+        "prev": "Предыдущая",
+        "prevArticle": "Предыдущая",
+        "readingTime": "мин чтения",
+        "readingTimeLabel": "Оценочное время чтения:",
+        "recent": "Недавние",
+        "recentPosts": "Последние статьи",
+        "relatedArticles": "Похожие статьи",
+        "rss": "RSS",
+        "search": "Поиск",
+        "searchArticle": "Поиск статей...",
+        "searchNoResult": "Результаты не найдены",
+        "searchResults": "результатов",
+        "searchTags": "Поиск тегов...",
+        "secondShort": "с",
+        "shareCopyFailed": "Не удалось скопировать, пожалуйста, скопируйте ссылку вручную: ",
+        "shareEmail": "Отправить по email",
+        "shareFacebook": "Поделиться в Facebook",
+        "shareLinkedin": "Поделиться в LinkedIn",
+        "shareQQ": "Поделиться в QQ",
+        "shareReddit": "Поделиться в Reddit",
+        "shareText": "Поделиться",
+        "shareTwitter": "Поделиться в Twitter",
+        "shareWechat": "Поделиться в WeChat",
+        "shareWechatCopied": "Ссылка скопирована! Вставьте в WeChat для отправки.",
+        "shareWeibo": "Поделиться в Weibo",
+        "siteTitle": "Мой Блог",
+        "skipToContent": "Перейти к содержимому",
+        "sort": "Сортировка:",
+        "tableOfContents": "Оглавление",
+        "tags": "Теги",
+        "tagsLabel": "тегов",
+        "toggleMenu": "Меню",
+        "toggleToc": "Показать/скрыть оглавление",
+        "totalArticles": "",
+        "totalTerms": "Всего",
+        "trending": "Популярные",
+        "uncategorized": "Без категории",
+        "websiteAge": "Сайт создан",
+        "welcome": "Добро пожаловать на мой блог",
+        "wordCount": "слов",
+        "wordCountLabel": "Количество слов:",
+        "year": "г",
+    },
+    "id": {
+        "about": "Tentang",
+        "allRightsReserved": ". Hak cipta dilindungi.",
+        "archives": "Arsip",
+        "articleBack": "Kembali ke daftar",
+        "articleCount": "Artikel",
+        "articleList": "Artikel",
+        "articleMenu": "Menu Artikel",
+        "articles": "artikel",
+        "calculating": "Menghitung...",
+        "categoriesLabel": "kategori",
+        "category": "Kategori",
+        "chinese": "CN",
+        "code": "kode",
+        "collapse": "Ciutkan",
+        "commentTitle": "Komentar",
+        "comments": "Komentar",
+        "copyright": "©",
+        "count": "Jumlah",
+        "customText": "Kustom",
+        "darkMode": "Mode Gelap",
+        "day": "hr",
+        "english": "EN",
+        "error404BrowseArticles": "Jelajahi Artikel",
+        "error404Description": "Halaman yang Anda cari mungkin telah dihapus, dipindahkan, atau sementara tidak tersedia.",
+        "error404GoHome": "Kembali ke Beranda",
+        "error404Subtitle": "Ups, halaman tidak ditemukan",
+        "error404Title": "404 - Halaman Tidak Ditemukan",
+        "error404TrySearch": "Atau coba cari:",
+        "expand": "Perluas",
+        "frequency": "Frekuensi",
+        "gitalkUnavailable": "Sistem komentar Gitalk tidak tersedia dalam pratinjau lokal",
+        "home": "Beranda",
+        "hour": "jam",
+        "hourShort": "j",
+        "languageName": "Bahasa Indonesia",
+        "lessThanOneMinute": "Kurang dari 1 menit",
+        "lightMode": "Mode Terang",
+        "links": "Tautan",
+        "loadArticlesFailed": "Gagal memuat artikel",
+        "minute": "mnt",
+        "minuteShort": "m",
+        "month": "bln",
+        "more": "Lainnya",
+        "next": "Berikutnya",
+        "nextArticle": "Berikutnya",
+        "noArticles": "Belum ada artikel",
+        "noArticlesInTag": "Tidak ada artikel di tag ini",
+        "noDescription": "Tidak ada deskripsi",
+        "noLinks": "Belum ada tautan",
+        "noTitle": "Tanpa judul",
+        "none": "Tidak ada",
+        "page": "Halaman",
+        "prev": "Sebelumnya",
+        "prevArticle": "Sebelumnya",
+        "readingTime": "menit baca",
+        "readingTimeLabel": "Estimasi waktu baca:",
+        "recent": "Terbaru",
+        "recentPosts": "Artikel Terbaru",
+        "relatedArticles": "Artikel Terkait",
+        "rss": "RSS",
+        "search": "Cari",
+        "searchArticle": "Cari artikel...",
+        "searchNoResult": "Tidak ada hasil ditemukan",
+        "searchResults": "hasil",
+        "searchTags": "Cari tag...",
+        "secondShort": "d",
+        "shareCopyFailed": "Gagal menyalin, silakan salin tautan secara manual: ",
+        "shareEmail": "Bagikan via Email",
+        "shareFacebook": "Bagikan di Facebook",
+        "shareLinkedin": "Bagikan di LinkedIn",
+        "shareQQ": "Bagikan di QQ",
+        "shareReddit": "Bagikan di Reddit",
+        "shareText": "Bagikan",
+        "shareTwitter": "Bagikan di Twitter",
+        "shareWechat": "Bagikan di WeChat",
+        "shareWechatCopied": "Tautan disalin! Tempel di WeChat untuk berbagi.",
+        "shareWeibo": "Bagikan di Weibo",
+        "siteTitle": "Blog Saya",
+        "skipToContent": "Langsung ke konten",
+        "sort": "Urutkan:",
+        "tableOfContents": "Daftar Isi",
+        "tags": "Tag",
+        "tagsLabel": "tag",
+        "toggleMenu": "Menu",
+        "toggleToc": "Tampilkan/Sembunyikan Daftar Isi",
+        "totalArticles": "",
+        "totalTerms": "Total",
+        "trending": "Tren",
+        "uncategorized": "Tanpa kategori",
+        "websiteAge": "Situs dibuat",
+        "welcome": "Selamat datang di blog saya",
+        "wordCount": "kata",
+        "wordCountLabel": "Jumlah kata:",
+        "year": "thn",
+    },
+};
+
+window.i18nCurrentLang = localStorage.getItem('preferred-language') || 'zh-cn';
+
+Cards.i18nApply = function(lang) {
+    const translations = window.i18nTranslations[lang];
+    if (!translations) return;
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n');
+        if (translations[key] !== undefined) {
+            el.textContent = translations[key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-placeholder');
+        if (translations[key] !== undefined) {
+            el.placeholder = translations[key];
+        }
+    });
+
+    document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+        const key = el.getAttribute('data-i18n-title');
+        if (translations[key] !== undefined) {
+            el.title = translations[key];
+        }
+    });
+
+    localStorage.setItem('preferred-language', lang);
+    window.i18nCurrentLang = lang;
+};
+
+Cards.register('i18n', {
+  init: function() {
+    Cards.i18nApply(window.i18nCurrentLang);
+
+    const selector = document.getElementById('language-switcher');
+    if (selector) {
+      selector.value = window.i18nCurrentLang;
+      const changeHandler = function(e) {
+        Cards.i18nApply(e.target.value);
+      };
+      selector.addEventListener('change', changeHandler);
+      return { selector: selector, changeHandler: changeHandler };
+    }
+    return {};
+  },
+  destroy: function(instance) {
+    if (instance.selector && instance.changeHandler) {
+      instance.selector.removeEventListener('change', instance.changeHandler);
+    }
+  }
+});
+</script>
+
           <div
   class="button-style theme-toggle-btn"
-  onclick="toggleTheme()"
+  data-action="theme:toggle"
   aria-label="切换主题"
   role="button"
   tabindex="0"
-  onkeydown="if(event.key === 'Enter' || event.key === ' ') toggleTheme()"
-  title="点击切换主题"
 >
-  <img src="/images/svg/theme-toggle.svg" alt="" id="theme-toggle-icon">
+  <img src="/images/svg/theme-toggle.svg" alt="" id="theme-toggle-icon" aria-hidden="true">
 </div>
 
 <script>
-(function() {
+Cards.register('theme', {
+  init: function() {
+    const STORAGE_KEY = 'CardsColorScheme';
+
+    const getSavedScheme = function() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === 'light' || saved === 'dark' || saved === 'auto') return saved;
+      return 'auto';
+    };
+
+    const getSystemScheme = function() {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+      return 'light';
+    };
+
+    const isDark = function(scheme, systemScheme) {
+      return scheme === 'dark' || (scheme === 'auto' && systemScheme === 'dark');
+    };
+
+    const applyScheme = function(scheme, systemScheme) {
+      const actualScheme = isDark(scheme, systemScheme) ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-scheme', actualScheme);
+      if (actualScheme === 'dark') {
+        document.body.classList.add('dark-theme');
+      } else {
+        document.body.classList.remove('dark-theme');
+      }
+      window.dispatchEvent(new CustomEvent('onColorSchemeChange', {
+        detail: actualScheme
+      }));
+    };
+
+    const systemListener = function(e) {
+      const scheme = getSavedScheme();
+      if (scheme === 'auto') {
+        const systemScheme = e.matches ? 'dark' : 'light';
+        applyScheme('auto', systemScheme);
+      }
+    };
+
+    const scheme = getSavedScheme();
+    const systemScheme = getSystemScheme();
+    applyScheme(scheme, systemScheme);
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', systemListener);
+
+    return { systemListener: systemListener, STORAGE_KEY: STORAGE_KEY, getSavedScheme: getSavedScheme, getSystemScheme: getSystemScheme, applyScheme: applyScheme };
+  },
+  destroy: function(instance) {
+    window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', instance.systemListener);
+  }
+});
+
+Cards.actions['theme:toggle'] = function() {
   const STORAGE_KEY = 'CardsColorScheme';
 
   const getSavedScheme = function() {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'light' || saved === 'dark' || saved === 'auto') {
-      return saved;
-    }
+    if (saved === 'light' || saved === 'dark' || saved === 'auto') return saved;
     return 'auto';
   };
 
   const getSystemScheme = function() {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
     return 'light';
   };
 
@@ -967,78 +1871,44 @@ document.addEventListener('DOMContentLoaded', function() {
   const applyScheme = function(scheme, systemScheme) {
     const actualScheme = isDark(scheme, systemScheme) ? 'dark' : 'light';
     document.documentElement.setAttribute('data-scheme', actualScheme);
-
-    
     if (actualScheme === 'dark') {
       document.body.classList.add('dark-theme');
     } else {
       document.body.classList.remove('dark-theme');
     }
-
-    
     window.dispatchEvent(new CustomEvent('onColorSchemeChange', {
       detail: actualScheme
     }));
   };
 
-  
-  const initScheme = function() {
-    const scheme = getSavedScheme();
-    const systemScheme = getSystemScheme();
-    applyScheme(scheme, systemScheme);
-  };
+  const currentScheme = getSavedScheme();
+  const systemScheme = getSystemScheme();
+  const currentActual = isDark(currentScheme, systemScheme) ? 'dark' : 'light';
+  let newScheme;
 
-  
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initScheme);
+  if (currentActual === 'dark') {
+    newScheme = 'light';
   } else {
-    initScheme();
+    newScheme = 'dark';
   }
 
-  
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    const scheme = getSavedScheme();
-    if (scheme === 'auto') {
-      const systemScheme = e.matches ? 'dark' : 'light';
-      applyScheme('auto', systemScheme);
-    }
-  });
+  if (newScheme === systemScheme) {
+    newScheme = 'auto';
+  }
 
-  
-  window.toggleTheme = function() {
-    const currentScheme = getSavedScheme();
-    const systemScheme = getSystemScheme();
-    let newScheme;
-
-    
-    
-    const currentActual = isDark(currentScheme, systemScheme) ? 'dark' : 'light';
-
-    if (currentActual === 'dark') {
-      newScheme = 'light';
-    } else {
-      newScheme = 'dark';
-    }
-
-    
-    if (newScheme === systemScheme) {
-      newScheme = 'auto';
-    }
-
-    localStorage.setItem(STORAGE_KEY, newScheme);
-    applyScheme(newScheme, systemScheme);
-  };
-})();
+  localStorage.setItem(STORAGE_KEY, newScheme);
+  applyScheme(newScheme, systemScheme);
+};
 </script>
 
-          <div class="button-style" onclick="toggleImmersiveReading()">
-  <img src="/images/svg/book.svg" alt="沉浸式阅读">
+          <div class="button-style" data-action="reading:toggle" role="button" tabindex="0" aria-label="沉浸式阅读">
+  <img src="/images/svg/book.svg" alt="" aria-hidden="true">
 </div>
 
 <script>
-const toggleImmersiveReading = () => {
+Cards.actions['reading:toggle'] = function() {
   document.body.classList.toggle('immersive-reading');
-}
+};
 </script>
 
 <style>
@@ -1223,6 +2093,7 @@ body.immersive-reading .center-card {
 <style>
 .header-card {
   background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
   box-shadow: 0 2px 4px var(--common-shadow);
 }
 
@@ -1358,15 +2229,15 @@ body.dark-theme .button-style img {
 }
 </style>
 
-  <main class="mid-flex">
+  <main class="mid-flex" id="main-content">
     <aside class="left-asider-S">
   <div class="left-asider-container">
     <div class="left-asider-card">
       
         
 <div class="avator-card">
-  <a href="https://example.com/">
-    <img src="/images/avator.jpg" alt="头像">
+  <a href="http://localhost:1313/">
+    <img src="/images/avatar.jpg" alt="头像">
   </a>
 </div>
 
@@ -1401,7 +2272,7 @@ body.dark-theme .button-style img {
       
       
         <div class="welcome-saying-card">
-  <a href="https://example.com/" class="welcome-link">
+  <a href="http://localhost:1313/" class="welcome-link">
     <p data-i18n="welcome">欢迎来到我的个人博客</p>
   </a>
 </div>
@@ -1451,17 +2322,15 @@ body.dark-theme .button-style img {
 <div class="page-list-card">
   <ul>
     
-    <li><a href="/" class="page-card" >首页</a></li>
+    <li><a href="/list/" class="page-card" ><span data-i18n="home">home</span></a></li>
     
-    <li><a href="/about/" class="page-card" >关于</a></li>
+    <li><a href="/about/" class="page-card" ><span data-i18n="about">about</span></a></li>
     
-    <li><a href="/archives/" class="page-card" >归档</a></li>
+    <li><a href="/categories/" class="page-card" ><span data-i18n="archives">archives</span></a></li>
     
-    <li><a href="/tags/" class="page-card" >标签</a></li>
+    <li><a href="/tags/" class="page-card" ><span data-i18n="tags">tags</span></a></li>
     
-    <li><a href="/links/" class="page-card" >友链</a></li>
-    
-    <li><a href="/index.xml" class="page-card" >RSS</a></li>
+    <li><a href="/links/" class="page-card" ><span data-i18n="links">links</span></a></li>
     
   </ul>
 </div>
@@ -1511,13 +2380,13 @@ body.dark-theme .button-style img {
   background-color: var(--common-color-1);
   border: 2px solid var(--common-color-2);
   box-shadow: var(--common-shadow);
-  color: white;
+  color: var(--common-content);
 }
 
 .page-card:hover {
   box-shadow: var(--common-shadow);
   background-color: var(--common-hover);
-  color: white;
+  color: var(--common-content);
 }
 </style>
 
@@ -1633,7 +2502,8 @@ body.dark-theme .button-style img {
   <h2 data-i18n="archives">归档</h2>
   
 <button class="article-count-btn">
-  <span><span data-i18n="totalArticles">共</span> <span id="article-count">4</span> <span data-i18n="articles">篇文章</span></span>
+
+  <span><span data-i18n="totalArticles">共</span> <span id="article-count">8</span> <span data-i18n="articles">篇文章</span></span>
 </button>
 
 
@@ -1655,7 +2525,7 @@ body.dark-theme .button-style img {
 .article-count-btn {
   background-color: var(--common-color-1);
   border: 2px solid var(--common-color-1);
-  color: white;
+  color: var(--common-content);
 }
 </style>
 </div>
@@ -1668,10 +2538,210 @@ body.dark-theme .button-style img {
   
 
   
+    
+    
+      
+    
+
+    
+    
+      
+    
+    
+    
+  
+    
+    
+      
+    
+
+    
+    
+      
+    
+    
+    
+  
+    
+    
+      
+    
+
+    
+    
+      
+    
+    
+    
+  
+    
+    
+      
+    
+
+    
+    
+    
+    
+  
+    
+    
+      
+    
+
+    
+    
+    
+    
+  
+    
+    
+      
+    
+
+    
+    
+    
+    
+  
+    
+    
+      
+    
+
+    
+    
+      
+    
+    
+    
+  
+    
+    
+      
+    
+
+    
+    
+    
+    
+  
 
   
-    <div class="empty-message">
-      <p data-i18n="noArticles">暂无文章</p>
+    <a href="#" onclick="toggleCategory(event, '%E6%8C%87%E5%8D%97')">
+      <div class="index-center-list-card archive-category-card">
+        <div class="index-center-list-card-header">
+          指南
+        </div>
+        <hr>
+        <div class="index-center-list-card-content">
+          <div class="article-meta-info">
+            <span><span data-i18n="articleCount">文章数量</span>: 2</span>
+          <span class="toggle-text" id="toggle-%E6%8C%87%E5%8D%97" data-i18n="expand">展开</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <div class="category-posts" id="category-%E6%8C%87%E5%8D%97" style="display: none;">
+      
+        <a href="/posts/markdown-guide/" class="post-item">
+          <span class="post-title">Markdown 语法展示</span>
+          <span class="post-date">2024-01-20</span>
+        </a>
+      
+        <a href="/posts/getting-started/" class="post-item">
+          <span class="post-title">开始使用 Cards 主题</span>
+          <span class="post-date">2024-01-15</span>
+        </a>
+      
+    </div>
+  
+    <a href="#" onclick="toggleCategory(event, '%E6%95%99%E7%A8%8B')">
+      <div class="index-center-list-card archive-category-card">
+        <div class="index-center-list-card-header">
+          教程
+        </div>
+        <hr>
+        <div class="index-center-list-card-content">
+          <div class="article-meta-info">
+            <span><span data-i18n="articleCount">文章数量</span>: 1</span>
+          <span class="toggle-text" id="toggle-%E6%95%99%E7%A8%8B" data-i18n="expand">展开</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <div class="category-posts" id="category-%E6%95%99%E7%A8%8B" style="display: none;">
+      
+        <a href="/posts/theme-features/" class="post-item">
+          <span class="post-title">主题功能介绍</span>
+          <span class="post-date">2026-05-06</span>
+        </a>
+      
+    </div>
+  
+    <a href="#" onclick="toggleCategory(event, '%E6%96%87%E6%A1%A3')">
+      <div class="index-center-list-card archive-category-card">
+        <div class="index-center-list-card-header">
+          文档
+        </div>
+        <hr>
+        <div class="index-center-list-card-content">
+          <div class="article-meta-info">
+            <span><span data-i18n="articleCount">文章数量</span>: 1</span>
+          <span class="toggle-text" id="toggle-%E6%96%87%E6%A1%A3" data-i18n="expand">展开</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <div class="category-posts" id="category-%E6%96%87%E6%A1%A3" style="display: none;">
+      
+        <a href="/posts/markdown-syntax/" class="post-item">
+          <span class="post-title">Markdown 语法展示</span>
+          <span class="post-date">2026-05-06</span>
+        </a>
+      
+    </div>
+  
+    <a href="#" onclick="toggleCategory(event, '%E6%BC%94%E7%A4%BA')">
+      <div class="index-center-list-card archive-category-card">
+        <div class="index-center-list-card-header">
+          演示
+        </div>
+        <hr>
+        <div class="index-center-list-card-content">
+          <div class="article-meta-info">
+            <span><span data-i18n="articleCount">文章数量</span>: 4</span>
+          <span class="toggle-text" id="toggle-%E6%BC%94%E7%A4%BA" data-i18n="expand">展开</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <div class="category-posts" id="category-%E6%BC%94%E7%A4%BA" style="display: none;">
+      
+        <a href="/posts/katex-demo/" class="post-item">
+          <span class="post-title">数学公式渲染</span>
+          <span class="post-date">2026-05-05</span>
+        </a>
+      
+        <a href="/posts/mermaid-charts/" class="post-item">
+          <span class="post-title">Mermaid 图表展示</span>
+          <span class="post-date">2026-05-05</span>
+        </a>
+      
+        <a href="/posts/image-gallery/" class="post-item">
+          <span class="post-title">图片懒加载展示</span>
+          <span class="post-date">2026-05-05</span>
+        </a>
+      
+        <a href="/posts/multilingual-demo/" class="post-item">
+          <span class="post-title">多语言文本渲染</span>
+          <span class="post-date">2026-05-04</span>
+        </a>
+      
     </div>
   
 </div>
@@ -1948,52 +3018,63 @@ const toggleCategory = (event, categoryId) => {
 </div>
 
 <script>
-(function() {
-  
-  const siteCreated = '2026-01-01T00:00:00';
-  const startTime = new Date(siteCreated).getTime();
+Cards.register('website-age', {
+  init: function() {
+    const siteCreated = '2024-01-01T00:00:00';
+    const startTime = new Date(siteCreated).getTime();
 
-  const padZero = (num) => {
-    return num.toString().padStart(2, '0');
-  };
+    const updateAge = function() {
+      const now = Date.now();
+      const diff = now - startTime;
 
-  const updateAge = () => {
-    const now = Date.now();
-    const diff = now - startTime;
+      if (diff < 0) {
+        const el = document.getElementById('website-age');
+        if (el) el.textContent = '即将上线';
+        return;
+      }
 
-    if (diff < 0) {
-      document.getElementById('website-age').textContent = '即将上线';
-      return;
-    }
+      const seconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      const months = Math.floor(days / 30);
+      const years = Math.floor(months / 12);
 
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30);
-    const years = Math.floor(months / 12);
+      const displayMonths = months % 12;
+      const displayDays = days % 30;
+      const displayHours = hours % 24;
+      const displayMinutes = minutes % 60;
+      const displaySeconds = seconds % 60;
 
-    const displayMonths = months % 12;
-    const displayDays = days % 30;
-    const displayHours = hours % 24;
-    const displayMinutes = minutes % 60;
-    const displaySeconds = seconds % 60;
+      const padZero = function(num) {
+        return num.toString().padStart(2, '0');
+      };
 
-    const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
-    const yearLabel = t ? t['year'] : '年';
-    const monthLabel = t ? t['month'] : '月';
-    const dayLabel = t ? t['day'] : '天';
-    const hourLabel = t ? t['hourShort'] : '时';
-    const minuteLabel = t ? t['minuteShort'] : '分';
-    const secondLabel = t ? t['secondShort'] : '秒';
-    document.getElementById('website-age').textContent =
-      `${years}${yearLabel}${displayMonths}${monthLabel}${displayDays}${dayLabel} ${padZero(displayHours)}${hourLabel}${padZero(displayMinutes)}${minuteLabel}${padZero(displaySeconds)}${secondLabel}`;
-  };
+      const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+      const yearLabel = t ? t['year'] : '年';
+      const monthLabel = t ? t['month'] : '月';
+      const dayLabel = t ? t['day'] : '天';
+      const hourLabel = t ? t['hourShort'] : '时';
+      const minuteLabel = t ? t['minuteShort'] : '分';
+      const secondLabel = t ? t['secondShort'] : '秒';
 
-  
-  updateAge();
-  setInterval(updateAge, 1000);
-})();
+      const el = document.getElementById('website-age');
+      if (el) {
+        el.textContent =
+          years + yearLabel + displayMonths + monthLabel + displayDays + dayLabel + ' ' +
+          padZero(displayHours) + hourLabel + padZero(displayMinutes) + minuteLabel + padZero(displaySeconds) + secondLabel;
+      }
+    };
+
+    updateAge();
+    const timerId = setInterval(updateAge, 1000);
+
+    return { timerId: timerId };
+  },
+  destroy: function(instance) {
+    if (instance.timerId) clearInterval(instance.timerId);
+  }
+});
 </script>
 
 <style>
@@ -2021,8 +3102,8 @@ const toggleCategory = (event, categoryId) => {
         
         
 <div class="footer-element-card copyright">
-  <span data-i18n="copyright">©</span> 2026 My Blog <span data-i18n="allRightsReserved">. All rights reserved.</span>
-   · <span data-i18n="customText">🔧 测试自定义文本</span>
+  <span data-i18n="copyright">©</span> 2026 Cards Demo <span data-i18n="allRightsReserved">. All rights reserved.</span>
+   · <span data-i18n="customText">Proudly published with Hugo &amp; Cards Theme</span>
 </div>
 
 
@@ -2099,6 +3180,7 @@ const toggleCategory = (event, categoryId) => {
 <style>
 .footer-card {
   background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
 }
 
 .footer-element-card {

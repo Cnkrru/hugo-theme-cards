@@ -1,853 +1,1365 @@
 <!DOCTYPE html>
 <html lang="zh-cn" dir="ltr">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
   <meta charset="utf-8">
-<meta name="viewport" content="width=device-width">
-<meta name="generator" content="Hugo 0.155.1">
-<title>My Blog</title>
-
-<link rel="alternate" type="application/rss+xml" title="My Blog RSS Feed" href="https://example.com/index.xml">
-<script>
-window.searchIndexData = [];
-</script>
-
-<link rel="sitemap" type="application/xml" title="Sitemap" href="https://example.com/sitemap.xml">
-
-
-<script>
-(function() {
-  const STORAGE_KEY = 'CardsColorScheme';
-  const getSavedScheme = function() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'light' || saved === 'dark' || saved === 'auto') return saved;
-    return 'auto';
-  };
-  const getSystemScheme = function() {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
-    return 'light';
-  };
-  const isDark = function(scheme, systemScheme) {
-    return scheme === 'dark' || (scheme === 'auto' && systemScheme === 'dark');
-  };
-  const scheme = getSavedScheme();
-  const systemScheme = getSystemScheme();
-  const actualScheme = isDark(scheme, systemScheme) ? 'dark' : 'light';
-  document.documentElement.setAttribute('data-scheme', actualScheme);
-})();
-</script>
-
-
-<style>
-:root,
-[data-scheme="light"] {
-  --common-color-1: rgba(255, 192, 203, 1);
-  --common-color-2: white;
-  --common-bg: white;
-  --common-text: #333;
-  --common-content: white;
-  --common-hover: rgba(255, 192, 203, 1);
-  --common-shadow: rgba(0, 0, 0, 0.1);
-  --common-cursor: rgba(255, 192, 203, 1);
-  --common-gradient: linear-gradient(90deg, #45b7d1, #4ecd8d, #feb47b, #4ecd8d, #45b7d1);
-}
-
-body.dark-theme,
-[data-scheme="dark"] {
-  --common-color-1: #3aaae7;
-  --common-color-2: #1a237e;
-  --common-bg: #15073c;
-  --common-text: white;
-  --common-content: #333;
-  --common-hover: #3aaae7;
-  --common-shadow: rgba(0, 0, 0, 0.3);
-  --common-cursor: #3aaae7;
-  --common-gradient: linear-gradient(90deg, #cc45d1, #654ecd, #7b97fe, #654ecd, #cc45d1);
-}
-</style>
-
-<link rel="stylesheet" href="/css/style.css">
-
-  
-  
-<meta property="og:title" content="My Blog">
-<meta property="og:description" content="My New Hugo Site">
-<meta property="og:url" content="https://example.com/">
-<meta property="og:site_name" content="My Blog">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="zh-cn"><meta name="twitter:title" content="My Blog">
-<meta name="twitter:description" content="My New Hugo Site">
-<meta name="twitter:card" content="summary">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "My Blog",
-  "url": "https:\/\/example.com\/",
-  "description": "My New Hugo Site",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": "https:\/\/example.com\/?keyword={search_term_string}",
-    "query-input": "required name=search_term_string"
+  <meta name="viewport" content="width=device-width">
+  <meta name="generator" content="Hugo 0.155.1">
+  <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+  <title>Cards Demo</title><link rel="alternate" type="application/rss+xml" title="Cards Demo RSS Feed" href="http://localhost:1313/index.xml"><style>
+  :root,
+  [data-scheme="light"] {
+    --common-color-1: rgba(255, 192, 203, 1);
+    --common-color-2: white;
+    --common-bg: white;
+    --common-text: #333;
+    --common-content: white;
+    --common-hover: rgba(255, 192, 203, 1);
+    --common-shadow: rgba(0, 0, 0, 0.1);
+    --common-cursor: rgba(255, 192, 203, 1);
+    --common-gradient: linear-gradient(90deg, #45b7d1, #4ecd8d, #feb47b, #4ecd8d, #45b7d1);
+    --common-code-bg: #1e1e1e;
+    --common-code-text: #d4d4d4;
   }
-}
-</script>
+
+  body.dark-theme,
+  [data-scheme="dark"] {
+    --common-color-1: #3aaae7;
+    --common-color-2: #1a237e;
+    --common-bg: #15073c;
+    --common-text: white;
+    --common-content: #333;
+    --common-hover: #3aaae7;
+    --common-shadow: rgba(0, 0, 0, 0.3);
+    --common-cursor: #3aaae7;
+    --common-gradient: linear-gradient(90deg, #cc45d1, #654ecd, #7b97fe, #654ecd, #cc45d1);
+    --common-code-bg: #1e1e1e;
+    --common-code-text: #d4d4d4;
+  }
+  </style>
+
+  <script>
+  (function() {
+    const STORAGE_KEY = 'CardsColorScheme';
+    const getSavedScheme = function() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === 'light' || saved === 'dark' || saved === 'auto') return saved;
+      return 'auto';
+    };
+    const getSystemScheme = function() {
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+      return 'light';
+    };
+    const isDark = function(scheme, systemScheme) {
+      return scheme === 'dark' || (scheme === 'auto' && systemScheme === 'dark');
+    };
+    const scheme = getSavedScheme();
+    const systemScheme = getSystemScheme();
+    const actualScheme = isDark(scheme, systemScheme) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-scheme', actualScheme);
+  })();
+  </script><link rel="stylesheet" href="/css/style.min.f7d6d2149a33cb69b9f0d7b1e49f6a9b607789e0974b5e0e7f61955002015cbe.css" integrity="sha256-99bSFJozy2m58Nex5J9qm2B3ieCXS14Of2GVUAIBXL4="><script src="/js/app.min.f52eca53a6fa05751271ab530a04b24287aab1c8fd52472ea398e38c9840b11d.js" integrity="sha256-9S7KU6b6BXUScatTCgSyQoeqscj9Ukcuo5jjjJhAsR0="></script><script src="/js/pjax.min.b0c7ba5490bacd8ae972868b008c2f1bb2c1b26e0bb774cfc5619e023871859f.js" integrity="sha256-sMe6VJC6zYrpcoaLAIwvG7LBsm4Lt3TPxWGeAjhxhZ8=" defer></script>
 </head>
 <body>
-  
+  <div class="index-hero-container">
+    <div class="index-gradient-bg"></div>
 
-<header class="header-flex">
-  <div class="header-S">
-    <nav class="header-container">
-      <div class="header-card">
-        
-          <div class="logo-card">
-  <a href="https://example.com/"><h1 data-i18n="siteTitle">🎨 测试博客</h1></a>
-</div>
+    <nav class="index-navbar">
+      <a href="/" class="index-nav-logo">
+  <span class="index-logo-text">Cards Blog</span>
+  <span class="index-logo-dot">.</span>
+</a>
 
 <style>
-.logo-card {
-  width: auto;
-  height: 100%;
-  padding: 0 0 0 10px;
+.index-nav-logo {
   display: flex;
-  justify-content: center;
   align-items: center;
+  gap: 0.25rem;
 }
 
-.logo-card h1 {
-  font-size: 24px;
-  font-family: "Arial", sans-serif;
-  white-space: nowrap;
-}
-</style>
-
-<style>
-.logo-card h1 {
-  color: var(--common-color-1);
-}
-</style>
-
-<style>
-@media (max-width: 768px) {
-  .logo-card {
-    margin-left: 0;
-    margin-right: 0;
-  }
-
-  .logo-card h1 {
-    font-size: 20px;
-  }
-}
-</style>
-        
-        
-          
-<div class="search-wrapper">
-  <div class="search-card search-container">
-    <input type="text" data-i18n-placeholder="search" placeholder="搜索" id="header-search-input">
-  </div>
-
-  
-  <div id="search-results-panel" class="search-results" style="display: none;">
-    <div id="search-empty" class="search-empty" style="display: none;">
-      <span data-i18n="search">搜索</span>: "<span id="search-query"></span>" - <span data-i18n="searchNoResult">未找到结果</span>
-    </div>
-
-    <div id="search-content" style="display: none;">
-      <div class="search-counter">
-        <span id="search-count">0</span> <span data-i18n="searchResults">个结果</span>
-      </div>
-      <div id="search-results-list"></div>
-    </div>
-  </div>
-</div><style>
-.search-wrapper {
-  position: relative;
-  flex: 1;
-  max-width: 400px;
-  min-width: 120px;
+.index-logo-text {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
-.search-card {
-  position: relative;
-  width: 100%;
-  height: 40px;
-  margin: 0;
-  padding: 0 16px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.search-card input {
-  width: 100%;
-  font-size: 14px;
-  outline: none;
-  box-sizing: border-box;
-  transition: color 0.3s ease;
-}
-
-.search-results {
-  position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  right: 0;
-  max-height: 400px;
-  width: 100%;
-  border-radius: 8px;
-  overflow-y: auto;
-  z-index: 9999;
-  background-color: var(--common-bg);
-  border: 2px solid var(--common-color-1);
-}
-
-.search-empty {
-  padding: 16px;
-  text-align: center;
-  color: var(--common-text);
-}
-
-.search-counter {
-  padding: 8px 16px;
-  font-size: 12px;
-  color: var(--common-text);
-  border-bottom: 1px solid var(--common-color-1);
-}
-
-.search-result-item {
-  padding: 12px 16px;
-  transition: background-color 0.2s ease;
-  cursor: pointer;
-  background-color: var(--common-bg);
-  color: var(--common-text);
-}
-
-.search-result-item:hover {
-  background-color: var(--common-hover);
-}
-
-.result-title {
-  font-weight: bold;
-  margin-bottom: 4px;
-  color: var(--common-text);
-}
-
-.result-meta {
-  font-size: 13px;
-  margin-bottom: 4px;
-  color: var(--common-text);
-}
-
-.result-tags {
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-.result-tags .tag {
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11px;
-  margin-right: 4px;
-  display: inline-block;
-  background-color: var(--common-color-1);
-  color: var(--common-text);
-}
-
-@media (max-width: 768px) {
-  .search-results {
-    max-height: 60vh;
-  }
+.index-logo-dot {
+  font-size: 2rem;
+  font-weight: 800;
 }
 </style>
 
 <style>
-.search-card {
-  border: 2px solid var(--common-color-1);
-  background-color: var(--common-bg);
+.index-logo-text {
+  background: var(--common-color-2);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite, index-pulse 2s ease-in-out infinite;
+  text-shadow: 0 0 20px var(--common-color-1);
 }
 
-.search-card input {
-  color: var(--common-text);
-  background-color: transparent;
-}
-</style>
-
-<style>
-@media (max-width: 768px) {
-  .search-card {
-    width: 80%;
-    max-width: none;
-  }
+.index-logo-text:hover {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px var(--common-color-1);
+  animation: index-gradient-shift 3s ease infinite, index-nav-glow-hover 1s ease-in-out infinite;
 }
 
-@media (max-width: 1024px) {
-  .search-card {
-    max-width: 400px;
-  }
+@keyframes index-gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-@media (max-width: 1200px) {
-  .search-card {
-    max-width: 500px;
-  }
+@keyframes index-pulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 20px var(--common-color-1); }
+  50% { opacity: 0.9; text-shadow: 0 0 30px var(--common-color-1); }
 }
 
-@media (max-width: 1440px) {
-  .search-card {
-    max-width: 600px;
-  }
-}
-</style>
-
-<script src="https://cdn.jsdelivr.net/npm/fuse.js@7.0.0/dist/fuse.min.js"></script>
-<script>
-
-let searchData = null;
-let fuse = null;
-let searchInput = null;
-let searchResultsPanel = null;
-
-
-const escapeHtml = (text) => {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
-};
-
-
-const highlightMatch = (text, query) => {
-  if (!query || !text) return text;
-  const escapedQuery = escapeHtml(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  const regex = new RegExp('(' + escapedQuery + ')', 'gi');
-  return text.replace(regex, '<mark>$1</mark>');
-};
-
-
-const getSearchData = async () => {
-  if (!searchData) {
-    try {
-      
-      if (window.searchIndexData) {
-        searchData = window.searchIndexData;
-      } else {
-        
-        const response = await fetch('/index.json');
-        if (!response.ok) {
-          throw new Error('HTTP ' + response.status);
-        }
-        searchData = await response.json();
-      }
-
-      
-      const options = {
-        keys: [
-          { name: 'title', weight: 0.4 },
-          { name: 'content', weight: 0.3 },
-          { name: 'tags', weight: 0.2 },
-          { name: 'category', weight: 0.1 }
-        ],
-        includeScore: true,
-        includeMatches: true,
-        threshold: 0.4,
-        minMatchCharLength: 1
-      };
-      fuse = new Fuse(searchData, options);
-    } catch (err) {
-      console.error('Failed to load search data:', err);
-      searchData = [];
-    }
-  }
-  return { searchData, fuse };
-};
-
-
-const performSearch = async (query) => {
-  if (!query || query.trim() === '') {
-    hideSearchResults();
-    return;
-  }
-
-  query = query.trim();
-  const { fuse } = await getSearchData();
-
-  if (!fuse) {
-    console.error('Fuse.js not initialized');
-    return;
-  }
-
-  const results = fuse.search(query);
-  displayResults(results, query);
-};
-
-
-const displayResults = (results, query) => {
-  const panel = document.getElementById('search-results-panel');
-  const emptyDiv = document.getElementById('search-empty');
-  const contentDiv = document.getElementById('search-content');
-  const countSpan = document.getElementById('search-count');
-  const listDiv = document.getElementById('search-results-list');
-  const querySpan = document.getElementById('search-query');
-
-  if (!panel) return;
-
-  panel.style.display = 'block';
-
-  if (results.length === 0) {
-    emptyDiv.style.display = 'block';
-    contentDiv.style.display = 'none';
-    if (querySpan) querySpan.textContent = escapeHtml(query);
-  } else {
-    emptyDiv.style.display = 'none';
-    contentDiv.style.display = 'block';
-    if (countSpan) countSpan.textContent = results.length;
-
-    if (listDiv) {
-      listDiv.innerHTML = '';
-      results.forEach(result => {
-        const item = result.item;
-        const resultItem = document.createElement('div');
-        resultItem.className = 'search-result-item';
-        resultItem.onclick = () => {
-          window.location.href = item.permalink;
-        };
-
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'result-title';
-        titleDiv.innerHTML = highlightMatch(item.title, query);
-
-        const metaDiv = document.createElement('div');
-        metaDiv.className = 'result-meta';
-        var t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
-        const categoryText = item.category || (t ? t['uncategorized'] : '未分类');
-        const idText = item.permalink ? item.permalink.split('/').filter(Boolean).pop() : '';
-        metaDiv.innerHTML = (t ? t['category'] : '分类') + ': ' + highlightMatch(categoryText, query) +
-                           ' | ID: ' + highlightMatch(idText, query);
-
-        resultItem.appendChild(titleDiv);
-        resultItem.appendChild(metaDiv);
-
-        if (item.tags && item.tags.length > 0) {
-          const tagsDiv = document.createElement('div');
-          tagsDiv.className = 'result-tags';
-          item.tags.forEach(tag => {
-            const tagSpan = document.createElement('span');
-            tagSpan.className = 'tag';
-            tagSpan.textContent = tag;
-            tagsDiv.appendChild(tagSpan);
-          });
-          resultItem.appendChild(tagsDiv);
-        }
-
-        listDiv.appendChild(resultItem);
-      });
-    }
-  }
-};
-
-
-const hideSearchResults = () => {
-  const panel = document.getElementById('search-results-panel');
-  if (panel) {
-    panel.style.display = 'none';
-  }
-};
-
-
-document.addEventListener('DOMContentLoaded', () => {
-  
-  getSearchData();
-
-  searchInput = document.querySelector('.search-card input');
-  searchResultsPanel = document.getElementById('search-results-panel');
-
-  if (searchInput) {
-    let debounceTimer;
-    searchInput.addEventListener('input', (e) => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => {
-        performSearch(e.target.value);
-      }, 300);
-    });
-
-    searchInput.addEventListener('focus', (e) => {
-      if (e.target.value.trim()) {
-        performSearch(e.target.value);
-      }
-    });
-  }
-
-  
-  document.addEventListener('click', (e) => {
-    if (searchResultsPanel && searchInput &&
-        !searchResultsPanel.contains(e.target) &&
-        !searchInput.contains(e.target)) {
-      hideSearchResults();
-    }
-  });
-});
-</script>
-
-        
-        <div class="button-class-card">
-          <div class="mobile-menu-container">
-  <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileMenu()">
-    <img src="/images/svg/order.svg" alt="菜单">
-  </div>
-</div>
-
-<div class="mobile-sidebar-overlay" id="mobile-menu-overlay" onclick="handleMobileOverlayClick(event)"></div>
-
-<aside class="mobile-sidebar" id="mobile-sidebar">
-  <div class="mobile-sidebar-card">
-    
-      
-<div class="avator-card">
-  <a href="https://example.com/">
-    <img src="/images/avator.jpg" alt="头像">
-  </a>
-</div>
-
-<style>
-.avator-card {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avator-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: all 0.3s ease;
-  border-radius: 50%;
-}
-
-.avator-card:hover img {
-  transform: rotate(360deg);
-}
-</style>
-
-<style>
-.avator-card {
-  border: 3px solid var(--common-color-1);
-}
-</style>
-
-
-    
-    
-      <div class="welcome-saying-card">
-  <a href="https://example.com/" class="welcome-link">
-    <p data-i18n="welcome">欢迎来到我的个人博客</p>
-  </a>
-</div>
-
-<style>
-.welcome-saying-card {
-  width: 90%;
-  height: fit-content;
-  margin: 4px auto;
-  text-align: center;
-}
-
-.welcome-saying-card p {
-  font-size: 14px;
-  font-style: italic;
-  font-family: "Microsoft YaHei", sans-serif;
-  line-height: normal;
-}
-
-.welcome-link {
-  cursor: pointer;
-  user-select: none;
-}
-
-.welcome-link:active {
-  transform: none;
-}
-</style>
-
-<style>
-.welcome-saying-card p {
-  color: var(--common-color-1);
-}
-</style>
-
-<style>
-@media (max-width: 768px) {
-  .welcome-saying-card p {
-    font-size: 14px;
-  }
-}
-</style>
-
-    
-    
-      
-<div class="page-list-card">
-  <ul>
-    
-    <li><a href="/" class="page-card" >首页</a></li>
-    
-    <li><a href="/about/" class="page-card" >关于</a></li>
-    
-    <li><a href="/archives/" class="page-card" >归档</a></li>
-    
-    <li><a href="/tags/" class="page-card" >标签</a></li>
-    
-    <li><a href="/links/" class="page-card" >友链</a></li>
-    
-    <li><a href="/index.xml" class="page-card" >RSS</a></li>
-    
-  </ul>
-</div>
-
-<style>
-.page-list-card {
-  width:100%;
-  height: 180px;
-  padding: 8px;
-  margin-bottom: 5px;
-  text-align: center;
-  overflow-y: auto;
-}
-
-.page-list-card ul {
-  width: 100%;
-  height: 100%;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.page-list-card ul li {
-  width: 100%;
-  height: fit-content;
-}
-
-.page-card {
-  display: block;
-  width: 100%;
-  height: fit-content;
-  padding: 6px;
-  margin-bottom: 4px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.page-card:hover {
-  transform: translateY(-5px);
-  border-left-width: 6px;
-}
-</style>
-
-<style>
-.page-card {
-  background-color: var(--common-color-1);
-  border: 2px solid var(--common-color-2);
-  box-shadow: var(--common-shadow);
-  color: white;
-}
-
-.page-card:hover {
-  box-shadow: var(--common-shadow);
-  background-color: var(--common-hover);
-  color: white;
-}
-</style>
-
-    
-  </div>
-</aside>
-
-<script>
-const toggleMobileMenu = () => {
-  const overlay = document.getElementById('mobile-menu-overlay');
-  const sidebar = document.getElementById('mobile-sidebar');
-  const isOpen = overlay.classList.toggle('active');
-  sidebar.classList.toggle('active', isOpen);
-  document.body.style.overflow = isOpen ? 'hidden' : '';
-}
-
-const closeMobileMenu = () => {
-  const overlay = document.getElementById('mobile-menu-overlay');
-  const sidebar = document.getElementById('mobile-sidebar');
-  overlay.classList.remove('active');
-  sidebar.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-const handleMobileOverlayClick = (event) => {
-  if (event.target.id === 'mobile-menu-overlay') {
-    closeMobileMenu();
-  }
-}
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape') {
-    closeMobileMenu();
-  }
-});
-</script>
-
-<style>
-.mobile-menu-container {
-  display: none;
-}
-
-.mobile-menu-toggle {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-}
-
-.mobile-sidebar-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 999;
-  display: none;
-}
-
-.mobile-sidebar-overlay.active {
-  display: block;
-}
-
-.mobile-sidebar {
-  position: fixed;
-  top: 0;
-  left: -280px;
-  width: 280px;
-  height: 100%;
-  z-index: 1000;
-  transition: left 0.3s ease;
-  overflow-y: auto;
-  overflow-x: hidden;
-  display: flex;
-}
-
-.mobile-sidebar.active {
-  left: 0;
-}
-
-.mobile-sidebar-card {
-  width: 100%;
-  height: auto;
-  padding: 20px;
-  margin-top: 60px;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-</style>
-
-<style>
-.mobile-sidebar-overlay {
-  background: rgba(0, 0, 0, 0.5);
-}
-
-.mobile-sidebar-card {
-  background-color: var(--common-bg);
-  border: 2px solid var(--common-color-1);
-}
-
-.mobile-sidebar {
-  background: var(--common-bg);
-  box-shadow: 2px 0 15px var(--common-shadow);
+.index-logo-dot {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite;
 }
 </style>
 
 <style>
 @media (max-width: 576px) {
-  .mobile-menu-container {
-    display: block;
-  }
-
-  .mobile-menu-toggle {
-    display: flex;
-    padding: 8px;
-  }
-}
-
-@media (max-width: 768px) {
-  .mobile-menu-container {
-    display: block;
-  }
-
-  .mobile-menu-toggle {
-    display: flex;
-    padding: 8px;
-  }
-}
-
-@media (min-width: 769px) {
-  .mobile-menu-container,
-  .mobile-sidebar,
-  .mobile-sidebar-overlay {
-    display: none !important;
+  .index-logo-text {
+    font-size: 1.25rem;
   }
 }
 </style>
 
-          <div class="language-selector">
-  <select name="language" class="language-select" id="language-switcher">
-    <option value="zh-cn" selected>简体中文</option>
-    <option value="zh-tw">繁體中文</option>
-    <option value="en">English</option>
-    <option value="fr">Français</option>
-    <option value="ru">Русский</option>
-    <option value="de">Deutsch</option>
-  </select>
+      <div class="index-nav-menu-container">
+  <ul class="index-nav-menu">
+    
+    
+    <li class="index-nav-item">
+      <a href="/list/" class="index-nav-link">
+        <span class="index-nav-link-text" data-i18n="home">home</span>
+        <span class="index-nav-link-underline"></span>
+      </a>
+    </li>
+    
+    
+    
+    <li class="index-nav-item">
+      <a href="/about/" class="index-nav-link">
+        <span class="index-nav-link-text" data-i18n="about">about</span>
+        <span class="index-nav-link-underline"></span>
+      </a>
+    </li>
+    
+    
+    
+    <li class="index-nav-item">
+      <a href="/categories/" class="index-nav-link">
+        <span class="index-nav-link-text" data-i18n="archives">archives</span>
+        <span class="index-nav-link-underline"></span>
+      </a>
+    </li>
+    
+    
+    
+    <li class="index-nav-item">
+      <a href="/tags/" class="index-nav-link">
+        <span class="index-nav-link-text" data-i18n="tags">tags</span>
+        <span class="index-nav-link-underline"></span>
+      </a>
+    </li>
+    
+    
+    
+    <li class="index-nav-item">
+      <a href="/links/" class="index-nav-link">
+        <span class="index-nav-link-text" data-i18n="links">links</span>
+        <span class="index-nav-link-underline"></span>
+      </a>
+    </li>
+    
+    
+  </ul>
 </div>
 
+<style>
+.index-nav-menu-container {
+  display: flex;
+  align-items: center;
+}
+
+.index-nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+}
+
+.index-nav-item {
+  position: relative;
+}
+
+.index-nav-link {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 1.25rem;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  transition: all 0.3s ease;
+}
+
+.index-nav-link:hover {
+  transform: translateY(-2px);
+}
+
+.index-nav-link-text {
+  position: relative;
+  z-index: 2;
+}
+
+.index-nav-link-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  transition: width 0.3s ease;
+  border-radius: 2px;
+}
+
+.index-nav-link:hover .index-nav-link-underline {
+  width: 100%;
+}
+</style>
+
+<style>
+.index-nav-link {
+  background: var(--common-color-2);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite;
+  text-shadow: 0 0 10px var(--common-color-1);
+}
+
+.index-nav-link:hover {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 20px var(--common-color-1);
+  animation: index-gradient-shift 3s ease infinite, index-nav-glow-hover 1s ease-in-out infinite;
+}
+
+@keyframes index-nav-glow-hover {
+  0%, 100% { text-shadow: 0 0 20px var(--common-color-1); }
+  50% { text-shadow: 0 0 30px var(--common-color-1); }
+}
+
+.index-nav-link-underline {
+  background: var(--common-color-1);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .index-nav-menu {
+    gap: 1.5rem;
+  }
+
+  .index-nav-link {
+    font-size: 0.875rem;
+    padding: 0.4rem 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .index-nav-menu {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .index-nav-link {
+    font-size: 0.75rem;
+    padding: 0.3rem 0;
+  }
+
+  .index-nav-item {
+    margin-bottom: 0.25rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .index-nav-link {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .index-nav-link:hover .index-nav-link-underline {
+    width: 0;
+  }
+
+  .index-nav-link:active .index-nav-link-underline {
+    width: 100%;
+  }
+}
+</style>
+
+    </nav>
+
+    <main class="index-hero-content">
+  <div class="index-hero-text">
+    <p class="index-hero-subtitle">
+      <span class="index-glow-text">HELLO WORLD</span>
+    </p>
+    <h1 class="index-hero-title">
+      <span class="index-typing-text" id="index-typing-text"></span>
+      <span class="index-cursor-blink">|</span>
+    </h1>
+  </div>
+
+  <div class="index-hero-buttons">
+    <a href="/list/" data-no-pjax class="index-btn index-btn-primary">
+      <span class="index-btn-text" data-i18n="start">开始</span>
+      <span class="index-btn-glow"></span>
+    </a>
+  </div>
+</main>
+
+<script>
+Cards.register('hero-typing', {
+  init: function() {
+    let typingText = '';
+    let typingIndex = 0;
+    let isDeleting = false;
+    let isPausing = false;
+    let lastTime = 0;
+    let animationFrameId = null;
+
+    const text = 'Welcome to Cnkrru\'s Blog';
+    const typingSpeed = 150;
+    const deletingSpeed = 80;
+    const pauseTime = 2000;
+    const loop = true;
+    const randomSpeed = true;
+
+    const targetElement = document.getElementById('index-typing-text');
+    if (!targetElement) return { animationFrameId: null };
+
+    const getRandomSpeed = function(baseSpeed) {
+      if (!randomSpeed) return baseSpeed;
+      return baseSpeed * (0.8 + Math.random() * 0.4);
+    };
+
+    const typeEffect = function(timestamp) {
+      if (!lastTime) lastTime = timestamp;
+      const elapsed = timestamp - lastTime;
+
+      if (isPausing) {
+        if (elapsed >= pauseTime) {
+          isPausing = false;
+          isDeleting = true;
+          lastTime = timestamp;
+        }
+      } else if (!isDeleting) {
+        const currentSpeed = getRandomSpeed(typingSpeed);
+        if (elapsed >= currentSpeed) {
+          if (typingIndex < text.length) {
+            typingText = text.substring(0, typingIndex + 1);
+            targetElement.textContent = typingText;
+            typingIndex++;
+            lastTime = timestamp;
+          } else if (loop) {
+            isPausing = true;
+            lastTime = timestamp;
+          }
+        }
+      } else {
+        const delSpeed = getRandomSpeed(deletingSpeed);
+        if (elapsed >= delSpeed) {
+          if (typingIndex > 0) {
+            typingIndex--;
+            typingText = text.substring(0, typingIndex);
+            targetElement.textContent = typingText;
+            lastTime = timestamp;
+          } else if (loop) {
+            isDeleting = false;
+            lastTime = timestamp;
+          }
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(typeEffect);
+    };
+
+    setTimeout(function() {
+      lastTime = 0;
+      animationFrameId = requestAnimationFrame(typeEffect);
+    }, 300);
+
+    return { animationFrameId: animationFrameId };
+  },
+  destroy: function(instance) {
+    if (instance.animationFrameId) cancelAnimationFrame(instance.animationFrameId);
+  }
+});
+</script>
+
+<style>
+.index-hero-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.index-hero-text {
+  margin-bottom: 3rem;
+}
+
+.index-hero-subtitle {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.index-hero-title {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+}
+
+.index-cursor-blink {
+  display: inline-block;
+  animation: index-cursor-fade 0.8s ease-in-out infinite;
+}
+
+@keyframes index-cursor-fade {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.index-hero-buttons {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.index-btn {
+  position: relative;
+  padding: 1rem 2.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: transparent;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.index-btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+.index-btn-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.index-btn-primary:hover .index-btn-glow {
+  width: 300px;
+  height: 300px;
+}
+
+.index-btn-text {
+  position: relative;
+  z-index: 2;
+}
+</style>
+
+<style>
+.index-glow-text {
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite, index-hello-glow 2s ease-in-out infinite;
+  text-shadow: 0 0 15px var(--common-color-1);
+}
+
+.index-typing-text {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: index-gradient-shift 3s ease infinite, index-typing-glow 2s ease-in-out infinite;
+  text-shadow: 0 0 15px var(--common-color-1);
+}
+
+@keyframes index-hello-glow {
+  0%, 100% { text-shadow: 0 0 15px var(--common-color-1); }
+  50% { text-shadow: 0 0 25px var(--common-color-1); }
+}
+
+@keyframes index-typing-glow {
+  0%, 100% { text-shadow: 0 0 15px var(--common-color-1); }
+  50% { text-shadow: 0 0 25px var(--common-color-1); }
+}
+
+.index-cursor-blink {
+  color: var(--common-color-1);
+}
+
+.index-btn-primary {
+  background: var(--common-gradient);
+  background-size: 200% 100%;
+  color: white;
+  box-shadow: 0 4px 15px var(--common-color-1);
+  animation: index-gradient-shift 3s ease infinite;
+}
+
+.index-btn-primary:hover {
+  box-shadow: 0 8px 25px var(--common-color-1);
+}
+
+.index-btn-glow {
+  background: var(--common-color-2);
+  opacity: 0.3;
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .index-hero-content {
+    padding: 4rem 1rem;
+  }
+
+  .index-hero-subtitle {
+    font-size: 1.5rem;
+  }
+
+  .index-hero-buttons {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .index-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .index-hero-content {
+    padding: 3rem 0.5rem;
+  }
+
+  .index-hero-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .index-hero-title {
+    font-size: clamp(1.5rem, 6vw, 2.5rem);
+  }
+}
+</style>
+
+  </div>
+
+  <style>
+  .index-hero-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .index-gradient-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+
+  .index-navbar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    z-index: 100;
+  }
+  </style>
+
+  <style>
+  .index-hero-container {
+    background: linear-gradient(to bottom, var(--common-color-1), var(--common-color-2));
+  }
+
+  .index-gradient-bg {
+    background: linear-gradient(to bottom, var(--common-color-1), var(--common-color-2));
+  }
+  </style>
+
+  <style>
+  @media (max-width: 768px) {
+    .index-navbar {
+      padding: 1.5rem 1.5rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .index-navbar {
+      padding: 1rem 1rem;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .index-hero-container {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .index-hero-container {
+      overflow-x: hidden;
+    }
+
+    .index-navbar {
+      flex-wrap: wrap;
+    }
+  }
+  </style>
 <script>
 window.i18nTranslations = {
     "zh-cn": {
+        "about": "关于",
+        "allRightsReserved": "版权所有",
+        "archives": "归档",
+        "articleBack": "返回列表",
+        "articleCount": "文章数量",
+        "articleList": "文章列表",
+        "articleMenu": "文章菜单",
+        "articles": "篇文章",
+        "calculating": "计算中...",
+        "categoriesLabel": "个分类",
+        "category": "分类",
+        "chinese": "中文",
+        "code": "代码",
+        "collapse": "收起",
+        "commentTitle": "评论",
+        "comments": "留言",
+        "copyright": "©",
+        "count": "数量",
+        "customText": "自定义",
+        "darkMode": "夜晚模式",
+        "day": "天",
+        "english": "英文",
+        "error404BrowseArticles": "浏览文章",
+        "error404Description": "您访问的页面可能已被删除、移动或暂时不可用。",
+        "error404GoHome": "返回首页",
+        "error404Subtitle": "哎呀，页面找不到了",
+        "error404Title": "404 - 页面未找到",
+        "error404TrySearch": "或者尝试搜索：",
+        "expand": "展开",
+        "frequency": "频率",
+        "gitalkUnavailable": "Gitalk 评论系统在本地预览时不可用",
+        "home": "首页",
+        "hour": "小时",
+        "hourShort": "时",
+        "lessThanOneMinute": "小于 1 分钟",
+        "lightMode": "日间模式",
+        "links": "友链",
+        "loadArticlesFailed": "加载文章失败",
+        "minute": "分钟",
+        "minuteShort": "分",
+        "month": "月",
+        "more": "更多",
+        "next": "下一页",
+        "nextArticle": "下一篇",
+        "noArticles": "暂无文章",
+        "noArticlesInTag": "该标签下暂无文章",
+        "noDescription": "暂无描述",
+        "noLinks": "暂无友链",
+        "noTitle": "无标题",
+        "none": "暂无",
+        "page": "页",
+        "prev": "上一页",
+        "prevArticle": "上一篇",
+        "readingTime": "分钟阅读",
+        "readingTimeLabel": "预计阅读时间:",
+        "recent": "最近",
+        "recentPosts": "最新文章",
+        "relatedArticles": "相关文章推荐",
+        "rss": "RSS",
+        "search": "搜索",
+        "searchArticle": "搜索文章...",
+        "searchNoResult": "未找到结果",
+        "searchResults": "个结果",
+        "searchTags": "搜索标签...",
+        "secondShort": "秒",
+        "shareCopyFailed": "复制失败，请手动复制链接: ",
+        "shareEmail": "通过邮件分享",
+        "shareFacebook": "分享到 Facebook",
+        "shareLinkedin": "分享到 LinkedIn",
+        "shareQQ": "分享到QQ",
+        "shareReddit": "分享到 Reddit",
+        "shareText": "分享",
+        "shareTwitter": "分享到 Twitter",
+        "shareWechat": "分享到微信",
+        "shareWechatCopied": "链接已复制，请粘贴到微信进行分享",
+        "shareWeibo": "分享到微博",
+        "siteTitle": "我的博客",
+        "skipToContent": "跳到内容",
+        "sort": "排序:",
+        "tableOfContents": "目录",
+        "tags": "标签",
+        "tagsLabel": "个标签",
+        "toggleMenu": "菜单",
+        "toggleToc": "显示/隐藏目录",
+        "totalArticles": "共",
+        "totalTerms": "共",
+        "trending": "趋势",
+        "uncategorized": "未分类",
+        "websiteAge": "本站已建立",
+        "welcome": "欢迎来到我的个人博客",
+        "wordCount": "字",
+        "wordCountLabel": "字数统计:",
+        "year": "年",
     },
     "zh-tw": {
+        "about": "關於",
+        "allRightsReserved": "版權所有",
+        "archives": "歸檔",
+        "articleBack": "返回列表",
+        "articleCount": "文章數量",
+        "articleList": "文章列表",
+        "articleMenu": "文章選單",
+        "articles": "篇文章",
+        "calculating": "計算中...",
+        "categoriesLabel": "個分類",
+        "category": "分類",
+        "chinese": "中文",
+        "code": "程式碼",
+        "collapse": "收起",
+        "commentTitle": "評論",
+        "comments": "留言",
+        "copyright": "©",
+        "count": "數量",
+        "customText": "自訂",
+        "darkMode": "夜晚模式",
+        "day": "天",
+        "english": "英文",
+        "error404BrowseArticles": "瀏覽文章",
+        "error404Description": "您訪問的頁面可能已被刪除、移動或暫時不可用。",
+        "error404GoHome": "返回首頁",
+        "error404Subtitle": "哎呀，頁面找不到了",
+        "error404Title": "404 - 頁面未找到",
+        "error404TrySearch": "或者嘗試搜尋：",
+        "expand": "展開",
+        "frequency": "頻率",
+        "gitalkUnavailable": "Gitalk 評論系統在本地預覽時不可用",
+        "home": "首頁",
+        "hour": "小時",
+        "hourShort": "時",
+        "lessThanOneMinute": "小於 1 分鐘",
+        "lightMode": "日間模式",
+        "links": "友鏈",
+        "loadArticlesFailed": "載入文章失敗",
+        "minute": "分鐘",
+        "minuteShort": "分",
+        "month": "月",
+        "more": "更多",
+        "next": "下一頁",
+        "nextArticle": "下一篇",
+        "noArticles": "暫無文章",
+        "noArticlesInTag": "該標籤下暫無文章",
+        "noDescription": "暫無描述",
+        "noLinks": "暫無友鏈",
+        "noTitle": "無標題",
+        "none": "暫無",
+        "page": "頁",
+        "prev": "上一頁",
+        "prevArticle": "上一篇",
+        "readingTime": "分鐘閱讀",
+        "readingTimeLabel": "預計閱讀時間:",
+        "recent": "最近",
+        "recentPosts": "最新文章",
+        "relatedArticles": "相關文章推薦",
+        "rss": "RSS",
+        "search": "搜尋",
+        "searchArticle": "搜尋文章...",
+        "searchNoResult": "未找到結果",
+        "searchResults": "個結果",
+        "searchTags": "搜尋標籤...",
+        "secondShort": "秒",
+        "shareCopyFailed": "複製失敗，請手動複製連結: ",
+        "shareEmail": "透過郵件分享",
+        "shareFacebook": "分享到 Facebook",
+        "shareLinkedin": "分享到 LinkedIn",
+        "shareQQ": "分享到QQ",
+        "shareReddit": "分享到 Reddit",
+        "shareText": "分享",
+        "shareTwitter": "分享到 Twitter",
+        "shareWechat": "分享到微信",
+        "shareWechatCopied": "連結已複製，請貼到微信進行分享",
+        "shareWeibo": "分享到微博",
+        "siteTitle": "我的部落格",
+        "skipToContent": "跳到內容",
+        "sort": "排序:",
+        "tableOfContents": "目錄",
+        "tags": "標籤",
+        "tagsLabel": "個標籤",
+        "toggleMenu": "選單",
+        "toggleToc": "顯示/隱藏目錄",
+        "totalArticles": "共",
+        "totalTerms": "共",
+        "trending": "趨勢",
+        "uncategorized": "未分類",
+        "websiteAge": "本站已建立",
+        "welcome": "歡迎來到我的個人部落格",
+        "wordCount": "字",
+        "wordCountLabel": "字數統計:",
+        "year": "年",
     },
     "en": {
+        "about": "About",
+        "allRightsReserved": ". All rights reserved.",
+        "archives": "Archives",
+        "articleBack": "Back to list",
+        "articleCount": "Articles",
+        "articleList": "Articles",
+        "articleMenu": "Article Menu",
+        "articles": "articles",
+        "calculating": "Calculating...",
+        "categoriesLabel": "categories",
+        "category": "Category",
+        "chinese": "CN",
+        "code": "code",
+        "collapse": "Collapse",
+        "commentTitle": "Comments",
+        "comments": "Comments",
+        "copyright": "©",
+        "count": "Count",
+        "customText": "Custom",
+        "darkMode": "Dark Mode",
+        "day": "d",
+        "english": "EN",
+        "error404BrowseArticles": "Browse Articles",
+        "error404Description": "The page you are looking for may have been deleted, moved, or is temporarily unavailable.",
+        "error404GoHome": "Back to Home",
+        "error404Subtitle": "Oops, page not found",
+        "error404Title": "404 - Page Not Found",
+        "error404TrySearch": "Or try searching:",
+        "expand": "Expand",
+        "frequency": "Frequency",
+        "gitalkUnavailable": "Gitalk comment system is not available in local preview",
+        "home": "Home",
+        "hour": "hr",
+        "hourShort": "h",
+        "lessThanOneMinute": "Less than 1 minute",
+        "lightMode": "Light Mode",
+        "links": "Links",
+        "loadArticlesFailed": "Failed to load articles",
+        "minute": "min",
+        "minuteShort": "m",
+        "month": "mo",
+        "more": "More",
+        "next": "Next",
+        "nextArticle": "Next",
+        "noArticles": "No articles yet",
+        "noArticlesInTag": "No articles in this tag",
+        "noDescription": "No description",
+        "noLinks": "No links yet",
+        "noTitle": "No title",
+        "none": "None",
+        "page": "Page",
+        "prev": "Previous",
+        "prevArticle": "Previous",
+        "readingTime": "min read",
+        "readingTimeLabel": "Estimated reading time:",
+        "recent": "Recent",
+        "recentPosts": "Recent Posts",
+        "relatedArticles": "Related Articles",
+        "rss": "RSS",
+        "search": "Search",
+        "searchArticle": "Search articles...",
+        "searchNoResult": "No results found",
+        "searchResults": "results",
+        "searchTags": "Search tags...",
+        "secondShort": "s",
+        "shareCopyFailed": "Copy failed, please manually copy the link: ",
+        "shareEmail": "Share via Email",
+        "shareFacebook": "Share on Facebook",
+        "shareLinkedin": "Share on LinkedIn",
+        "shareQQ": "Share on QQ",
+        "shareReddit": "Share on Reddit",
+        "shareText": "Share",
+        "shareTwitter": "Share on Twitter",
+        "shareWechat": "Share on WeChat",
+        "shareWechatCopied": "Link copied! Paste in WeChat to share.",
+        "shareWeibo": "Share on Weibo",
+        "siteTitle": "My Blog",
+        "skipToContent": "Skip to content",
+        "sort": "Sort:",
+        "tableOfContents": "Table of Contents",
+        "tags": "Tags",
+        "tagsLabel": "tags",
+        "toggleMenu": "Menu",
+        "toggleToc": "Show/Hide Table of Contents",
+        "totalArticles": "",
+        "totalTerms": "Total",
+        "trending": "Trending",
+        "uncategorized": "Uncategorized",
+        "websiteAge": "Site established",
+        "welcome": "Welcome to my blog",
+        "wordCount": "words",
+        "wordCountLabel": "Word count:",
+        "year": "y",
     },
     "fr": {
+        "about": "À propos",
+        "allRightsReserved": ". Tous droits réservés.",
+        "archives": "Archives",
+        "articleBack": "Retour à la liste",
+        "articleCount": "Articles",
+        "articleList": "Articles",
+        "articleMenu": "Menu d'article",
+        "articles": "articles",
+        "calculating": "Calcul...",
+        "categoriesLabel": "catégories",
+        "category": "Catégorie",
+        "chinese": "CN",
+        "code": "code",
+        "collapse": "Réduire",
+        "commentTitle": "Commentaires",
+        "comments": "Commentaires",
+        "copyright": "©",
+        "count": "Nombre",
+        "customText": "Personnalisé",
+        "darkMode": "Mode sombre",
+        "day": "j",
+        "english": "EN",
+        "error404BrowseArticles": "Parcourir les articles",
+        "error404Description": "La page que vous recherchez a peut-être été supprimée, déplacée ou est temporairement indisponible.",
+        "error404GoHome": "Retour à l'accueil",
+        "error404Subtitle": "Oups, page introuvable",
+        "error404Title": "404 - Page introuvable",
+        "error404TrySearch": "Ou essayez de rechercher :",
+        "expand": "Développer",
+        "frequency": "Fréquence",
+        "gitalkUnavailable": "Le système de commentaires Gitalk n'est pas disponible en aperçu local",
+        "home": "Accueil",
+        "hour": "h",
+        "hourShort": "h",
+        "lessThanOneMinute": "Moins d'une minute",
+        "lightMode": "Mode clair",
+        "links": "Liens",
+        "loadArticlesFailed": "Échec du chargement des articles",
+        "minute": "min",
+        "minuteShort": "m",
+        "month": "mo",
+        "more": "Plus",
+        "next": "Suivant",
+        "nextArticle": "Suivant",
+        "noArticles": "Aucun article",
+        "noArticlesInTag": "Aucun article dans cette étiquette",
+        "noDescription": "Aucune description",
+        "noLinks": "Aucun lien pour l'instant",
+        "noTitle": "Sans titre",
+        "none": "Aucun",
+        "page": "Page",
+        "prev": "Précédent",
+        "prevArticle": "Précédent",
+        "readingTime": "min de lecture",
+        "readingTimeLabel": "Temps de lecture estimé:",
+        "recent": "Récent",
+        "recentPosts": "Articles récents",
+        "relatedArticles": "Articles connexes",
+        "rss": "RSS",
+        "search": "Rechercher",
+        "searchArticle": "Rechercher des articles...",
+        "searchNoResult": "Aucun résultat trouvé",
+        "searchResults": "résultats",
+        "searchTags": "Rechercher des étiquettes...",
+        "secondShort": "s",
+        "shareCopyFailed": "Échec de la copie, veuillez copier manuellement le lien: ",
+        "shareEmail": "Partager par e-mail",
+        "shareFacebook": "Partager sur Facebook",
+        "shareLinkedin": "Partager sur LinkedIn",
+        "shareQQ": "Partager sur QQ",
+        "shareReddit": "Partager sur Reddit",
+        "shareText": "Partager",
+        "shareTwitter": "Partager sur Twitter",
+        "shareWechat": "Partager sur WeChat",
+        "shareWechatCopied": "Lien copié ! Collez dans WeChat pour partager.",
+        "shareWeibo": "Partager sur Weibo",
+        "siteTitle": "Mon Blog",
+        "skipToContent": "Aller au contenu",
+        "sort": "Trier:",
+        "tableOfContents": "Table des matières",
+        "tags": "Étiquettes",
+        "tagsLabel": "étiquettes",
+        "toggleMenu": "Menu",
+        "toggleToc": "Afficher/Masquer la table des matières",
+        "totalArticles": "",
+        "totalTerms": "Total",
+        "trending": "Tendance",
+        "uncategorized": "Non classé",
+        "websiteAge": "Site créé",
+        "welcome": "Bienvenue sur mon blog",
+        "wordCount": "mots",
+        "wordCountLabel": "Nombre de mots:",
+        "year": "a",
     },
     "de": {
+        "about": "Über mich",
+        "allRightsReserved": ". Alle Rechte vorbehalten.",
+        "archives": "Archive",
+        "articleBack": "Zurück zur Liste",
+        "articleCount": "Artikel",
+        "articleList": "Artikel",
+        "articleMenu": "Artikelmenü",
+        "articles": "Artikel",
+        "calculating": "Berechnung...",
+        "categoriesLabel": "Kategorien",
+        "category": "Kategorie",
+        "chinese": "CN",
+        "code": "Code",
+        "collapse": "Reduzieren",
+        "commentTitle": "Kommentare",
+        "comments": "Kommentare",
+        "copyright": "©",
+        "count": "Anzahl",
+        "customText": "Benutzerdefiniert",
+        "darkMode": "Dunkelmodus",
+        "day": "T",
+        "english": "EN",
+        "error404BrowseArticles": "Artikel durchsuchen",
+        "error404Description": "Die gesuchte Seite wurde möglicherweise gelöscht, verschoben oder ist vorübergehend nicht verfügbar.",
+        "error404GoHome": "Zurück zur Startseite",
+        "error404Subtitle": "Hoppla, Seite nicht gefunden",
+        "error404Title": "404 - Seite nicht gefunden",
+        "error404TrySearch": "Oder versuchen Sie zu suchen:",
+        "expand": "Erweitern",
+        "frequency": "Häufigkeit",
+        "gitalkUnavailable": "Gitalk-Kommentarsystem ist in der lokalen Vorschau nicht verfügbar",
+        "home": "Startseite",
+        "hour": "Std",
+        "hourShort": "h",
+        "lessThanOneMinute": "Weniger als 1 Minute",
+        "lightMode": "Hellmodus",
+        "links": "Links",
+        "loadArticlesFailed": "Artikel konnten nicht geladen werden",
+        "minute": "Min",
+        "minuteShort": "m",
+        "month": "Mo",
+        "more": "Mehr",
+        "next": "Nächste",
+        "nextArticle": "Nächste",
+        "noArticles": "Keine Artikel",
+        "noArticlesInTag": "Keine Artikel in diesem Tag",
+        "noDescription": "Keine Beschreibung",
+        "noLinks": "Noch keine Links",
+        "noTitle": "Kein Titel",
+        "none": "Keine",
+        "page": "Seite",
+        "prev": "Vorherige",
+        "prevArticle": "Vorherige",
+        "readingTime": "Minuten Lesezeit",
+        "readingTimeLabel": "Geschätzte Lesezeit:",
+        "recent": "Kürzlich",
+        "recentPosts": "Neueste Artikel",
+        "relatedArticles": "Ähnliche Artikel",
+        "rss": "RSS",
+        "search": "Suche",
+        "searchArticle": "Artikel durchsuchen...",
+        "searchNoResult": "Keine Ergebnisse gefunden",
+        "searchResults": "Ergebnisse",
+        "searchTags": "Tags durchsuchen...",
+        "secondShort": "s",
+        "shareCopyFailed": "Kopieren fehlgeschlagen, bitte kopieren Sie den Link manuell: ",
+        "shareEmail": "Per E-Mail teilen",
+        "shareFacebook": "Auf Facebook teilen",
+        "shareLinkedin": "Auf LinkedIn teilen",
+        "shareQQ": "Auf QQ teilen",
+        "shareReddit": "Auf Reddit teilen",
+        "shareText": "Teilen",
+        "shareTwitter": "Auf Twitter teilen",
+        "shareWechat": "Auf WeChat teilen",
+        "shareWechatCopied": "Link kopiert! In WeChat einfügen zum Teilen.",
+        "shareWeibo": "Auf Weibo teilen",
+        "siteTitle": "Mein Blog",
+        "skipToContent": "Zum Inhalt springen",
+        "sort": "Sortieren:",
+        "tableOfContents": "Inhaltsverzeichnis",
+        "tags": "Tags",
+        "tagsLabel": "Tags",
+        "toggleMenu": "Menü",
+        "toggleToc": "Inhaltsverzeichnis anzeigen/verbergen",
+        "totalArticles": "",
+        "totalTerms": "Gesamt",
+        "trending": "Trend",
+        "uncategorized": "Nicht kategorisiert",
+        "websiteAge": "Website erstellt",
+        "welcome": "Willkommen auf meinem Blog",
+        "wordCount": "Wörter",
+        "wordCountLabel": "Wortanzahl:",
+        "year": "J",
     },
     "ru": {
+        "about": "Обо мне",
+        "allRightsReserved": ". Все права защищены.",
+        "archives": "Архивы",
+        "articleBack": "Назад к списку",
+        "articleCount": "Статьи",
+        "articleList": "Статьи",
+        "articleMenu": "Меню статьи",
+        "articles": "статей",
+        "calculating": "Вычисление...",
+        "categoriesLabel": "категорий",
+        "category": "Категория",
+        "chinese": "КИТ",
+        "code": "код",
+        "collapse": "Свернуть",
+        "commentTitle": "Комментарии",
+        "comments": "Комментарии",
+        "copyright": "©",
+        "count": "Количество",
+        "customText": "Настраиваемый",
+        "darkMode": "Темный режим",
+        "day": "д",
+        "english": "АНГЛ",
+        "error404BrowseArticles": "Все статьи",
+        "error404Description": "Возможно, страница была удалена, перемещена или временно недоступна.",
+        "error404GoHome": "На главную",
+        "error404Subtitle": "Ой, страница не найдена",
+        "error404Title": "404 - Страница не найдена",
+        "error404TrySearch": "Или попробуйте поиск:",
+        "expand": "Развернуть",
+        "frequency": "Частота",
+        "gitalkUnavailable": "Система комментариев Gitalk недоступна при локальном просмотре",
+        "home": "Главная",
+        "hour": "ч",
+        "hourShort": "ч",
+        "lessThanOneMinute": "Меньше 1 минуты",
+        "lightMode": "Светлый режим",
+        "links": "Ссылки",
+        "loadArticlesFailed": "Не удалось загрузить статьи",
+        "minute": "мин",
+        "minuteShort": "м",
+        "month": "мес",
+        "more": "Ещё",
+        "next": "Следующая",
+        "nextArticle": "Следующая",
+        "noArticles": "Нет статей",
+        "noArticlesInTag": "В этом теге нет статей",
+        "noDescription": "Нет описания",
+        "noLinks": "Ссылок пока нет",
+        "noTitle": "Без названия",
+        "none": "Нет",
+        "page": "Страница",
+        "prev": "Предыдущая",
+        "prevArticle": "Предыдущая",
+        "readingTime": "мин чтения",
+        "readingTimeLabel": "Оценочное время чтения:",
+        "recent": "Недавние",
+        "recentPosts": "Последние статьи",
+        "relatedArticles": "Похожие статьи",
+        "rss": "RSS",
+        "search": "Поиск",
+        "searchArticle": "Поиск статей...",
+        "searchNoResult": "Результаты не найдены",
+        "searchResults": "результатов",
+        "searchTags": "Поиск тегов...",
+        "secondShort": "с",
+        "shareCopyFailed": "Не удалось скопировать, пожалуйста, скопируйте ссылку вручную: ",
+        "shareEmail": "Отправить по email",
+        "shareFacebook": "Поделиться в Facebook",
+        "shareLinkedin": "Поделиться в LinkedIn",
+        "shareQQ": "Поделиться в QQ",
+        "shareReddit": "Поделиться в Reddit",
+        "shareText": "Поделиться",
+        "shareTwitter": "Поделиться в Twitter",
+        "shareWechat": "Поделиться в WeChat",
+        "shareWechatCopied": "Ссылка скопирована! Вставьте в WeChat для отправки.",
+        "shareWeibo": "Поделиться в Weibo",
+        "siteTitle": "Мой Блог",
+        "skipToContent": "Перейти к содержимому",
+        "sort": "Сортировка:",
+        "tableOfContents": "Оглавление",
+        "tags": "Теги",
+        "tagsLabel": "тегов",
+        "toggleMenu": "Меню",
+        "toggleToc": "Показать/скрыть оглавление",
+        "totalArticles": "",
+        "totalTerms": "Всего",
+        "trending": "Популярные",
+        "uncategorized": "Без категории",
+        "websiteAge": "Сайт создан",
+        "welcome": "Добро пожаловать на мой блог",
+        "wordCount": "слов",
+        "wordCountLabel": "Количество слов:",
+        "year": "г",
+    },
+    "id": {
+        "about": "Tentang",
+        "allRightsReserved": ". Hak cipta dilindungi.",
+        "archives": "Arsip",
+        "articleBack": "Kembali ke daftar",
+        "articleCount": "Artikel",
+        "articleList": "Artikel",
+        "articleMenu": "Menu Artikel",
+        "articles": "artikel",
+        "calculating": "Menghitung...",
+        "categoriesLabel": "kategori",
+        "category": "Kategori",
+        "chinese": "CN",
+        "code": "kode",
+        "collapse": "Ciutkan",
+        "commentTitle": "Komentar",
+        "comments": "Komentar",
+        "copyright": "©",
+        "count": "Jumlah",
+        "customText": "Kustom",
+        "darkMode": "Mode Gelap",
+        "day": "hr",
+        "english": "EN",
+        "error404BrowseArticles": "Jelajahi Artikel",
+        "error404Description": "Halaman yang Anda cari mungkin telah dihapus, dipindahkan, atau sementara tidak tersedia.",
+        "error404GoHome": "Kembali ke Beranda",
+        "error404Subtitle": "Ups, halaman tidak ditemukan",
+        "error404Title": "404 - Halaman Tidak Ditemukan",
+        "error404TrySearch": "Atau coba cari:",
+        "expand": "Perluas",
+        "frequency": "Frekuensi",
+        "gitalkUnavailable": "Sistem komentar Gitalk tidak tersedia dalam pratinjau lokal",
+        "home": "Beranda",
+        "hour": "jam",
+        "hourShort": "j",
+        "languageName": "Bahasa Indonesia",
+        "lessThanOneMinute": "Kurang dari 1 menit",
+        "lightMode": "Mode Terang",
+        "links": "Tautan",
+        "loadArticlesFailed": "Gagal memuat artikel",
+        "minute": "mnt",
+        "minuteShort": "m",
+        "month": "bln",
+        "more": "Lainnya",
+        "next": "Berikutnya",
+        "nextArticle": "Berikutnya",
+        "noArticles": "Belum ada artikel",
+        "noArticlesInTag": "Tidak ada artikel di tag ini",
+        "noDescription": "Tidak ada deskripsi",
+        "noLinks": "Belum ada tautan",
+        "noTitle": "Tanpa judul",
+        "none": "Tidak ada",
+        "page": "Halaman",
+        "prev": "Sebelumnya",
+        "prevArticle": "Sebelumnya",
+        "readingTime": "menit baca",
+        "readingTimeLabel": "Estimasi waktu baca:",
+        "recent": "Terbaru",
+        "recentPosts": "Artikel Terbaru",
+        "relatedArticles": "Artikel Terkait",
+        "rss": "RSS",
+        "search": "Cari",
+        "searchArticle": "Cari artikel...",
+        "searchNoResult": "Tidak ada hasil ditemukan",
+        "searchResults": "hasil",
+        "searchTags": "Cari tag...",
+        "secondShort": "d",
+        "shareCopyFailed": "Gagal menyalin, silakan salin tautan secara manual: ",
+        "shareEmail": "Bagikan via Email",
+        "shareFacebook": "Bagikan di Facebook",
+        "shareLinkedin": "Bagikan di LinkedIn",
+        "shareQQ": "Bagikan di QQ",
+        "shareReddit": "Bagikan di Reddit",
+        "shareText": "Bagikan",
+        "shareTwitter": "Bagikan di Twitter",
+        "shareWechat": "Bagikan di WeChat",
+        "shareWechatCopied": "Tautan disalin! Tempel di WeChat untuk berbagi.",
+        "shareWeibo": "Bagikan di Weibo",
+        "siteTitle": "Blog Saya",
+        "skipToContent": "Langsung ke konten",
+        "sort": "Urutkan:",
+        "tableOfContents": "Daftar Isi",
+        "tags": "Tag",
+        "tagsLabel": "tag",
+        "toggleMenu": "Menu",
+        "toggleToc": "Tampilkan/Sembunyikan Daftar Isi",
+        "totalArticles": "",
+        "totalTerms": "Total",
+        "trending": "Tren",
+        "uncategorized": "Tanpa kategori",
+        "websiteAge": "Situs dibuat",
+        "welcome": "Selamat datang di blog saya",
+        "wordCount": "kata",
+        "wordCountLabel": "Jumlah kata:",
+        "year": "thn",
     },
 };
 
 window.i18nCurrentLang = localStorage.getItem('preferred-language') || 'zh-cn';
 
-function i18nApplyTranslations(lang) {
+Cards.i18nApply = function(lang) {
     const translations = window.i18nTranslations[lang];
     if (!translations) return;
 
-    document.querySelectorAll('[data-i18n]').forEach(el => {
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
         const key = el.getAttribute('data-i18n');
         if (translations[key] !== undefined) {
             el.textContent = translations[key];
         }
     });
 
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
         const key = el.getAttribute('data-i18n-placeholder');
         if (translations[key] !== undefined) {
             el.placeholder = translations[key];
         }
     });
 
-    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+    document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
         const key = el.getAttribute('data-i18n-title');
         if (translations[key] !== undefined) {
             el.title = translations[key];
@@ -856,1358 +1368,15 @@ function i18nApplyTranslations(lang) {
 
     localStorage.setItem('preferred-language', lang);
     window.i18nCurrentLang = lang;
-}
+};
 
-function i18nSwitchLanguage(lang) {
-    i18nApplyTranslations(lang);
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    i18nApplyTranslations(window.i18nCurrentLang);
-
-    const selector = document.getElementById('language-switcher');
-    if (selector) {
-        selector.value = window.i18nCurrentLang;
-        selector.addEventListener('change', function(e) {
-            i18nSwitchLanguage(e.target.value);
-        });
-    }
+Cards.register('i18n', {
+  init: function() {
+    Cards.i18nApply(window.i18nCurrentLang);
+    return {};
+  },
+  destroy: function() {}
 });
 </script>
-
-
-<style>
-.language-selector {
-  position: relative;
-  display: inline-block;
-}
-
-.language-select {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 32px 8px 16px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: bold;
-  background-color: var(--common-color-1);
-  color: var(--common-content);
-  border: 1px solid var(--common-color-1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 8px center;
-  min-width: 100px;
-}
-
-.language-select:hover {
-  transform: translateY(-2px);
-  background-color: var(--common-hover);
-}
-
-.language-select:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(255, 182, 193, 0.3);
-}
-
-@media (max-width: 768px) {
-  .language-select {
-    padding: 6px 28px 6px 12px;
-    font-size: 12px;
-    min-width: 80px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  }
-}
-</style>
-          <div
-  class="button-style theme-toggle-btn"
-  onclick="toggleTheme()"
-  aria-label="切换主题"
-  role="button"
-  tabindex="0"
-  onkeydown="if(event.key === 'Enter' || event.key === ' ') toggleTheme()"
-  title="点击切换主题"
->
-  <img src="/images/svg/theme-toggle.svg" alt="" id="theme-toggle-icon">
-</div>
-
-<script>
-(function() {
-  const STORAGE_KEY = 'CardsColorScheme';
-
-  const getSavedScheme = function() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'light' || saved === 'dark' || saved === 'auto') {
-      return saved;
-    }
-    return 'auto';
-  };
-
-  const getSystemScheme = function() {
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
-    }
-    return 'light';
-  };
-
-  const isDark = function(scheme, systemScheme) {
-    return scheme === 'dark' || (scheme === 'auto' && systemScheme === 'dark');
-  };
-
-  const applyScheme = function(scheme, systemScheme) {
-    const actualScheme = isDark(scheme, systemScheme) ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-scheme', actualScheme);
-
-    
-    if (actualScheme === 'dark') {
-      document.body.classList.add('dark-theme');
-    } else {
-      document.body.classList.remove('dark-theme');
-    }
-
-    
-    window.dispatchEvent(new CustomEvent('onColorSchemeChange', {
-      detail: actualScheme
-    }));
-  };
-
-  
-  const initScheme = function() {
-    const scheme = getSavedScheme();
-    const systemScheme = getSystemScheme();
-    applyScheme(scheme, systemScheme);
-  };
-
-  
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initScheme);
-  } else {
-    initScheme();
-  }
-
-  
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-    const scheme = getSavedScheme();
-    if (scheme === 'auto') {
-      const systemScheme = e.matches ? 'dark' : 'light';
-      applyScheme('auto', systemScheme);
-    }
-  });
-
-  
-  window.toggleTheme = function() {
-    const currentScheme = getSavedScheme();
-    const systemScheme = getSystemScheme();
-    let newScheme;
-
-    
-    
-    const currentActual = isDark(currentScheme, systemScheme) ? 'dark' : 'light';
-
-    if (currentActual === 'dark') {
-      newScheme = 'light';
-    } else {
-      newScheme = 'dark';
-    }
-
-    
-    if (newScheme === systemScheme) {
-      newScheme = 'auto';
-    }
-
-    localStorage.setItem(STORAGE_KEY, newScheme);
-    applyScheme(newScheme, systemScheme);
-  };
-})();
-</script>
-
-          <div class="button-style" onclick="toggleImmersiveReading()">
-  <img src="/images/svg/book.svg" alt="沉浸式阅读">
-</div>
-
-<script>
-const toggleImmersiveReading = () => {
-  document.body.classList.toggle('immersive-reading');
-}
-</script>
-
-<style>
-.left-blank,
-.left-asider-S,
-.left-center-blank,
-.center-S,
-.mid-flex,
-.footer-blank,
-.footer-flex,
-.footer-S {
-  transition: all 0.3s ease;
-}
-
-body.immersive-reading .left-blank,
-body.immersive-reading .left-asider-S,
-body.immersive-reading .left-center-blank,
-body.immersive-reading .footer-blank,
-body.immersive-reading .footer-flex,
-body.immersive-reading .footer-S {
-  display: none;
-}
-
-body.immersive-reading .center-S {
-  width: 1400px;
-  max-width: 1400px;
-}
-
-body.immersive-reading .mid-flex {
-  padding-left: 20px;
-  padding-right: 20px;
-  align-items: flex-start;
-}
-
-body.immersive-reading .center-card {
-  max-height: none;
-  height: auto;
-}
-</style>
-
-<style>
-@media (max-width: 576px) {
-  body.immersive-reading .center-S {
-    width: 100%;
-    max-width: 100%;
-  }
-  body.immersive-reading .mid-flex {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-}
-
-@media (max-width: 768px) {
-  body.immersive-reading .center-S {
-    width: 90%;
-    max-width: 90%;
-  }
-  body.immersive-reading .mid-flex {
-    padding-left: 15px;
-    padding-right: 15px;
-    align-items: flex-start;
-  }
-  body.immersive-reading .center-card {
-    max-height: none;
-    height: auto;
-  }
-}
-
-@media (max-width: 1024px) {
-  body.immersive-reading .center-S {
-    width: 700px;
-    max-width: 700px;
-  }
-  body.immersive-reading .mid-flex {
-    padding-left: 20px;
-    padding-right: 20px;
-    align-items: flex-start;
-  }
-  body.immersive-reading .center-card {
-    max-height: none;
-    height: auto;
-  }
-}
-
-@media (max-width: 1200px) {
-  body.immersive-reading .center-S {
-    width: 900px;
-    max-width: 900px;
-  }
-  body.immersive-reading .mid-flex {
-    align-items: flex-start;
-  }
-  body.immersive-reading .center-card {
-    max-height: none;
-    height: auto;
-  }
-}
-
-@media (max-width: 1440px) {
-  body.immersive-reading .center-S {
-    width: 1400px;
-    max-width: 1400px;
-  }
-  body.immersive-reading .mid-flex {
-    align-items: flex-start;
-  }
-  body.immersive-reading .center-card {
-    max-height: none;
-    height: auto;
-  }
-}
-</style>
-
-        </div>
-      </div>
-    </nav>
-  </div>
-</header>
-
-<style>
-.header-flex {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.header-S {
-  max-width: 1800px;
-  margin: 0 auto;
-  width: 95%;
-}
-
-.header-container {
-  width: 100%;
-  height: 100%;
-  margin: 0 auto;
-}
-
-.header-card {
-  width: 100%;
-  height: 100%;
-  padding: 10px 20px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  overflow: visible;
-}
-
-.button-class-card {
-  width: fit-content;
-  height: 40px;
-  margin: 0;
-  padding: 4px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-}
-
-.button-style {
-  width: 40px;
-  height: 40px;
-  border-radius: 25%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-.button-style img {
-  width: 20px;
-  height: 20px;
-}
-</style>
-
-<style>
-.header-card {
-  background-color: var(--common-bg);
-  box-shadow: 0 2px 4px var(--common-shadow);
-}
-
-.button-style {
-  background-color: var(--common-color-1);
-  border-color: var(--common-color-1);
-}
-
-.button-style img {
-  filter: invert(1);
-}
-
-body.dark-theme .button-style img {
-  filter: invert(0);
-}
-</style>
-
-<style>
-@media (max-width: 576px) {
-  .header-flex {
-    flex-direction: column;
-    justify-content: flex-start;
-    height: auto;
-    min-height: 200px;
-    align-items: center;
-  }
-
-  .header-S {
-    width: 100%;
-    height: auto;
-  }
-
-  .header-container {
-    width: 100%;
-    height: auto;
-  }
-
-  .header-card {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  .button-class-card {
-    gap: 10px;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-flex {
-    flex-direction: column;
-    justify-content: flex-start;
-    height: auto;
-    min-height: 260px;
-    align-items: center;
-  }
-
-  .header-S {
-    width: 100%;
-    height: auto;
-  }
-
-  .header-container {
-    width: 100%;
-    height: auto;
-  }
-
-  .header-card {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
-    height: auto;
-  }
-
-  .button-class-card {
-    gap: 10px;
-  }
-
-  .button-style {
-    width: 36px;
-    height: 36px;
-  }
-
-  .button-style img {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .header-flex {
-    padding: 20px;
-    height: auto;
-    min-height: 240px;
-  }
-
-  .header-S {
-    height: auto;
-  }
-
-  .header-card {
-    height: auto;
-    padding: 15px 30px;
-    flex-direction: column;
-    gap: 15px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .header-flex {
-    padding: 15px;
-    height: auto;
-    min-height: 220px;
-  }
-
-  .header-S {
-    height: auto;
-  }
-
-  .header-card {
-    height: auto;
-    padding: 15px 30px;
-    flex-direction: column;
-    gap: 15px;
-  }
-}
-
-@media (max-width: 1440px) {
-  .header-S {
-    max-width: 1400px;
-    height: 70px;
-  }
-}
-</style>
-
-  <main class="mid-flex">
-    <aside class="left-asider-S">
-  <div class="left-asider-container">
-    <div class="left-asider-card">
-      
-        
-<div class="avator-card">
-  <a href="https://example.com/">
-    <img src="/images/avator.jpg" alt="头像">
-  </a>
-</div>
-
-<style>
-.avator-card {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
-}
-
-.avator-card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: all 0.3s ease;
-  border-radius: 50%;
-}
-
-.avator-card:hover img {
-  transform: rotate(360deg);
-}
-</style>
-
-<style>
-.avator-card {
-  border: 3px solid var(--common-color-1);
-}
-</style>
-
-
-      
-      
-        <div class="welcome-saying-card">
-  <a href="https://example.com/" class="welcome-link">
-    <p data-i18n="welcome">欢迎来到我的个人博客</p>
-  </a>
-</div>
-
-<style>
-.welcome-saying-card {
-  width: 90%;
-  height: fit-content;
-  margin: 4px auto;
-  text-align: center;
-}
-
-.welcome-saying-card p {
-  font-size: 14px;
-  font-style: italic;
-  font-family: "Microsoft YaHei", sans-serif;
-  line-height: normal;
-}
-
-.welcome-link {
-  cursor: pointer;
-  user-select: none;
-}
-
-.welcome-link:active {
-  transform: none;
-}
-</style>
-
-<style>
-.welcome-saying-card p {
-  color: var(--common-color-1);
-}
-</style>
-
-<style>
-@media (max-width: 768px) {
-  .welcome-saying-card p {
-    font-size: 14px;
-  }
-}
-</style>
-
-      
-      
-        
-<div class="page-list-card">
-  <ul>
-    
-    <li><a href="/" class="page-card" >首页</a></li>
-    
-    <li><a href="/about/" class="page-card" >关于</a></li>
-    
-    <li><a href="/archives/" class="page-card" >归档</a></li>
-    
-    <li><a href="/tags/" class="page-card" >标签</a></li>
-    
-    <li><a href="/links/" class="page-card" >友链</a></li>
-    
-    <li><a href="/index.xml" class="page-card" >RSS</a></li>
-    
-  </ul>
-</div>
-
-<style>
-.page-list-card {
-  width:100%;
-  height: 180px;
-  padding: 8px;
-  margin-bottom: 5px;
-  text-align: center;
-  overflow-y: auto;
-}
-
-.page-list-card ul {
-  width: 100%;
-  height: 100%;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.page-list-card ul li {
-  width: 100%;
-  height: fit-content;
-}
-
-.page-card {
-  display: block;
-  width: 100%;
-  height: fit-content;
-  padding: 6px;
-  margin-bottom: 4px;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.page-card:hover {
-  transform: translateY(-5px);
-  border-left-width: 6px;
-}
-</style>
-
-<style>
-.page-card {
-  background-color: var(--common-color-1);
-  border: 2px solid var(--common-color-2);
-  box-shadow: var(--common-shadow);
-  color: white;
-}
-
-.page-card:hover {
-  box-shadow: var(--common-shadow);
-  background-color: var(--common-hover);
-  color: white;
-}
-</style>
-
-      
-    </div>
-  </div>
-</aside>
-
-<style>
-.left-asider-S {
-  width: 15%;
-  height: 100%;
-  display: flex;
-  position: static;
-}
-
-.left-asider-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.left-asider-card {
-  width: 200px;
-  height: 600px;
-  border-radius: 8px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 25px;
-}
-</style>
-
-<style>
-.left-asider-card {
-  background-color: var(--common-bg);
-  border: 2px solid var(--common-color-1);
-}
-</style>
-
-<style>
-@media (max-width: 576px) {
-  .left-asider-S {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .left-asider-S {
-    display: none;
-  }
-}
-
-@media (max-width: 1024px) {
-  .left-asider-S {
-    position: static;
-    width: 20%;
-    height: fit-content;
-    padding: 0;
-    left: 0;
-    box-shadow: none;
-    background: transparent;
-    align-self: flex-start;
-  }
-
-  .left-asider-container {
-    width: 100%;
-  }
-
-  .left-asider-card {
-    width: 180px;
-    height: 600px;
-    margin-top: 0;
-    border-radius: 8px;
-    gap: 20px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .left-asider-S {
-    width: 18%;
-    padding: 0;
-  }
-
-  .left-asider-card {
-    width: 200px;
-    height: 650px;
-    border-radius: 8px;
-  }
-}
-
-@media (max-width: 1440px) {
-  .left-asider-card {
-    width: 210px;
-    height: 600px;
-    border-radius: 8px;
-  }
-}
-</style>
-
-    <section class="center-S">
-      <div class="center-container">
-        <div class="center-card">
-          <div class="center-header-area">
-            
-<div class="center-head-card">
-  <h2 data-i18n="articleList">文章列表</h2>
-  
-    
-<button class="article-count-btn">
-  <span><span data-i18n="totalArticles">共</span> <span id="article-count">4</span> <span data-i18n="articles">篇文章</span></span>
-</button>
-
-
-<style>
-.article-count-btn {
-  font-size: 14px;
-  font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: default;
-  transition: all 0.3s ease;
-}
-</style>
-
-<style>
-.article-count-btn {
-  background-color: var(--common-color-1);
-  border: 2px solid var(--common-color-1);
-  color: white;
-}
-</style>
-  
-</div>
-<hr>
-
-<div class="center-card-content">
-  
-  
-
-  
-    <div class="empty-message">
-      <p>暂无文章</p>
-    </div>
-  
-</div>
-
-<hr>
-
-<div class="pagination-wrapper">
-  
-
-<div class="page-nav-container">
-  <div class="nav-section">
-    <button
-      class="nav-btn prev-btn"
-      disabled
-      
-    >
-      &lt; <span data-i18n="prev">上一页</span>
-    </button>
-  </div>
-
-  <div class="nav-section page-buttons-section">
-    <div class="page-buttons">
-      
-      <button
-        class="page-btn active"
-        onclick="window.location.href='\/'"
-      >
-        1
-      </button>
-      
-    </div>
-  </div>
-
-  <div class="nav-section">
-    <button
-      class="nav-btn next-btn"
-      disabled
-      
-    >
-      <span data-i18n="next">下一页</span> &gt;
-    </button>
-  </div>
-
-  <div class="page-info">
-    <span data-i18n="page">第</span> 1 / 0 <span data-i18n="page">页</span>
-  </div>
-</div>
-
-<style>
-.page-nav-container {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 8px;
-  position: relative;
-  width: 100%;
-}
-
-.nav-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-}
-
-.page-buttons-section {
-  flex-wrap: wrap;
-}
-
-.page-buttons {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.nav-btn {
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
-}
-
-.nav-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.prev-btn, .next-btn {
-  min-width: 100px;
-}
-
-.page-btn {
-  padding: 8px 14px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
-  min-width: 40px;
-}
-
-.page-info {
-  text-align: center;
-  font-size: 14px;
-  width: 100%;
-}
-</style>
-
-<style>
-.nav-btn {
-  border: 1px solid var(--common-color-1);
-  background: var(--common-color-1);
-  color: white;
-}
-
-.page-btn {
-  background: var(--common-color-1);
-  color: white;
-  border: 1px solid var(--common-color-1);
-}
-
-.page-btn.active {
-  background: var(--common-hover);
-  color: white;
-  border-color: var(--common-color-1);
-}
-
-.page-info {
-  color: var(--common-text);
-}
-</style>
-
-<style>
-@media (max-width: 575px) {
-  .page-nav-container {
-    padding: 10px;
-    gap: 10px;
-  }
-
-  .nav-btn {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-
-  .prev-btn, .next-btn {
-    min-width: 80px;
-  }
-
-  .page-btn {
-    padding: 6px 10px;
-    font-size: 13px;
-    min-width: 60px;
-  }
-}
-
-@media (max-width: 768px) {
-  .page-nav-container {
-    padding: 12px;
-    gap: 12px;
-  }
-
-  .nav-btn {
-    padding: 7px 14px;
-    font-size: 13px;
-  }
-
-  .prev-btn, .next-btn {
-    min-width: 90px;
-  }
-
-  .page-btn {
-    padding: 7px 12px;
-    font-size: 13px;
-    min-width: 70px;
-  }
-}
-</style>
-
-</div>
-
-<style>
-.center-head-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  gap: 10px;
-}
-
-.index-center-list-card {
-  width: 100%;
-  height: auto;
-  min-height: 140px;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: 3px solid;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.index-center-list-card:hover {
-  transform: translateY(-5px);
-  border-width: 4px;
-}
-
-.index-center-list-card-header {
-  width: 100%;
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 1.4;
-}
-
-.index-center-list-card-content {
-  width: 100%;
-  font-size: 16px;
-  line-height: 1.5;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.article-meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-
-.meta-item {
-  font-size: 14px;
-  opacity: 0.8;
-}
-
-.date-item {
-  opacity: 0.6;
-}
-
-.loading-message,
-.error-message,
-.empty-message {
-  text-align: center;
-  padding: 50px 0;
-}
-
-.pagination-wrapper {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.index-center-list-card {
-  border-color: var(--common-color-1);
-  background-color: var(--common-bg);
-  transition: border-color 0.3s ease, background-color 0.3s ease;
-}
-
-.index-center-list-card:hover {
-  box-shadow: 0 4px 8px var(--common-shadow);
-}
-
-.index-center-list-card-header {
-  color: var(--common-text);
-}
-
-.index-center-list-card-content {
-  color: var(--common-text);
-}
-
-.meta-item {
-  color: var(--common-text);
-}
-
-.date-item {
-  color: var(--common-text);
-}
-
-.loading-message,
-.error-message,
-.empty-message {
-  color: var(--common-text);
-}
-
-@media (max-width: 575px) {
-  .index-center-list-card {
-    padding: 12px;
-    margin-bottom: 12px;
-    min-height: 130px;
-  }
-
-  .index-center-list-card-header {
-    font-size: 16px;
-  }
-
-  .index-center-list-card-content {
-    font-size: 13px;
-  }
-
-  .article-meta-row {
-    gap: 10px;
-  }
-
-  .meta-item {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .index-center-list-card {
-    padding: 15px;
-    margin-bottom: 15px;
-    min-height: 150px;
-  }
-
-  .index-center-list-card-header {
-    font-size: 18px;
-  }
-
-  .index-center-list-card-content {
-    font-size: 15px;
-  }
-
-  .article-meta-row {
-    gap: 12px;
-  }
-
-  .meta-item {
-    font-size: 14px;
-  }
-}
-</style>
-
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-  <footer class="footer-flex">
-  <div class="footer-S">
-    <nav class="footer-container">
-      <div class="footer-card">
-        
-          <div class="footer-element-card website-age">
-  <span data-i18n="websiteAge">本站已建立</span> <span id="website-age"></span>
-</div>
-
-<script>
-(function() {
-  
-  const siteCreated = '2026-01-01T00:00:00';
-  const startTime = new Date(siteCreated).getTime();
-
-  const padZero = (num) => {
-    return num.toString().padStart(2, '0');
-  };
-
-  const updateAge = () => {
-    const now = Date.now();
-    const diff = now - startTime;
-
-    if (diff < 0) {
-      document.getElementById('website-age').textContent = '即将上线';
-      return;
-    }
-
-    const seconds = Math.floor(diff / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30);
-    const years = Math.floor(months / 12);
-
-    const displayMonths = months % 12;
-    const displayDays = days % 30;
-    const displayHours = hours % 24;
-    const displayMinutes = minutes % 60;
-    const displaySeconds = seconds % 60;
-
-    const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
-    const yearLabel = t ? t['year'] : '年';
-    const monthLabel = t ? t['month'] : '月';
-    const dayLabel = t ? t['day'] : '天';
-    const hourLabel = t ? t['hourShort'] : '时';
-    const minuteLabel = t ? t['minuteShort'] : '分';
-    const secondLabel = t ? t['secondShort'] : '秒';
-    document.getElementById('website-age').textContent =
-      `${years}${yearLabel}${displayMonths}${monthLabel}${displayDays}${dayLabel} ${padZero(displayHours)}${hourLabel}${padZero(displayMinutes)}${minuteLabel}${padZero(displaySeconds)}${secondLabel}`;
-  };
-
-  
-  updateAge();
-  setInterval(updateAge, 1000);
-})();
-</script>
-
-<style>
-.website-age {
-  width: 100%;
-  text-align: center;
-  font-size: 0.9rem;
-}
-</style>
-
-<style>
-.website-age {
-  color: var(--common-content);
-}
-</style>
-
-<style>
-@media (max-width: 768px) {
-  .website-age {
-    text-align: left;
-  }
-}
-</style>
-
-        
-        
-<div class="footer-element-card copyright">
-  <span data-i18n="copyright">©</span> 2026 My Blog <span data-i18n="allRightsReserved">. All rights reserved.</span>
-   · <span data-i18n="customText">🔧 测试自定义文本</span>
-</div>
-
-
-<style>
-.copyright {
-  width: 100%;
-  text-align: center;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-</style>
-
-<style>
-.copyright {
-  color: var(--common-content);
-}
-</style>
-
-<style>
-@media (max-width: 768px) {
-  .copyright {
-    text-align: left;
-  }
-}
-</style>
-
-      </div>
-    </nav>
-  </div>
-</footer>
-
-<style>
-.footer-flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 0;
-}
-
-.footer-S {
-  width: 95%;
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.footer-container {
-  width: 100%;
-}
-
-.footer-card {
-  width: 100%;
-  padding: 15px;
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
-  display: flex;
-  flex-direction: column !important;
-  gap: 10px;
-  align-items: center;
-}
-
-.footer-element-card {
-  width: 80% !important;
-  margin-bottom: 5px !important;;
-  border-radius: 8px;
-  padding: 10px;
-  transition: all 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-</style>
-
-<style>
-.footer-card {
-  background-color: var(--common-bg);
-}
-
-.footer-element-card {
-  background-color: var(--common-color-1);
-}
-</style>
-
-<style>
-@media (max-width: 768px) {
-  .footer-S {
-    height: auto;
-    padding: 20px 0;
-  }
-
-  .footer-card {
-    padding: 10px;
-  }
-
-  .footer-element-card {
-    width: 90%;
-    padding: 8px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .footer-S {
-    height: 190px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .footer-S {
-    height: 200px;
-  }
-}
-
-@media (max-width: 1440px) {
-  .footer-S {
-    max-width: 1400px;
-    height: 210px;
-  }
-}
-</style>
-
 </body>
 </html>

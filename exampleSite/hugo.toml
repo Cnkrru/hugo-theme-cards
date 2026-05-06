@@ -2,7 +2,7 @@
 baseURL = 'https://example.org/'
 languageCode = 'zh-cn'
 title = 'Cards Demo'
-theme = 'cards'
+theme = '.'
 defaultContentLanguage = 'zh-cn'
 
 # ─── 分类法 ────────────────────────────────────────────
