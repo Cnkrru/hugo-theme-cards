@@ -1,0 +1,255 @@
+{{ if .Site.Params.article.pageNav.showPrevNext }}
+<div class="post-nav-container">
+  <button
+    class="post-nav-btn prev {{ if not .PrevInSection }}disabled{{ end }}"
+    {{ if .PrevInSection }}onclick="window.location.href='{{ .PrevInSection.RelPermalink }}'"{{ end }}
+    {{ if not .PrevInSection }}disabled{{ end }}
+  >
+    <span class="post-nav-btn-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </span>
+    <div class="post-nav-btn-text">
+      <span class="post-nav-btn-label" data-i18n="prev">上一篇</span>
+      <span class="post-nav-btn-title">{{ with .PrevInSection }}{{ .LinkTitle }}{{ else }}<span data-i18n="none">暂无</span>{{ end }}</span>
+    </div>
+  </button>
+
+  <button
+    class="post-nav-btn next {{ if not .NextInSection }}disabled{{ end }}"
+    {{ if .NextInSection }}onclick="window.location.href='{{ .NextInSection.RelPermalink }}'"{{ end }}
+    {{ if not .NextInSection }}disabled{{ end }}
+  >
+    <div class="post-nav-btn-text">
+      <span class="post-nav-btn-label" data-i18n="next">下一篇</span>
+      <span class="post-nav-btn-title">{{ with .NextInSection }}{{ .LinkTitle }}{{ else }}<span data-i18n="none">暂无</span>{{ end }}</span>
+    </div>
+    <span class="post-nav-btn-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </span>
+  </button>
+</div>
+
+<script>
+document.addEventListener('keydown', (e) => {
+  {{ if .PrevInSection }}
+  if (e.key === 'ArrowLeft') {
+    window.location.href = '{{ .PrevInSection.RelPermalink }}';
+  }
+  {{ end }}
+  {{ if .NextInSection }}
+  if (e.key === 'ArrowRight') {
+    window.location.href = '{{ .NextInSection.RelPermalink }}';
+  }
+  {{ end }}
+});
+</script>
+
+<style>
+.post-nav-container {
+  position: relative;
+  width: 100%;
+  margin: 30px 0;
+  padding: 8px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  border-radius: 16px;
+}
+
+.post-nav-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 72px;
+  border: none;
+}
+
+.post-nav-btn.prev {
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+.post-nav-btn.next {
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.post-nav-btn-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+}
+
+.post-nav-btn-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.post-nav-btn.prev .post-nav-btn-text {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.post-nav-btn.next .post-nav-btn-text {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.post-nav-btn-label {
+  font-size: 12px;
+  font-weight: 500;
+  opacity: 0.7;
+  letter-spacing: 0.5px;
+}
+
+.post-nav-btn-title {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.post-nav-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.post-nav-btn:not(.disabled):hover .post-nav-btn-icon {
+  transform: scale(1.1);
+}
+
+.post-nav-btn:not(.disabled):hover {
+  transform: translateY(-2px);
+}
+
+.post-nav-btn:not(.disabled):active {
+  transform: translateY(-1px);
+}
+
+.post-nav-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.3);
+}
+</style>
+
+<style>
+.post-nav-container {
+  background: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+}
+
+.post-nav-btn {
+  background-color: var(--common-color-1);
+  border: 2px solid var(--common-color-2);
+  color: var(--common-content);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.post-nav-btn:hover {
+  background-color: var(--common-hover);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.post-nav-btn:not(.disabled):active {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.post-nav-btn-label,
+.post-nav-btn-title {
+  color: var(--common-content);
+}
+</style>
+
+<style>
+@media (max-width: 576px) {
+  .post-nav-container {
+    flex-direction: column;
+    gap: 8px;
+    padding: 6px;
+  }
+
+  .post-nav-btn {
+    padding: 12px 15px;
+    min-height: 60px;
+  }
+
+  .post-nav-btn-label {
+    font-size: 11px;
+  }
+
+  .post-nav-btn-title {
+    font-size: 12px;
+  }
+
+  .post-nav-btn-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 768px) {
+  .post-nav-container {
+    gap: 12px;
+    padding: 6px;
+  }
+
+  .post-nav-btn {
+    padding: 14px 18px;
+    min-height: 68px;
+  }
+
+  .post-nav-btn-label {
+    font-size: 12px;
+  }
+
+  .post-nav-btn-title {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .post-nav-btn {
+    padding: 15px 22px;
+    min-height: 70px;
+  }
+
+  .post-nav-btn-title {
+    font-size: 13.5px;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1440px) {
+  .post-nav-btn {
+    padding: 18px 24px;
+    min-height: 76px;
+  }
+
+  .post-nav-btn-title {
+    font-size: 14.5px;
+  }
+}
+</style>
+
+{{ end }}

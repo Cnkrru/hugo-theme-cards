@@ -1,0 +1,67 @@
+{{- $img := dict "exists" false "permalink" .Destination "resource" nil }}
+{{- $imageValue := .Destination }}
+{{- if $imageValue }}
+    {{- $url := urls.Parse $imageValue }}
+    {{- if or (eq $url.Scheme "http") (eq $url.Scheme "https") }}
+        {{- $img = dict "exists" true "permalink" $imageValue "resource" nil }}
+    {{- else }}
+        {{- $pageResourceImage := .Page.Resources.GetMatch (printf "%s" ($imageValue | safeURL)) }}
+        {{- if $pageResourceImage }}
+            {{- $img = dict "exists" true "permalink" $pageResourceImage.RelPermalink "resource" $pageResourceImage }}
+        {{- else }}
+            {{- $globalResourceImage := resources.GetMatch (printf "%s" ($imageValue | safeURL)) }}
+            {{- if $globalResourceImage }}
+                {{- $img = dict "exists" true "permalink" $globalResourceImage.RelPermalink "resource" $globalResourceImage }}
+            {{- else }}
+                {{- $img = dict "exists" true "permalink" $imageValue "resource" nil }}
+            {{- end }}
+        {{- end }}
+    {{- end }}
+{{- end }}
+
+{{- $alt := plainify .Title -}}
+{{- $title := plainify .Title -}}
+{{- $imageUrl := .Destination -}}
+{{- if $img.exists }}
+    {{- $imageUrl = $img.permalink -}}
+{{- end }}
+
+<a href="{{ $imageUrl | safeURL }}" data-pswp-width="{{ if $img.resource }}{{ $img.resource.Width }}{{ else }}1920{{ end }}" data-pswp-height="{{ if $img.resource }}{{ $img.resource.Height }}{{ else }}1080{{ end }}">
+    <img src="{{ $imageUrl | safeURL }}"
+         {{- with $alt }} alt="{{ . }}" {{ end }}
+         {{- with $title }} title="{{ . }}" {{ end }}
+         {{- if and ($img.exists) (not (eq .Page.Site.Params.imageProcessing.content false)) -}}
+             {{- with $img.resource }}
+                 {{- $srcset := slice -}}
+                 {{- range $size := slice 480 768 1200 1920 }}
+                     {{- if ge .Width . }}
+                         {{- $srcset = $srcset | append (printf "%s %vw" (.Resize (printf "%v w" .)).RelPermalink . ) -}}
+                     {{- end }}
+                 {{- end }}
+                 {{- if gt (len $srcset) 0 }}
+                     srcset="{{ delimit $srcset ", " }}"
+                     sizes="(max-width: 1200px) 100vw, 1200px"
+                 {{- end }}
+                 {{- if ge .Width 768 }}
+                     loading="lazy"
+                 {{- end }}
+             {{- end }}
+         {{- else }}
+             loading="lazy"
+         {{- end }}
+    >
+</a>
+
+{{ if not (.Page.Store.Get "photoswipeLoaded") }}
+{{ .Page.Store.Set "photoswipeLoaded" true }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist/photoswipe.css">
+<script type="module">
+    import PhotoSwipeLightbox from 'https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist/photoswipe-lightbox.esm.min.js';
+    const lightbox = new PhotoSwipeLightbox({
+        gallery: '.post-content',
+        children: 'a[data-pswp-width]',
+        pswpModule: () => import('https://cdn.jsdelivr.net/npm/photoswipe@5.3.4/dist/photoswipe.esm.min.js')
+    });
+    lightbox.init();
+</script>
+{{ end }}

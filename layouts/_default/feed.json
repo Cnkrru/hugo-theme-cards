@@ -1,0 +1,35 @@
+{{- $.Scratch.Set "title" .Site.Title -}}
+{{- $.Scratch.Set "description" .Site.Params.description | default .Site.Title -}}
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "{{ $.Scratch.Get "title" }}",
+  "description": "{{ $.Scratch.Get "description" }}",
+  "homePageUrl": "{{ absURL "/" }}",
+  "feedUrl": "{{ "feed.json" | absURL }}",
+  "language": "{{ .Site.Language.Lang | default "zh-CN" }}",
+  "authors": [
+    {
+      "name": "{{ .Site.Author.name | default .Site.Title }}"
+      {{- with .Site.Author.email -}}
+      ,"url": "mailto:{{ . }}"
+      {{- end -}}
+    }
+  ],
+  "items": [
+    {{- range $index, $item := first 20 .Site.RegularPages -}}
+    {{- if $index -}},{{- end -}}
+    {
+      "title": {{ $item.Title | jsonify }},
+      "url": {{ $item.Permalink | jsonify }},
+      "date_published": {{ $item.Date.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+      "date_modified": {{ $item.Lastmod.Format "2006-01-02T15:04:05Z07:00" | jsonify }},
+      "summary": {{ $item.Summary | jsonify }},
+      "content_text": {{ $item.Plain | jsonify | truncate 500 }},
+      "tags": [{{- range $tagIndex, $tag := $item.Params.tags -}}{{- if $tagIndex -}},{{- end -}}{{ $tag | jsonify }}{{- end -}}]
+      {{- with $item.Params.image -}}
+      ,"image": {{ (. | absURL) | jsonify }}
+      {{- end -}}
+    }
+    {{- end -}}
+  ]
+}

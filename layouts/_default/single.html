@@ -1,0 +1,836 @@
+{{ define "main" }}
+<!-- 中心卡片头部区域 -->
+<div class="center-head-card">
+  <h2>{{ .Title }}</h2>
+  <div class="center-head-card-tools">
+    {{ partial "p-center/back-to-top.html" . }}
+    {{ partial "p-center/post-menu.html" . }}
+    {{ if .Site.Params.article.tocButton.enabled }}
+    <div class="toc-button-container">
+      <button class="toc-button" onclick="toggleToc()" aria-label="显示/隐藏目录" role="button" data-i18n-title="toggleToc">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+          <path d="M3 9h14V7H3v2zm0 4h14v-2H3v2zm0 4h14v-2H3v2zm16 0h2v-2h-2v2zm0-10v2h2V7h-2zm0 6h2v-2h-2v2z"/>
+        </svg>
+        <span class="toc-button-text" data-i18n="tableOfContents">目录</span>
+      </button>
+    </div>
+    {{ end }}
+  </div>
+</div>
+
+{{ partial "p-center/toc.html" . }}
+
+<hr>
+
+<!-- 文章内容区域 -->
+<div class="center-card-content">
+  {{- if .Site.Params.article.page.showReadingTime -}}
+  {{ partial "p-center/reading-time.html" . }}
+  {{- end -}}
+
+  <!-- 文章元信息 -->
+  <div class="post-meta">
+    {{ if .Site.Params.article.pageMeta.showId }}
+    <div class="article-meta-row">
+      <span class="meta-item">ID: {{ .File.ContentBaseName }}</span>
+    </div>
+    {{ end }}
+    {{ if .Site.Params.article.pageMeta.showCategory }}
+    {{ with .Params.categories }}
+    <div class="article-meta-row">
+      <span class="meta-item">分类: {{ delimit . ", " }}</span>
+    </div>
+    {{ end }}
+    {{ end }}
+    {{ if .Site.Params.article.pageMeta.showTags }}
+    {{ with .Params.tags }}
+    <div class="article-meta-row">
+      <span class="meta-item">标签: {{ delimit . ", " }}</span>
+    </div>
+    {{ end }}
+    {{ end }}
+    {{ if .Site.Params.article.pageMeta.showDate }}
+    <div class="article-meta-row">
+      <span class="meta-item date-item">Date: {{ .Date.Format "2006-01-02" }}</span>
+    </div>
+    {{ end }}
+  </div>
+
+  <hr>
+
+  <!-- 文章内容 -->
+  <article class="post-content">
+    {{ .Content }}
+  </article>
+
+  <hr>
+
+  <!-- 社交分享按钮 -->
+  {{ partial "p-center/share-buttons.html" . }}
+
+  <hr>
+
+  <!-- 上一篇/下一篇导航 -->
+  {{ partial "p-center/article-nav.html" . }}
+
+  <hr>
+
+  <!-- 相关文章推荐 -->
+  {{ if .Site.Params.article.page.showRelatedArticles }}
+    {{ partial "p-center/related-articles.html" . }}
+  {{ end }}
+
+  <hr>
+
+  <!-- 页脚版权 -->
+  <div class="read-center-card-footer">
+    <p><span data-i18n="copyright">©</span> {{ now.Year }} {{ site.Title }} <span data-i18n="allRightsReserved">. All rights reserved.</span></p>
+    {{- if .Site.Params.article.license.enabled -}}
+    <p class="article-license">{{ .Site.Params.article.license.default }}</p>
+    {{- end -}}
+  </div>
+
+  <hr>
+
+  <!-- 评论区域 -->
+  {{ if .Site.Params.article.page.showComments }}
+    {{ partial "components-comment/comments.html" . }}
+  {{ end }}
+</div>
+<hr>
+
+<style>
+/* 文章头部工具栏 */
+.center-head-card-tools {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+/* 文章元信息 */
+.post-meta {
+  margin-bottom: 20px;
+}
+
+/* 文章内容区域 */
+.post-content {
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.post-content h1 {
+  font-size: 28px;
+  border-bottom: 2px solid var(--common-color-1);
+  padding-bottom: 8px;
+}
+
+.post-content h2 {
+  font-size: 24px;
+  border-bottom: 1px solid var(--common-color-1);
+  padding-bottom: 6px;
+}
+
+.post-content h3 {
+  font-size: 20px;
+}
+
+.post-content p {
+  margin-bottom: 16px;
+}
+
+.post-content a {
+  color: var(--common-hover);
+  text-decoration: underline;
+}
+
+.post-content a:hover {
+  opacity: 0.8;
+}
+
+.post-content ul,
+.post-content ol {
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+
+.post-content li {
+  margin-bottom: 4px;
+}
+
+.post-content blockquote {
+  border-left: 4px solid var(--common-color-1);
+  padding-left: 16px;
+  margin: 16px 0;
+  color: var(--common-text);
+  opacity: 0.9;
+}
+
+.post-content code {
+  background-color: rgba(58, 170, 231, 0.2);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 14px;
+  color: var(--common-text);
+}
+
+.post-content pre {
+  background-color: #1e1e1e;
+  border: 1px solid var(--common-color-1);
+  border-radius: 8px;
+  padding: 16px;
+  overflow-x: auto;
+  margin-bottom: 16px;
+}
+
+.post-content pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  color: #d4d4d4;
+}
+
+/* Hugo 代码高亮样式 */
+.post-content .highlight {
+  background-color: #1e1e1e;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.post-content .highlight pre {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 16px;
+}
+
+.post-content .highlight code {
+  background: none;
+  color: #d4d4d4;
+}
+
+.post-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 16px 0;
+}
+
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.post-content th,
+.post-content td {
+  border: 1px solid var(--common-color-1);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.post-content th {
+  background-color: var(--common-color-1);
+  opacity: 0.3;
+  font-weight: 600;
+}
+
+/* 文章页脚 */
+.read-center-card-footer {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
+</style>
+
+<style>
+/* Post 页面颜色 */
+.post-content {
+  color: var(--common-text);
+}
+
+.read-center-card-footer {
+  color: var(--common-text);
+}
+</style>
+
+<style>
+/* Post 页面响应式 */
+@media (max-width: 576px) {
+  .center-head-card-tools {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .center-head-card {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .center-head-card h2 {
+    width: 100%;
+    height: auto;
+    font-size: 16px;
+    line-height: 1.4;
+    white-space: normal;
+  }
+
+  .post-content h1 {
+    font-size: 22px;
+  }
+
+  .post-content h2 {
+    font-size: 20px;
+  }
+
+  .post-content h3 {
+    font-size: 18px;
+  }
+
+  .post-content {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .post-content h1 {
+    font-size: 24px;
+  }
+
+  .post-content h2 {
+    font-size: 22px;
+  }
+
+  .post-content h3 {
+    font-size: 19px;
+  }
+}
+</style>
+
+<style>
+/*============================== TOC 目录样式 ==============================*/
+.toc-card {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translate(100%, -50%);
+  width: 280px;
+  max-height: 70vh;
+  border-right: none;
+  border-radius: 12px 0 0 12px;
+  z-index: 999;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
+  box-shadow: -4px 4px 12px var(--common-shadow);
+}
+
+.toc-card.active {
+  transform: translate(0, -50%);
+  box-shadow: -6px 6px 20px var(--common-shadow);
+}
+
+.toc-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--common-color-1);
+  background-color: var(--common-bg);
+}
+
+.toc-card-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  color: var(--common-text);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.toc-item-count {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  color: var(--common-text);
+  border: 1px solid var(--common-color-1);
+}
+
+.toc-close-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  color: var(--common-text);
+}
+
+.toc-close-btn:hover {
+  transform: rotate(90deg);
+  background-color: var(--common-bg);
+}
+
+.toc-card-content {
+  padding: 15px 20px;
+  max-height: calc(70vh - 60px);
+  overflow-y: auto;
+  background-color: var(--common-bg);
+}
+
+.toc-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.toc-item {
+  margin-bottom: 8px;
+  border-radius: 6px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.toc-item a {
+  display: flex;
+  align-items: flex-start;
+  padding: 8px 12px;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  line-height: 1.5;
+  position: relative;
+  overflow: hidden;
+  color: var(--common-text);
+}
+
+.toc-item a:hover {
+  background-color: var(--common-bg);
+  transform: translateX(4px);
+}
+
+.toc-item.active a {
+  background-color: var(--common-bg);
+  color: pink;
+  font-weight: bold;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.toc-item.active a:hover {
+  transform: translateX(0);
+  background-color: var(--common-bg);
+}
+
+.toc-item-number {
+  margin-right: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  min-width: 30px;
+  text-align: right;
+  color: var(--common-text);
+}
+
+.toc-item.active .toc-item-number {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.toc-item-text {
+  flex: 1;
+  word-break: break-word;
+}
+
+.toc-item.level-1 a {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.toc-item.level-2 a {
+  padding-left: 24px;
+  font-size: 14px;
+}
+
+.toc-item.level-3 a {
+  padding-left: 36px;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.toc-item.level-4 a {
+  padding-left: 48px;
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+@keyframes tocSlideIn {
+  from {
+    transform: translate(100%, -50%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(0, -50%);
+    opacity: 1;
+  }
+}
+
+@keyframes tocSlideOut {
+  from {
+    transform: translate(0, -50%);
+    opacity: 1;
+  }
+  to {
+    transform: translate(100%, -50%);
+    opacity: 0;
+  }
+}
+
+.toc-card.active {
+  animation: tocSlideIn 0.3s ease forwards;
+}
+
+.toc-card:not(.active) {
+  animation: tocSlideOut 0.3s ease forwards;
+}
+
+/* TOC 按钮 */
+.toc-button-container {
+  display: flex;
+  align-items: center;
+}
+
+.toc-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.toc-button:hover {
+  transform: translateY(-2px);
+}
+
+.toc-button {
+  background-color: var(--common-color-1);
+  color: var(--common-content);
+  border: 1px solid var(--common-color-1);
+}
+
+.toc-button:hover {
+  background-color: var(--common-hover);
+}
+
+.toc-button svg {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+}
+
+.toc-button svg {
+  fill: var(--common-content);
+}
+
+/* TOC 响应式 */
+@media (max-width: 768px) {
+  .toc-card {
+    width: 240px;
+    max-height: 60vh;
+  }
+
+  .toc-card-header {
+    padding: 12px 16px;
+  }
+
+  .toc-card-header h3 {
+    font-size: 14px;
+  }
+
+  .toc-card-content {
+    padding: 12px 16px;
+    max-height: calc(60vh - 50px);
+  }
+
+  .toc-button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .toc-button svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .toc-item a {
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+
+  .toc-item-number {
+    font-size: 11px;
+    min-width: 25px;
+  }
+
+  .toc-item.level-1 a {
+    font-size: 14px;
+  }
+
+  .toc-item.level-2 a {
+    padding-left: 20px;
+    font-size: 13px;
+  }
+
+  .toc-item.level-3 a {
+    padding-left: 30px;
+    font-size: 12px;
+  }
+
+  .toc-item.level-4 a {
+    padding-left: 40px;
+    font-size: 11px;
+  }
+
+  .toc-item-count {
+    font-size: 10px;
+    padding: 1px 6px;
+  }
+}
+
+@media (max-width: 576px) {
+  .toc-card {
+    width: 220px;
+    max-height: 50vh;
+  }
+
+  .toc-card-header {
+    padding: 10px 14px;
+  }
+
+  .toc-card-header h3 {
+    font-size: 13px;
+  }
+
+  .toc-card-content {
+    padding: 10px 14px;
+    max-height: calc(50vh - 45px);
+  }
+
+  .toc-item a {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .toc-item-number {
+    font-size: 10px;
+    min-width: 20px;
+    margin-right: 6px;
+  }
+
+  .toc-item.level-2 a {
+    padding-left: 16px;
+  }
+
+  .toc-item.level-3 a {
+    padding-left: 24px;
+  }
+
+  .toc-item.level-4 a {
+    padding-left: 32px;
+  }
+}
+</style>
+
+<script>
+let tocData = [];
+let activeId = '';
+let scrollListener = null;
+let resizeListener = null;
+
+const generateHeadingNumber = (index, level, counters) => {
+  counters[level] = (counters[level] || 0) + 1;
+  for (let i = level + 1; i <= 6; i++) {
+    counters[i] = 0;
+  }
+  let number = '';
+  for (let i = 1; i <= level; i++) {
+    if (counters[i]) {
+      number += counters[i] + '.';
+    }
+  }
+  return number.slice(0, -1);
+};
+
+const scanAndProcessHeadings = () => {
+  const contentContainer = document.querySelector('.post-content');
+  if (!contentContainer) return;
+
+  const headings = contentContainer.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  const newToc = [];
+  const counters = {};
+
+  headings.forEach((heading, index) => {
+    const level = parseInt(heading.tagName.substring(1));
+    const text = heading.textContent.trim();
+    const id = 'toc-heading-' + index;
+    heading.id = id;
+    const numbering = generateHeadingNumber(index, level, counters);
+
+    newToc.push({
+      id: id,
+      level: level,
+      text: text,
+      numbering: numbering
+    });
+  });
+
+  tocData = newToc;
+
+  const tocList = document.getElementById('toc-list');
+  const tocItemCount = document.getElementById('toc-item-count');
+
+  if (tocList) {
+    tocList.innerHTML = '';
+    tocData.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'toc-item level-' + item.level;
+      li.id = 'toc-item-' + item.id;
+      li.innerHTML = '<a href="#" onclick="scrollToHeading(event, \'' + item.id + '\')" title="跳转到: ' + item.text + '"><span class="toc-item-number">' + item.numbering + '</span><span class="toc-item-text">' + item.text + '</span></a>';
+      tocList.appendChild(li);
+    });
+  }
+
+  if (tocItemCount) {
+    tocItemCount.textContent = tocData.length + ' 项';
+  }
+};
+
+const scrollToHeading = (event, id) => {
+  if (event) event.preventDefault();
+  const element = document.getElementById(id);
+  if (!element) return;
+
+  const container = document.querySelector('.center-card-content');
+  if (container) {
+    const rect = element.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const relativeTop = rect.top - containerRect.top;
+    container.scrollTo({
+      top: container.scrollTop + relativeTop - 20,
+      behavior: 'smooth'
+    });
+  } else {
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
+};
+
+const detectCurrentPosition = () => {
+  if (tocData.length === 0) return;
+
+  const container = document.querySelector('.center-card-content');
+  if (!container) return;
+
+  let currentId = '';
+  let closestDistance = Infinity;
+
+  for (const item of tocData) {
+    const element = document.getElementById(item.id);
+    if (element) {
+      const rect = element.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      const distance = Math.abs(rect.top - containerRect.top - containerRect.height * 0.3);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        currentId = item.id;
+      }
+    }
+  }
+
+  if (currentId && currentId !== activeId) {
+    activeId = currentId;
+
+    document.querySelectorAll('.toc-item').forEach(item => {
+      item.classList.remove('active');
+    });
+    const activeItem = document.getElementById('toc-item-' + currentId);
+    if (activeItem) {
+      activeItem.classList.add('active');
+      scrollTocToActiveItem(activeItem);
+    }
+  }
+};
+
+const scrollTocToActiveItem = (activeElement) => {
+  const tocContent = document.getElementById('toc-content');
+  if (!tocContent || !activeElement) return;
+
+  const tocRect = tocContent.getBoundingClientRect();
+  const activeRect = activeElement.getBoundingClientRect();
+  const relativeTop = activeRect.top - tocRect.top;
+
+  tocContent.scrollTop = tocContent.scrollTop + relativeTop - tocRect.height / 2;
+};
+
+const toggleToc = () => {
+  const tocCard = document.getElementById('toc-card');
+  if (tocCard) {
+    tocCard.classList.toggle('active');
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
+    scanAndProcessHeadings();
+    detectCurrentPosition();
+  }, 500);
+
+  scrollListener = () => {
+    requestAnimationFrame(detectCurrentPosition);
+  };
+
+  resizeListener = detectCurrentPosition;
+
+  const container = document.querySelector('.center-card-content');
+  if (container) {
+    container.addEventListener('scroll', scrollListener, { passive: true });
+  }
+  window.addEventListener('scroll', scrollListener, { passive: true });
+  window.addEventListener('resize', resizeListener, { passive: true });
+});
+</script>
+
+{{ partial "markup/render-katex.html" . }}
+{{ end }}

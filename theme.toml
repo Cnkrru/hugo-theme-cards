@@ -1,0 +1,13 @@
+name = 'Cards'
+license = 'MIT'
+licenselink = 'https://github.com/Cnkrru/hugo-theme-cards/blob/main/LICENSE'
+description = 'A clean, card-based Hugo theme with multi-language support, dark mode, and customizable colors.'
+homepage = 'https://github.com/Cnkrru/hugo-theme-cards'
+demosite = 'https://hugo-theme-cards.netlify.app'
+tags = ['blog', 'responsive', 'multilingual', 'dark mode', 'cards', 'clean']
+features = ['multilingual', 'search', 'comments', 'dark mode', 'customizable colors']
+min_version = '0.115.0'
+
+[author]
+  name = 'Cnkrru'
+  homepage = 'https://github.com/Cnkrru'

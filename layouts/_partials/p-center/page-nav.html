@@ -1,0 +1,175 @@
+{{/* 分页导航 - 使用传入的 paginator */}}
+{{ $paginator := . }}
+<div class="page-nav-container">
+  <div class="nav-section">
+    <button
+      class="nav-btn prev-btn"
+      {{ if not $paginator.HasPrev }}disabled{{ end }}
+      {{ if $paginator.HasPrev }}onclick="window.location.href='{{ $paginator.Prev.URL }}'"{{ end }}
+    >
+      &lt; <span data-i18n="prev">上一页</span>
+    </button>
+  </div>
+
+  <div class="nav-section page-buttons-section">
+    <div class="page-buttons">
+      {{ range $paginator.Pagers }}
+      <button
+        class="page-btn{{ if eq . $paginator }} active{{ end }}"
+        onclick="window.location.href='{{ .URL }}'"
+      >
+        {{ .PageNumber }}
+      </button>
+      {{ end }}
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <button
+      class="nav-btn next-btn"
+      {{ if not $paginator.HasNext }}disabled{{ end }}
+      {{ if $paginator.HasNext }}onclick="window.location.href='{{ $paginator.Next.URL }}'"{{ end }}
+    >
+      <span data-i18n="next">下一页</span> &gt;
+    </button>
+  </div>
+
+  <div class="page-info">
+    <span data-i18n="page">第</span> {{ $paginator.PageNumber }} / {{ $paginator.TotalPages }} <span data-i18n="page">页</span>
+  </div>
+</div>
+
+<style>
+.page-nav-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  position: relative;
+  width: 100%;
+}
+
+.nav-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.page-buttons-section {
+  flex-wrap: wrap;
+}
+
+.page-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-btn {
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.prev-btn, .next-btn {
+  min-width: 100px;
+}
+
+.page-btn {
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  min-width: 40px;
+}
+
+.page-info {
+  text-align: center;
+  font-size: 14px;
+  width: 100%;
+}
+</style>
+
+<style>
+.nav-btn {
+  border: 1px solid var(--common-color-1);
+  background: var(--common-color-1);
+  color: white;
+}
+
+.page-btn {
+  background: var(--common-color-1);
+  color: white;
+  border: 1px solid var(--common-color-1);
+}
+
+.page-btn.active {
+  background: var(--common-hover);
+  color: white;
+  border-color: var(--common-color-1);
+}
+
+.page-info {
+  color: var(--common-text);
+}
+</style>
+
+<style>
+@media (max-width: 575px) {
+  .page-nav-container {
+    padding: 10px;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .prev-btn, .next-btn {
+    min-width: 80px;
+  }
+
+  .page-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+    min-width: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-nav-container {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .nav-btn {
+    padding: 7px 14px;
+    font-size: 13px;
+  }
+
+  .prev-btn, .next-btn {
+    min-width: 90px;
+  }
+
+  .page-btn {
+    padding: 7px 12px;
+    font-size: 13px;
+    min-width: 70px;
+  }
+}
+</style>

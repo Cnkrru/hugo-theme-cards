@@ -1,0 +1,156 @@
+<div class="mobile-menu-container">
+  <div class="button-style mobile-menu-toggle" id="mobile-menu-toggle" onclick="toggleMobileMenu()">
+    <img src="/images/svg/order.svg" alt="菜单">
+  </div>
+</div>
+
+<div class="mobile-sidebar-overlay" id="mobile-menu-overlay" onclick="handleMobileOverlayClick(event)"></div>
+
+<aside class="mobile-sidebar" id="mobile-sidebar">
+  <div class="mobile-sidebar-card">
+    {{ if in .Site.Params.mobile.sidebarWidgets.widgets "avatar" }}
+      {{ partial "p-sidebar/avatar.html" . }}
+    {{ end }}
+    {{ if in .Site.Params.mobile.sidebarWidgets.widgets "welcome" }}
+      {{ partial "p-sidebar/welcome-saying.html" . }}
+    {{ end }}
+    {{ if in .Site.Params.mobile.sidebarWidgets.widgets "links" }}
+      {{ partial "p-sidebar/page-links.html" . }}
+    {{ end }}
+  </div>
+</aside>
+
+<script>
+const toggleMobileMenu = () => {
+  const overlay = document.getElementById('mobile-menu-overlay');
+  const sidebar = document.getElementById('mobile-sidebar');
+  const isOpen = overlay.classList.toggle('active');
+  sidebar.classList.toggle('active', isOpen);
+  document.body.style.overflow = isOpen ? 'hidden' : '';
+}
+
+const closeMobileMenu = () => {
+  const overlay = document.getElementById('mobile-menu-overlay');
+  const sidebar = document.getElementById('mobile-sidebar');
+  overlay.classList.remove('active');
+  sidebar.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+const handleMobileOverlayClick = (event) => {
+  if (event.target.id === 'mobile-menu-overlay') {
+    closeMobileMenu();
+  }
+}
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    closeMobileMenu();
+  }
+});
+</script>
+
+<style>
+.mobile-menu-container {
+  display: none;
+}
+
+.mobile-menu-toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.mobile-sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  display: none;
+}
+
+.mobile-sidebar-overlay.active {
+  display: block;
+}
+
+.mobile-sidebar {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 280px;
+  height: 100%;
+  z-index: 1000;
+  transition: left 0.3s ease;
+  overflow-y: auto;
+  overflow-x: hidden;
+  display: flex;
+}
+
+.mobile-sidebar.active {
+  left: 0;
+}
+
+.mobile-sidebar-card {
+  width: 100%;
+  height: auto;
+  padding: 20px;
+  margin-top: 60px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+</style>
+
+<style>
+.mobile-sidebar-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.mobile-sidebar-card {
+  background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
+}
+
+.mobile-sidebar {
+  background: var(--common-bg);
+  box-shadow: 2px 0 15px var(--common-shadow);
+}
+</style>
+
+<style>
+@media (max-width: 576px) {
+  .mobile-menu-container {
+    display: block;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-container {
+    display: block;
+  }
+
+  .mobile-menu-toggle {
+    display: flex;
+    padding: 8px;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-menu-container,
+  .mobile-sidebar,
+  .mobile-sidebar-overlay {
+    display: none !important;
+  }
+}
+</style>

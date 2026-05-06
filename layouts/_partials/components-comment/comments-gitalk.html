@@ -1,0 +1,106 @@
+{{- if .Site.Params.comments.enabled -}}
+{{- if eq .Site.Params.comments.provider "gitalk" -}}
+<div class="comment-section">
+  <div class="comment-header">
+    <h3>评论</h3>
+  </div>
+  <div id="gitalk-container" class="comment-container"></div>
+</div>
+
+<style>
+.comment-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comment-section:hover {
+  transform: translateY(-2px);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.comment-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, var(--common-color-1), var(--common-color-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.comment-container {
+  width: 100%;
+  min-height: 300px;
+}
+
+@media (max-width: 576px) {
+  .comment-section {
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+
+  .comment-header h3 {
+    font-size: 1.1rem;
+  }
+}
+</style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" />
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.18.0/js/md5.min.js"></script>
+<script>
+  const gitalk = new Gitalk({
+    clientID: "{{ .Site.Params.comments.gitalk.clientID }}",
+    clientSecret: "{{ .Site.Params.comments.gitalk.clientSecret }}",
+    repo: "{{ .Site.Params.comments.gitalk.repo }}",
+    owner: "{{ .Site.Params.comments.gitalk.owner }}",
+    admin: ["{{ .Site.Params.comments.gitalk.admin }}"],
+    distractionFreeMode: false,
+    id: md5(location.pathname),
+    {{- with .Site.Params.comments.gitalk.proxy }}
+    proxy: '{{ . }}',
+    {{- end }}
+  });
+
+  (function() {
+    const excludedHosts = ["localhost", "127.0.0.1"];
+    const hostname = window.location.hostname;
+
+    if (excludedHosts.includes(hostname)) {
+      document.getElementById("gitalk-container").innerHTML =
+        "<div style='text-align: center; padding: 20px; color: var(--common-text);'>Gitalk 评论系统在本地预览时不可用</div>";
+      return;
+    }
+    gitalk.render("gitalk-container");
+  })();
+
+  // 监听主题变化
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+        // Gitalk 不支持动态主题切换，需要重新渲染
+        const container = document.getElementById('gitalk-container');
+        if (container) {
+          container.innerHTML = '';
+          gitalk.render('gitalk-container');
+        }
+      }
+    });
+  });
+
+  observer.observe(document.body, { attributes: true });
+</script>
+{{- end -}}
+{{- end -}}

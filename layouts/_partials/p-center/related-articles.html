@@ -1,0 +1,338 @@
+{{ $currentPage := . }}
+{{ $currentCategory := .Params.category }}
+{{ $allPages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+
+{{ $related := slice }}
+
+{{ if $currentCategory }}
+  {{ range $allPages }}
+    {{ if and (eq .Params.category $currentCategory) (ne .Permalink $currentPage.Permalink) }}
+      {{ if lt (len $related) 3 }}
+        {{ $related = $related | append . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if eq (len $related) 0 }}
+  {{ $currentIndex := -1 }}
+  {{ range $index, $page := $allPages }}
+    {{ if eq $page.Permalink $currentPage.Permalink }}
+      {{ $currentIndex = $index }}
+    {{ end }}
+  {{ end }}
+
+  {{ if ge $currentIndex 0 }}
+    {{ if gt $currentIndex 0 }}
+      {{ $prevPage := index $allPages (sub $currentIndex 1) }}
+      {{ $related = $related | append $prevPage }}
+    {{ end }}
+    {{ if lt $currentIndex (sub (len $allPages) 1) }}
+      {{ $nextPage := index $allPages (add $currentIndex 1) }}
+      {{ $related = $related | append $nextPage }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+
+
+<!-- html代码部分 -->
+{{ if gt (len $related) 0 }}
+{{ if .Site.Params.article.related.enabled }}
+<div class="related-articles-wrapper">
+  <div class="related-articles-container">
+    <h3 class="related-articles-title">{{ .Site.Params.article.related.title | default "相关文章推荐" }}</h3>
+    <div class="related-articles-list">
+      {{ range $index, $article := $related }}
+      <div class="related-article-item" style="animation-delay: {{ mul $index 0.05 }}s;">
+        <a href="{{ $article.Permalink }}" class="related-article-link">
+          <div class="related-article-content">
+            {{ if $article.Params.category }}
+            <span class="related-article-category">{{ $article.Params.category }}</span>
+            {{ end }}
+            <div class="related-article-title">{{ $article.Title }}</div>
+            <div class="related-article-meta">
+              <span class="related-article-date">{{ $article.Date.Format "2006-01-02" }}</span>
+              {{ if $article.Params.tags }}
+              <span class="related-article-tags">
+                {{ range first 2 $article.Params.tags }}
+                <span class="tag">{{ . }}</span>
+                {{ end }}
+              </span>
+              {{ end }}
+            </div>
+          </div>
+          <span class="related-article-arrow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </span>
+        </a>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</div>
+
+<style>
+/* ===== 基础样式 ===== */
+.related-articles-wrapper {
+    width: 100%;
+    margin: 20px 0;
+}
+
+.related-articles-container {
+    width: 100%;
+    padding: 15px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.related-articles-title {
+    margin: 0 0 15px 0;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.related-articles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.related-article-item {
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    animation: fadeInUp 0.3s ease forwards;
+    opacity: 0;
+}
+
+.related-article-item:nth-child(1) { animation-delay: 0.05s; }
+.related-article-item:nth-child(2) { animation-delay: 0.1s; }
+.related-article-item:nth-child(3) { animation-delay: 0.15s; }
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.related-article-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.related-article-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+
+.related-article-category {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+.related-article-title {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.related-article-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 12px;
+}
+
+.related-article-date {
+    flex-shrink: 0;
+}
+
+.related-article-tags {
+    display: flex;
+    gap: 4px;
+}
+
+.related-article-tags .tag {
+    padding: 1px 6px;
+    font-size: 10px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.related-article-arrow {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.related-article-arrow svg {
+    width: 100%;
+    height: 100%;
+}
+
+.related-article-link:hover .related-article-arrow {
+    transform: translateX(4px);
+}
+</style>
+
+<style>
+/* ===== 颜色相关样式 ===== */
+.related-articles-container {
+    background-color: var(--common-bg);
+    border: 2px solid var(--common-color-1);
+}
+
+.related-articles-title {
+    color: var(--common-text);
+}
+
+.related-article-link {
+    color: var(--common-text);
+}
+
+.related-article-link:hover {
+    background-color: var(--common-hover);
+}
+
+.related-article-category {
+    color: white;
+    background-color: var(--common-color-1);
+}
+
+.related-article-title {
+    color: var(--common-text);
+}
+
+.related-article-link:hover .related-article-title {
+    color: var(--common-text);
+}
+
+.related-article-meta {
+    color: var(--common-text);
+}
+
+.related-article-tags .tag {
+    background-color: var(--common-bg);
+    color: var(--common-text);
+}
+
+.related-article-link:hover .tag {
+    background-color: var(--common-color-1);
+    color: white;
+}
+
+.related-article-arrow {
+    color: var(--common-text);
+}
+
+.related-article-link:hover .related-article-arrow {
+    color: var(--common-text);
+}
+</style>
+
+<style>
+/* ===== 媒体查询 ===== */
+@media (max-width: 575px) {
+    .related-articles-container {
+        padding: 12px;
+        margin: 15px 0;
+    }
+
+    .related-articles-title {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .related-article-link {
+        padding: 8px;
+    }
+
+    .related-article-title {
+        font-size: 13px;
+    }
+
+    .related-article-meta {
+        font-size: 11px;
+        flex-wrap: wrap;
+    }
+
+    .related-article-arrow {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+@media (max-width: 576px) {
+    .related-articles-container {
+        padding: 13px;
+        margin: 18px 0;
+    }
+
+    .related-articles-title {
+        font-size: 15px;
+        margin-bottom: 13px;
+    }
+
+    .related-article-link {
+        padding: 9px;
+    }
+
+    .related-article-title {
+        font-size: 13.5px;
+    }
+
+    .related-article-meta {
+        font-size: 11.5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .related-articles-container {
+        padding: 15px;
+        margin: 20px 0;
+    }
+
+    .related-articles-title {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    .related-article-link {
+        padding: 10px;
+    }
+
+    .related-article-title {
+        font-size: 14px;
+    }
+
+    .related-article-meta {
+        font-size: 12px;
+    }
+}
+</style>
+{{ end }}
+{{ end }}

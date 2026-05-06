@@ -1,0 +1,112 @@
+<aside class="left-asider-S">
+  <div class="left-asider-container">
+    <div class="left-asider-card">
+      {{ if in .Site.Params.widgets.sidebar.widgets "avatar" }}
+        {{ partial "p-sidebar/avatar.html" . }}
+      {{ end }}
+      {{ if in .Site.Params.widgets.sidebar.widgets "welcome" }}
+        {{ partial "p-sidebar/welcome-saying.html" . }}
+      {{ end }}
+      {{ if in .Site.Params.widgets.sidebar.widgets "links" }}
+        {{ partial "p-sidebar/page-links.html" . }}
+      {{ end }}
+    </div>
+  </div>
+</aside>
+
+<style>
+.left-asider-S {
+  width: 15%;
+  height: 100%;
+  display: flex;
+  position: static;
+}
+
+.left-asider-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.left-asider-card {
+  width: 200px;
+  height: 600px;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+</style>
+
+<style>
+.left-asider-card {
+  background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
+}
+</style>
+
+<style>
+@media (max-width: 576px) {
+  .left-asider-S {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .left-asider-S {
+    display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .left-asider-S {
+    position: static;
+    width: 20%;
+    height: fit-content;
+    padding: 0;
+    left: 0;
+    box-shadow: none;
+    background: transparent;
+    align-self: flex-start;
+  }
+
+  .left-asider-container {
+    width: 100%;
+  }
+
+  .left-asider-card {
+    width: 180px;
+    height: 600px;
+    margin-top: 0;
+    border-radius: 8px;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .left-asider-S {
+    width: 18%;
+    padding: 0;
+  }
+
+  .left-asider-card {
+    width: 200px;
+    height: 650px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .left-asider-card {
+    width: 210px;
+    height: 600px;
+    border-radius: 8px;
+  }
+}
+</style>

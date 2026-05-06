@@ -1,0 +1,74 @@
+<div class="footer-element-card website-age">
+  <span data-i18n="websiteAge">本站已建立</span> <span id="website-age"></span>
+</div>
+
+<script>
+(function() {
+  // 从配置中读取站点创建时间
+  const siteCreated = '{{ .Site.Params.footer.since | default "2026-03-28T12:00:00" }}';
+  const startTime = new Date(siteCreated).getTime();
+
+  const padZero = (num) => {
+    return num.toString().padStart(2, '0');
+  };
+
+  const updateAge = () => {
+    const now = Date.now();
+    const diff = now - startTime;
+
+    if (diff < 0) {
+      document.getElementById('website-age').textContent = '即将上线';
+      return;
+    }
+
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(months / 12);
+
+    const displayMonths = months % 12;
+    const displayDays = days % 30;
+    const displayHours = hours % 24;
+    const displayMinutes = minutes % 60;
+    const displaySeconds = seconds % 60;
+
+    const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+    const yearLabel = t ? t['year'] : '年';
+    const monthLabel = t ? t['month'] : '月';
+    const dayLabel = t ? t['day'] : '天';
+    const hourLabel = t ? t['hourShort'] : '时';
+    const minuteLabel = t ? t['minuteShort'] : '分';
+    const secondLabel = t ? t['secondShort'] : '秒';
+    document.getElementById('website-age').textContent =
+      `${years}${yearLabel}${displayMonths}${monthLabel}${displayDays}${dayLabel} ${padZero(displayHours)}${hourLabel}${padZero(displayMinutes)}${minuteLabel}${padZero(displaySeconds)}${secondLabel}`;
+  };
+
+  // 初始化并启动定时器
+  updateAge();
+  setInterval(updateAge, 1000);
+})();
+</script>
+
+<style>
+.website-age {
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+}
+</style>
+
+<style>
+.website-age {
+  color: var(--common-content);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .website-age {
+    text-align: left;
+  }
+}
+</style>

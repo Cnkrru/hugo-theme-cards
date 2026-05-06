@@ -1,0 +1,44 @@
+<div class="logo-card">
+  <h1><a href="{{ absLangURL "/" }}" data-i18n="siteTitle">{{ .Site.Params.header.logo.text | default .Site.Title }}</a></h1>
+</div>
+
+<style>
+.logo-card {
+  width: auto;
+  height: 100%;
+  padding: 0 0 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo-card h1 {
+  font-size: 24px;
+  font-family: "{{ .Site.Params.header.logo.font | default "Microsoft YaHei" }}", sans-serif;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.logo-card h1 a {
+  text-decoration: none;
+}
+</style>
+
+<style>
+.logo-card h1 a {
+  color: var(--common-color-1);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .logo-card {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .logo-card h1 {
+    font-size: 20px;
+  }
+}
+</style>

@@ -1,0 +1,38 @@
+{{- if .Site.Params.analytics.enabled -}}
+{{- $provider := .Site.Params.analytics.provider | default "google" -}}
+
+{{- if eq $provider "google" -}}
+<!-- Google Analytics -->
+{{- with .Site.Params.analytics.google.trackingID -}}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', '{{ . }}');
+</script>
+{{- end -}}
+
+{{- else if eq $provider "vercel" -}}
+<!-- Vercel Analytics -->
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+{{- else if eq $provider "baidu" -}}
+<!-- Baidu Analytics -->
+{{- with .Site.Params.analytics.baidu.trackingID -}}
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?{{ . }}";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+{{- end -}}
+
+{{- end -}}
+{{- end -}}

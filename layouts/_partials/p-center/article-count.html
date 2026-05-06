@@ -1,0 +1,28 @@
+{{ if .Site.Params.homepage.articleCountBtn.enabled }}
+<button class="article-count-btn">
+{{ $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+  <span><span data-i18n="totalArticles">共</span> <span id="article-count">{{ len $pages }}</span> <span data-i18n="articles">篇文章</span></span>
+</button>
+{{ end }}
+
+<style>
+.article-count-btn {
+  font-size: 14px;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+  transition: all 0.3s ease;
+}
+</style>
+
+<style>
+.article-count-btn {
+  background-color: var(--common-color-1);
+  border: 2px solid var(--common-color-1);
+  color: var(--common-content);
+}
+</style>

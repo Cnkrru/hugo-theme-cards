@@ -1,0 +1,101 @@
+<div
+  class="button-style theme-toggle-btn"
+  onclick="toggleTheme()"
+  aria-label="切换主题"
+  role="button"
+  tabindex="0"
+  onkeydown="if(event.key === 'Enter' || event.key === ' ') toggleTheme()"
+  title="点击切换主题"
+>
+  <img src="/images/svg/theme-toggle.svg" alt="" id="theme-toggle-icon">
+</div>
+
+<script>
+(function() {
+  const STORAGE_KEY = 'CardsColorScheme';
+
+  const getSavedScheme = function() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'light' || saved === 'dark' || saved === 'auto') {
+      return saved;
+    }
+    return 'auto';
+  };
+
+  const getSystemScheme = function() {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      return 'dark';
+    }
+    return 'light';
+  };
+
+  const isDark = function(scheme, systemScheme) {
+    return scheme === 'dark' || (scheme === 'auto' && systemScheme === 'dark');
+  };
+
+  const applyScheme = function(scheme, systemScheme) {
+    const actualScheme = isDark(scheme, systemScheme) ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-scheme', actualScheme);
+
+    // 同时更新 body class 保持兼容性
+    if (actualScheme === 'dark') {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
+
+    // 触发自定义事件
+    window.dispatchEvent(new CustomEvent('onColorSchemeChange', {
+      detail: actualScheme
+    }));
+  };
+
+  // 初始化
+  const initScheme = function() {
+    const scheme = getSavedScheme();
+    const systemScheme = getSystemScheme();
+    applyScheme(scheme, systemScheme);
+  };
+
+  // 页面加载时立即执行，防止闪烁
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initScheme);
+  } else {
+    initScheme();
+  }
+
+  // 监听系统主题变化
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+    const scheme = getSavedScheme();
+    if (scheme === 'auto') {
+      const systemScheme = e.matches ? 'dark' : 'light';
+      applyScheme('auto', systemScheme);
+    }
+  });
+
+  // 全局切换函数
+  window.toggleTheme = function() {
+    const currentScheme = getSavedScheme();
+    const systemScheme = getSystemScheme();
+    let newScheme;
+
+    // 切换逻辑: auto -> light -> dark -> auto (循环)
+    // 或者基于当前实际显示状态切换
+    const currentActual = isDark(currentScheme, systemScheme) ? 'dark' : 'light';
+
+    if (currentActual === 'dark') {
+      newScheme = 'light';
+    } else {
+      newScheme = 'dark';
+    }
+
+    // 如果新选择和系统一致，则保存为 auto
+    if (newScheme === systemScheme) {
+      newScheme = 'auto';
+    }
+
+    localStorage.setItem(STORAGE_KEY, newScheme);
+    applyScheme(newScheme, systemScheme);
+  };
+})();
+</script>

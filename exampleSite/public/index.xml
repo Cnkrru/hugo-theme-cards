@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My Blog</title>
+    <link>https://example.com/</link>
+    <description>A blog built with Hugo Cards theme</description>
+    <atom:link href="https://example.com/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 May 2026 03:10:41 GMT</lastBuildDate>
+    <language>zh-CN</language>
+
+    
+    <item>
+      <title>About</title>
+      <link>https://example.com/about/</link>
+      <description>About Me Write something about yourself here.
+</description>
+      <pubDate>Thu, 01 Jan 2026 00:00:00 GMT</pubDate>
+      <guid>https://example.com/about/</guid>
+    </item>
+    
+    <item>
+      <title>Archives</title>
+      <link>https://example.com/archives/</link>
+      <description>Article archives page.
+</description>
+      <pubDate>Thu, 01 Jan 2026 00:00:00 GMT</pubDate>
+      <guid>https://example.com/archives/</guid>
+    </item>
+    
+    <item>
+      <title>Links</title>
+      <link>https://example.com/links/</link>
+      <description>Friend Links Example - Description </description>
+      <pubDate>Thu, 01 Jan 2026 00:00:00 GMT</pubDate>
+      <guid>https://example.com/links/</guid>
+    </item>
+    
+    <item>
+      <title>Tags</title>
+      <link>https://example.com/tags/</link>
+      <description>Tags cloud page.
+</description>
+      <pubDate>Thu, 01 Jan 2026 00:00:00 GMT</pubDate>
+      <guid>https://example.com/tags/</guid>
+    </item>
+    
+  </channel>
+</rss>

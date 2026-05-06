@@ -1,0 +1,499 @@
+{{ if and .Site.Params.search.enable (eq .Site.Params.search.mode "advanced") }}
+<div class="search-wrapper">
+  <div class="search-card search-container">
+    <input type="text" placeholder="{{ or .Site.Params.search.placeholder "搜索" }}" id="header-search-input-advanced">
+  </div>
+  <div id="search-results-panel-advanced" class="search-results" style="display: none;">
+    <div id="search-empty-advanced" class="search-empty" style="display: none;">
+      搜索: "<span id="search-query-advanced"></span>" - 未找到结果
+    </div>
+
+    <div id="search-content-advanced" style="display: none;">
+      <div class="search-counter">
+        <span id="search-count-advanced">0</span> 个结果
+        <span class="search-time">(<span id="search-time-advanced">0</span>ms)</span>
+      </div>
+      <div id="search-results-list-advanced"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+.search-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 400px;
+  min-width: 120px;
+}
+
+.search-card {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.search-card input {
+  width: 100%;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: color 0.3s ease;
+}
+
+.search-results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  max-height: 400px;
+  width: 100%;
+  border-radius: 8px;
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+.search-empty {
+  padding: 16px;
+  text-align: center;
+}
+
+.search-counter {
+  padding: 8px 16px;
+  font-size: 12px;
+}
+
+.search-time {
+  margin-left: 4px;
+  opacity: 0.7;
+}
+
+.search-result-item {
+  padding: 12px 16px;
+  transition: background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.result-title {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.result-meta {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.result-score {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+.result-tags {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.result-tags .tag {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  margin-right: 4px;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .search-results {
+    max-height: 60vh;
+  }
+}
+</style>
+
+<style>
+.search-card {
+  border: 2px solid var(--common-color-1);
+  background-color: var(--common-bg);
+}
+
+.search-card input {
+  color: var(--common-text);
+  background-color: transparent;
+}
+
+.search-results {
+  background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
+}
+
+.search-empty {
+  color: var(--common-text);
+}
+
+.search-counter {
+  color: var(--common-text);
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.search-result-item {
+  background-color: var(--common-bg);
+  color: var(--common-text);
+}
+
+.search-result-item:hover {
+  background-color: var(--common-hover);
+}
+
+.result-title {
+  color: var(--common-text);
+}
+
+.result-meta {
+  color: var(--common-text);
+}
+
+.result-score {
+  color: var(--common-text);
+}
+
+.result-tags .tag {
+  background-color: var(--common-color-1);
+  color: var(--common-text);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .search-card {
+    width: 80%;
+    max-width: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  .search-card {
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .search-card {
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .search-card {
+    max-width: 600px;
+  }
+}
+</style>
+
+<script>
+class AdvancedSearch {
+  constructor() {
+    this.searchData = null;
+    this.invertedIndex = null;
+    this.cache = new Map();
+    this.cacheMaxSize = 200;
+    this.searchInput = document.getElementById('header-search-input-advanced');
+    this.searchResultsPanel = document.getElementById('search-results-panel-advanced');
+
+    this.init();
+  }
+
+  async init() {
+    await this.loadData();
+    this.buildInvertedIndex();
+    this.bindEvents();
+  }
+
+  async loadData() {
+    try {
+      if (window.searchIndexData) {
+        this.searchData = window.searchIndexData;
+      } else {
+        const response = await fetch('/index.json');
+        if (!response.ok) {
+          throw new Error('HTTP ' + response.status);
+        }
+        this.searchData = await response.json();
+      }
+    } catch (err) {
+      console.error('Failed to load search data:', err);
+      this.searchData = [];
+    }
+  }
+
+  buildInvertedIndex() {
+    this.invertedIndex = new Map();
+
+    this.searchData.forEach((doc, docIndex) => {
+      const text = `${doc.title} ${doc.content || ''} ${(doc.tags || []).join(' ')} ${doc.category || ''}`;
+      const tokens = this.tokenize(text);
+
+      tokens.forEach(token => {
+        if (!this.invertedIndex.has(token)) {
+          this.invertedIndex.set(token, new Set());
+        }
+        this.invertedIndex.get(token).add(docIndex);
+      });
+    });
+  }
+
+  tokenize(text) {
+    if (!text) return [];
+    return text.toLowerCase()
+      .replace(/[^\u4e00-\u9fa5a-z0-9\s]/g, ' ')
+      .split(/\s+/)
+      .filter(token => token.length > 0);
+  }
+
+  calculateScore(query, doc) {
+    let score = 0;
+    const queryTokens = this.tokenize(query);
+    const titleTokens = this.tokenize(doc.title);
+    const contentTokens = this.tokenize(doc.content);
+    const tagTokens = (doc.tags || []).map(t => t.toLowerCase());
+    const categoryToken = (doc.category || '').toLowerCase();
+
+    queryTokens.forEach(queryToken => {
+      titleTokens.forEach(titleToken => {
+        if (titleToken === queryToken) {
+          score += 10;
+        } else if (titleToken.includes(queryToken)) {
+          score += 5;
+        }
+      });
+
+      tagTokens.forEach(tagToken => {
+        if (tagToken === queryToken) {
+          score += 8;
+        } else if (tagToken.includes(queryToken)) {
+          score += 4;
+        }
+      });
+
+      if (categoryToken === queryToken) {
+        score += 6;
+      } else if (categoryToken.includes(queryToken)) {
+        score += 3;
+      }
+
+      contentTokens.forEach(contentToken => {
+        if (contentToken === queryToken) {
+          score += 2;
+        } else if (contentToken.includes(queryToken)) {
+          score += 1;
+        }
+      });
+    });
+
+    return score;
+  }
+
+  search(query) {
+    const startTime = performance.now();
+    const cacheKey = query.trim().toLowerCase();
+
+    if (this.cache.has(cacheKey)) {
+      const cached = this.cache.get(cacheKey);
+      return {
+        results: cached.results,
+        time: performance.now() - startTime,
+        fromCache: true
+      };
+    }
+
+    if (!query || query.trim() === '' || !this.searchData) {
+      return { results: [], time: 0, fromCache: false };
+    }
+
+    const queryTokens = this.tokenize(query);
+    if (queryTokens.length === 0) {
+      return { results: [], time: 0, fromCache: false };
+    }
+
+    let candidateDocs = new Set();
+    queryTokens.forEach(token => {
+      if (this.invertedIndex.has(token)) {
+        this.invertedIndex.get(token).forEach(docIndex => {
+          candidateDocs.add(docIndex);
+        });
+      }
+    });
+
+    if (candidateDocs.size === 0) {
+      this.searchData.forEach((_, index) => candidateDocs.add(index));
+    }
+
+    const results = [];
+    candidateDocs.forEach(docIndex => {
+      const doc = this.searchData[docIndex];
+      const score = this.calculateScore(query, doc);
+      if (score > 0) {
+        results.push({
+          item: doc,
+          score: score
+        });
+      }
+    });
+
+    results.sort((a, b) => b.score - a.score);
+
+    const limitedResults = results.slice(0, 20);
+
+    this.setCache(cacheKey, limitedResults);
+
+    const endTime = performance.now();
+    return {
+      results: limitedResults,
+      time: endTime - startTime,
+      fromCache: false
+    };
+  }
+
+  setCache(key, results) {
+    if (this.cache.size >= this.cacheMaxSize) {
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+    this.cache.set(key, { results, timestamp: Date.now() });
+  }
+
+  escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  highlightMatch(text, query) {
+    if (!query || !text) return text;
+    const escapedQuery = this.escapeHtml(query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const regex = new RegExp('(' + escapedQuery + ')', 'gi');
+    return text.replace(regex, '<mark>$1</mark>');
+  }
+
+  displayResults(searchResult, query) {
+    const panel = document.getElementById('search-results-panel-advanced');
+    const emptyDiv = document.getElementById('search-empty-advanced');
+    const contentDiv = document.getElementById('search-content-advanced');
+    const countSpan = document.getElementById('search-count-advanced');
+    const timeSpan = document.getElementById('search-time-advanced');
+    const listDiv = document.getElementById('search-results-list-advanced');
+    const querySpan = document.getElementById('search-query-advanced');
+
+    if (!panel) return;
+
+    const { results, time, fromCache } = searchResult;
+
+    panel.style.display = 'block';
+
+    if (results.length === 0) {
+      emptyDiv.style.display = 'block';
+      contentDiv.style.display = 'none';
+      if (querySpan) querySpan.textContent = this.escapeHtml(query);
+    } else {
+      emptyDiv.style.display = 'none';
+      contentDiv.style.display = 'block';
+      if (countSpan) countSpan.textContent = results.length;
+      if (timeSpan) timeSpan.textContent = time.toFixed(2);
+
+      if (listDiv) {
+        listDiv.innerHTML = '';
+        results.forEach(result => {
+          const item = result.item;
+          const resultItem = document.createElement('div');
+          resultItem.className = 'search-result-item';
+          resultItem.onclick = () => {
+            window.location.href = item.permalink;
+          };
+
+          const titleDiv = document.createElement('div');
+          titleDiv.className = 'result-title';
+          titleDiv.innerHTML = this.highlightMatch(item.title, query);
+
+          const metaDiv = document.createElement('div');
+          metaDiv.className = 'result-meta';
+          const categoryText = item.category || '未分类';
+          const idText = item.permalink ? item.permalink.split('/').filter(Boolean).pop() : '';
+          metaDiv.innerHTML = '分类: ' + this.highlightMatch(categoryText, query) +
+                             ' | ID: ' + this.highlightMatch(idText, query);
+
+          const scoreDiv = document.createElement('div');
+          scoreDiv.className = 'result-score';
+          scoreDiv.textContent = `相关度: ${result.score}${fromCache ? ' (缓存)' : ''}`;
+
+          resultItem.appendChild(titleDiv);
+          resultItem.appendChild(metaDiv);
+          resultItem.appendChild(scoreDiv);
+
+          if (item.tags && item.tags.length > 0) {
+            const tagsDiv = document.createElement('div');
+            tagsDiv.className = 'result-tags';
+            item.tags.forEach(tag => {
+              const tagSpan = document.createElement('span');
+              tagSpan.className = 'tag';
+              tagSpan.textContent = tag;
+              tagsDiv.appendChild(tagSpan);
+            });
+            resultItem.appendChild(tagsDiv);
+          }
+
+          listDiv.appendChild(resultItem);
+        });
+      }
+    }
+  }
+
+  hideSearchResults() {
+    if (this.searchResultsPanel) {
+      this.searchResultsPanel.style.display = 'none';
+    }
+  }
+
+  bindEvents() {
+    if (this.searchInput) {
+      let debounceTimer;
+      this.searchInput.addEventListener('input', (e) => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          const query = e.target.value;
+          if (query.trim()) {
+            const result = this.search(query);
+            this.displayResults(result, query);
+          } else {
+            this.hideSearchResults();
+          }
+        }, 300);
+      });
+
+      this.searchInput.addEventListener('focus', (e) => {
+        if (e.target.value.trim()) {
+          const result = this.search(e.target.value);
+          this.displayResults(result, e.target.value);
+        }
+      });
+    }
+
+    document.addEventListener('click', (e) => {
+      if (this.searchResultsPanel && this.searchInput &&
+          !this.searchResultsPanel.contains(e.target) &&
+          !this.searchInput.contains(e.target)) {
+        this.hideSearchResults();
+      }
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new AdvancedSearch();
+});
+</script>
+{{ end }}

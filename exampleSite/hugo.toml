@@ -1,0 +1,86 @@
+baseURL = 'https://example.com'
+languageCode = 'zh-cn'
+defaultContentLanguage = 'zh-cn'
+title = 'My Blog'
+theme = 'cards'
+themesDir = '../../../themes'
+
+[module]
+    [[module.mounts]]
+        source = 'themes/cards/content'
+        target = 'content'
+
+[params]
+    author = 'Your Name'
+    description = 'A blog built with Hugo Cards theme'
+
+[params.colors]
+    [params.colors.light]
+        color1 = 'rgba(255, 192, 203, 1)'
+        color2 = 'white'
+        bg = 'white'
+        text = '#333'
+        content = 'white'
+        hover = 'rgba(255, 192, 203, 1)'
+        shadow = 'rgba(0, 0, 0, 0.1)'
+        cursor = 'rgba(255, 192, 203, 1)'
+        gradient = 'linear-gradient(90deg, #45b7d1, #4ecd8d, #feb47b, #4ecd8d, #45b7d1)'
+    [params.colors.dark]
+        color1 = '#3aaae7'
+        color2 = '#1a237e'
+        bg = '#15073c'
+        text = 'white'
+        hover = '#3aaae7'
+        content = '#333'
+        shadow = 'rgba(0, 0, 0, 0.3)'
+        cursor = '#3aaae7'
+        gradient = 'linear-gradient(90deg, #cc45d1, #654ecd, #7b97fe, #654ecd, #cc45d1)'
+
+[params.search]
+    enable = true
+
+[params.comments]
+    enabled = false
+    provider = 'giscus'
+
+[params.sidebar]
+    welcomeSaying = 'Welcome to my blog'
+
+[params.article]
+    [params.article.related]
+        enabled = true
+        title = 'Related Articles'
+    [params.article.license]
+        enabled = false
+        default = 'CC BY-NC-SA 4.0'
+
+[menu]
+    [[menu.main]]
+        name = 'Home'
+        url = '/'
+        weight = 10
+    [[menu.main]]
+        name = 'Archives'
+        url = '/archives/'
+        weight = 20
+    [[menu.main]]
+        name = 'Tags'
+        url = '/tags/'
+        weight = 30
+    [[menu.main]]
+        name = 'Links'
+        url = '/links/'
+        weight = 40
+    [[menu.main]]
+        name = 'About'
+        url = '/about/'
+        weight = 50
+
+[taxonomies]
+    tag = 'tags'
+    category = 'categories'
+
+[outputs]
+    home = ['HTML', 'RSS', 'ROBOTS']
+
+enableRobotsTXT = true

@@ -1,0 +1,101 @@
+{{- if .Site.Params.seo.enabled -}}
+{{- $title := .Title -}}
+{{- if .IsHome -}}
+  {{- $title = .Site.Title -}}
+{{- else -}}
+  {{- $title = printf "%s - %s" .Title .Site.Title -}}
+{{- end -}}
+{{- $description := .Summary | default .Site.Params.seo.description | default .Site.Title -}}
+
+<!-- Open Graph -->
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:locale" content="{{ .Site.Language.Lang | default "zh-CN" }}">
+
+{{- if .IsPage -}}
+  {{- if not .Date.IsZero -}}
+    <meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05-07:00" }}">
+  {{- end -}}
+  {{- if not .Lastmod.IsZero -}}
+    <meta property="article:modified_time" content="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}">
+  {{- end -}}
+  <meta property="article:section" content="{{ .Section | title }}">
+  {{- range .Params.tags -}}
+    <meta property="article:tag" content="{{ . }}">
+  {{- end -}}
+{{- end -}}
+
+<!-- Twitter Cards -->
+{{- with .Site.Params.seo.twitter.site -}}
+  <meta name="twitter:site" content="@{{ . }}">
+  <meta name="twitter:creator" content="@{{ . }}">
+{{- end -}}
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $description }}">
+<meta name="twitter:card" content="{{ .Site.Params.seo.twitter.card | default "summary_large_image" }}">
+
+<!-- 图片 -->
+{{- $image := "" -}}
+{{- if .Params.image -}}
+  {{- $image = .Params.image -}}
+{{- else if .Params.cover -}}
+  {{- $image = .Params.cover -}}
+{{- end -}}
+{{- if $image -}}
+  <meta property="og:image" content="{{ absURL $image }}">
+  <meta name="twitter:image" content="{{ absURL $image }}">
+{{- end -}}
+
+<!-- 结构化数据 JSON-LD -->
+{{- if .IsPage -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ .Title }}",
+  "description": "{{ $description }}",
+  "url": "{{ .Permalink }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05-07:00" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ .Site.Author | default .Site.Title }}"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ absURL (.Site.Params.seo.logo | default "/logo.png") }}"
+    }
+  }
+  {{- if $image -}}
+  ,"image": {
+    "@type": "ImageObject",
+    "url": "{{ absURL $image }}",
+    "width": 1200,
+    "height": 630
+  }
+  {{- end -}}
+}
+</script>
+{{- else -}}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ .Site.Title }}",
+  "url": "{{ absURL "/" }}",
+  "description": "{{ $description }}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ absURL "/" }}?keyword={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{{- end -}}
+{{- end -}}

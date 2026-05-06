@@ -1,0 +1,262 @@
+<div class="reading-time-wrapper">
+  <div class="reading-time-container" id="reading-time-container">
+    <div class="word-count-section">
+      <span class="word-count-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </span>
+      <span class="word-count-text" id="word-count-text">字数统计: 计算中...</span>
+      <span class="word-count-detail" id="word-count-detail"></span>
+    </div>
+    <div class="reading-time-section">
+      <span class="reading-time-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+      </span>
+      <span class="reading-time-text" id="reading-time-text">预计阅读时间: 计算中...</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const calculateReadingStats = () => {
+    const contentElement = document.querySelector('.post-content');
+    if (!contentElement) return null;
+
+    const clone = contentElement.cloneNode(true);
+    const codeBlocks = clone.querySelectorAll('pre, code');
+    let codeText = '';
+    codeBlocks.forEach(block => {
+      codeText += block.textContent + ' ';
+      block.remove();
+    });
+
+    const text = clone.textContent || '';
+    const chineseChars = text.match(/[\u4e00-\u9fa5]/g) || [];
+    const chineseCount = chineseChars.length;
+    const englishWords = text.match(/[a-zA-Z]+/g) || [];
+    const englishCount = englishWords.length;
+    const codeCount = codeText.length;
+
+    const wordsPerMinute = 300;
+    const codeWordsPerMinute = 100;
+    const textTime = (chineseCount + englishCount) / wordsPerMinute;
+    const codeTime = codeCount / codeWordsPerMinute;
+    const totalTime = textTime + codeTime;
+    const minutes = Math.max(1, Math.ceil(totalTime));
+
+    return {
+      minutes: minutes,
+      chineseCount: chineseCount,
+      englishCount: englishCount,
+      codeCount: codeCount,
+      totalWords: chineseCount + englishCount + codeCount
+    };
+  };
+
+  const formatTime = (minutes) => {
+    const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+    const lessThanOne = t ? t['lessThanOneMinute'] : '小于 1 分钟';
+    const minuteLabel = t ? t['minute'] : '分钟';
+    const hourLabel = t ? t['hour'] : '小时';
+
+    if (minutes < 1) {
+      return lessThanOne;
+    } else if (minutes === 1) {
+      return '1 ' + minuteLabel;
+    } else if (minutes < 60) {
+      return minutes + ' ' + minuteLabel;
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      if (remainingMinutes === 0) {
+        return hours + ' ' + hourLabel;
+      } else {
+        return hours + ' ' + hourLabel + ' ' + remainingMinutes + ' ' + minuteLabel;
+      }
+    }
+  };
+
+  const updateDisplay = () => {
+    const stats = calculateReadingStats();
+    if (!stats) return;
+
+    const t = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang];
+
+    const wordCountText = document.getElementById('word-count-text');
+    const wordCountDetail = document.getElementById('word-count-detail');
+    const readingTimeText = document.getElementById('reading-time-text');
+
+    if (wordCountText) {
+      wordCountText.textContent = t
+        ? t['wordCountLabel'] + ' ' + stats.totalWords + ' ' + t['wordCount']
+        : '字数统计: ' + stats.totalWords + ' 字';
+    }
+
+    if (wordCountDetail) {
+      wordCountDetail.textContent = '(' +
+        stats.chineseCount + (t ? t['chinese'] : '中文') + ' / ' +
+        stats.englishCount + (t ? t['english'] : '英文') + ' / ' +
+        stats.codeCount + (t ? t['code'] : '代码') + ')';
+    }
+
+    if (readingTimeText) {
+      readingTimeText.textContent = (t ? t['readingTimeLabel'] : '预计阅读时间: ') + formatTime(stats.minutes);
+    }
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => setTimeout(updateDisplay, 300));
+  } else {
+    setTimeout(updateDisplay, 300);
+  }
+})();
+</script>
+
+<style>
+.reading-time-wrapper {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.reading-time-container {
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.word-count-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.word-count-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.word-count-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.word-count-detail {
+  font-size: 12px;
+}
+
+.reading-time-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reading-time-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.reading-time-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+</style>
+
+<style>
+.reading-time-container {
+  background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
+}
+
+.word-count-icon {
+  color: var(--common-text);
+}
+
+.word-count-text {
+  color: var(--common-text);
+}
+
+.word-count-detail {
+  color: var(--common-text);
+}
+
+.reading-time-icon {
+  color: var(--common-text);
+}
+
+.reading-time-text {
+  color: var(--common-text);
+}
+</style>
+
+<style>
+@media (max-width: 575px) {
+  .reading-time-container {
+    padding: 8px 12px;
+    margin: 8px 0;
+    border-radius: 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .word-count-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .word-count-detail {
+    font-size: 11px;
+  }
+
+  .word-count-text,
+  .reading-time-text {
+    font-size: 12px;
+  }
+
+  .word-count-icon,
+  .reading-time-icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reading-time-container {
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 20px;
+  }
+
+  .word-count-detail {
+    font-size: 12px;
+  }
+
+  .word-count-text,
+  .reading-time-text {
+    font-size: 14px;
+  }
+
+  .word-count-icon,
+  .reading-time-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+</style>

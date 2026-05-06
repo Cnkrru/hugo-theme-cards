@@ -1,0 +1,316 @@
+{{ define "main" }}
+<!-- 中心卡片头部区域 -->
+<div class="center-head-card">
+  <h2 data-i18n="archives">归档</h2>
+  {{ partial "p-center/article-count.html" . }}
+</div>
+
+<hr>
+
+<!-- 归档内容区域 -->
+<div class="center-card-content">
+  {{ $articles := where .Site.RegularPages "Type" "posts" }}
+  {{ $categoryMap := dict }}
+
+  {{ range $articles }}
+    {{ $category := "Uncategorized" }}
+    {{ with .Params.categories }}
+      {{ $category = index . 0 }}
+    {{ end }}
+
+    {{ $existing := index $categoryMap $category }}
+    {{ if not $existing }}
+      {{ $existing = slice }}
+    {{ end }}
+    {{ $existing = $existing | append . }}
+    {{ $categoryMap = merge $categoryMap (dict $category $existing) }}
+  {{ end }}
+
+  {{ range $categoryName, $posts := $categoryMap }}
+    <a href="#" onclick="toggleCategory(event, '{{ $categoryName | urlize }}')">
+      <div class="index-center-list-card archive-category-card">
+        <div class="index-center-list-card-header">
+          {{ $categoryName }}
+        </div>
+        <hr>
+        <div class="index-center-list-card-content">
+          <div class="article-meta-info">
+            <span><span data-i18n="articleCount">文章数量</span>: {{ len $posts }}</span>
+          <span class="toggle-text" id="toggle-{{ $categoryName | urlize }}" data-i18n="expand">展开</span>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <div class="category-posts" id="category-{{ $categoryName | urlize }}" style="display: none;">
+      {{ range $posts }}
+        <a href="{{ .RelPermalink }}" class="post-item">
+          <span class="post-title">{{ .Title }}</span>
+          <span class="post-date">{{ .Date.Format "2006-01-02" }}</span>
+        </a>
+      {{ end }}
+    </div>
+  {{ else }}
+    <div class="empty-message">
+      <p data-i18n="noArticles">暂无文章</p>
+    </div>
+  {{ end }}
+</div>
+
+<hr>
+
+<script>
+const toggleCategory = (event, categoryId) => {
+  if (event) event.preventDefault();
+
+  const categoryPosts = document.getElementById('category-' + categoryId);
+  const toggleText = document.getElementById('toggle-' + categoryId);
+
+  if (categoryPosts) {
+    if (categoryPosts.style.display === 'none') {
+      categoryPosts.style.display = 'block';
+      if (toggleText) toggleText.textContent = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang] ? window.i18nTranslations[window.i18nCurrentLang]['collapse'] : '收起';
+    } else {
+      categoryPosts.style.display = 'none';
+      if (toggleText) toggleText.textContent = window.i18nTranslations && window.i18nTranslations[window.i18nCurrentLang] ? window.i18nTranslations[window.i18nCurrentLang]['expand'] : '展开';
+    }
+  }
+};
+</script>
+
+<style>
+/* 归档页面头部样式 */
+.center-head-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  gap: 10px;
+}
+
+/* 分类卡片样式 */
+.archive-category-card {
+  width: 100%;
+  height: 120px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  border: 3px solid;
+  transition: all 0.3s ease;
+}
+
+.archive-category-card:hover {
+  transform: translateY(-5px);
+  border-width: 4px;
+}
+
+.index-center-list-card-header {
+  width: 100%;
+  height: 30px;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.index-center-list-card-content {
+  width: 100%;
+  height: 30px;
+  font-size: 16px;
+  line-height: 1.5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.article-meta-info {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.article-meta-info span {
+  height: 30px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
+/* 分类下的文章列表 */
+.category-posts {
+  margin: 10px 0 20px 20px;
+  border-left: 3px solid;
+  padding-left: 20px;
+}
+
+.post-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  text-decoration: none;
+  border-bottom: 1px solid;
+  transition: all 0.3s ease;
+}
+
+.post-item:hover {
+  padding-left: 10px;
+}
+
+.post-title {
+  flex: 1;
+}
+
+.post-date {
+  font-size: 0.875rem;
+  opacity: 0.7;
+  margin-left: 20px;
+}
+</style>
+
+<style>
+/* 归档页面颜色 */
+.archive-category-card {
+  border-color: var(--common-color-1);
+  background-color: var(--common-bg);
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.archive-category-card:hover {
+  box-shadow: 0 4px 8px var(--common-shadow);
+}
+
+.index-center-list-card-header {
+  color: var(--common-text);
+}
+
+.index-center-list-card-content {
+  color: var(--common-text);
+}
+
+.article-meta-info span {
+  color: var(--common-text);
+}
+
+.category-posts {
+  border-left-color: var(--common-color-1);
+}
+
+.post-item {
+  color: var(--common-text);
+  border-bottom-color: var(--common-color-1);
+}
+
+.post-item:hover {
+  color: var(--common-hover);
+}
+
+.post-date {
+  color: var(--common-text);
+}
+
+.empty-message {
+  text-align: center;
+  padding: 50px 0;
+  color: var(--common-text);
+}
+</style>
+
+<style>
+/* 归档页面响应式 */
+@media (max-width: 575px) {
+  .archive-category-card {
+    height: auto;
+    min-height: 120px;
+    padding: 15px;
+  }
+
+  .index-center-list-card-header {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 8px;
+  }
+
+  .index-center-list-card-content {
+    font-size: 14px;
+    height: auto;
+    margin-bottom: 8px;
+  }
+
+  .article-meta-info {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    gap: 5px;
+  }
+
+  .article-meta-info span {
+    height: auto;
+    line-height: 1.2;
+    margin-bottom: 5px;
+  }
+
+  .category-posts {
+    margin: 10px 0 15px 10px;
+    padding-left: 10px;
+  }
+
+  .post-item {
+    padding: 6px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .post-date {
+    margin-left: 0;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .archive-category-card {
+    height: 120px;
+    padding: 10px;
+  }
+
+  .index-center-list-card-header {
+    font-size: 20px;
+  }
+
+  .index-center-list-card-content {
+    font-size: 16px;
+  }
+
+  .article-meta-info {
+    flex-direction: row;
+    align-items: center;
+    height: 30px;
+  }
+
+  .article-meta-info span {
+    height: 30px;
+    line-height: 30px;
+    margin-bottom: 10px;
+  }
+
+  .category-posts {
+    margin: 10px 0 20px 20px;
+    padding-left: 20px;
+  }
+
+  .post-item {
+    padding: 8px 0;
+    flex-direction: row;
+    align-items: center;
+    gap: 0;
+  }
+
+  .post-date {
+    margin-left: 20px;
+    font-size: 0.875rem;
+  }
+}
+</style>
+{{ end }}

@@ -1,0 +1,29 @@
+{{ if .Site.Params.footer.copyright.enabled }}
+<div class="footer-element-card copyright">
+  <span data-i18n="copyright">©</span> {{ now.Year }} {{ .Site.Title }} <span data-i18n="allRightsReserved">. All rights reserved.</span>
+  {{ with .Site.Params.footer.customText }} · <span data-i18n="customText">{{ . }}</span>{{ end }}
+</div>
+{{ end }}
+
+<style>
+.copyright {
+  width: 100%;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+</style>
+
+<style>
+.copyright {
+  color: var(--common-content);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .copyright {
+    text-align: left;
+  }
+}
+</style>

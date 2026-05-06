@@ -1,0 +1,17 @@
+{{- if .Site.Params.search.enable -}}
+{{- $pages := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+{{- $result := slice -}}
+{{- range $pages -}}
+    {{- $category := "" -}}
+    {{- if .Params.categories -}}
+        {{- $category = index .Params.categories 0 -}}
+    {{- else if .Params.category -}}
+        {{- $category = .Params.category -}}
+    {{- end -}}
+    {{- $data := dict "title" .Title "date" (.Date.Format "2006-01-02") "permalink" .RelPermalink "content" (.Plain) "category" $category "tags" (.Params.tags) -}}
+    {{- $result = $result | append $data -}}
+{{- end -}}
+<script>
+window.searchIndexData = {{ jsonify $result | safeJS }};
+</script>
+{{- end -}}

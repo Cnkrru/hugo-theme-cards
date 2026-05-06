@@ -1,0 +1,305 @@
+{{ define "main" }}
+<!-- 中心卡片头部区域 -->
+<div class="center-head-card">
+  <h2>友情链接</h2>
+</div>
+
+<hr>
+
+<!-- 友链内容区域 -->
+<div class="center-card-content">
+  <div class="links-page-content" id="links-content">
+    {{ .Content }}
+  </div>
+
+  <!-- 分页导航 -->
+  <div class="links-pagination" id="links-pagination">
+    <button class="page-btn prev-btn" id="prev-btn" onclick="changePage(-1)">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+      上一页
+    </button>
+    <span class="page-info" id="page-info">1 / 1</span>
+    <button class="page-btn next-btn" id="next-btn" onclick="changePage(1)">
+      下一页
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<hr>
+
+<script>
+(function() {
+  let categories = [];
+  let currentPage = 0;
+
+  const parseLinks = () => {
+    const container = document.getElementById('links-content');
+    if (!container) return;
+
+    const elements = Array.from(container.children);
+    const cats = [];
+    let currentCat = null;
+
+    elements.forEach(el => {
+      if (el.tagName === 'H2') {
+        if (currentCat) cats.push(currentCat);
+        currentCat = {
+          name: el.textContent.trim(),
+          links: []
+        };
+      } else if (el.tagName === 'UL' && currentCat) {
+        const items = Array.from(el.querySelectorAll('li'));
+        items.forEach(li => {
+          const link = li.querySelector('a');
+          if (link) {
+            currentCat.links.push({
+              name: link.textContent.trim(),
+              url: link.href,
+              description: li.textContent.replace(link.textContent, '').replace(/^\s*[-–—]\s*/, '').trim()
+            });
+          }
+        });
+      }
+    });
+
+    if (currentCat) cats.push(currentCat);
+    categories = cats;
+  };
+
+  const renderPage = () => {
+    const container = document.getElementById('links-content');
+    const pageInfo = document.getElementById('page-info');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+
+    if (categories.length === 0) {
+      container.innerHTML = '<p class="empty-message">暂无友链</p>';
+      pageInfo.textContent = '0 / 0';
+      prevBtn.disabled = true;
+      nextBtn.disabled = true;
+      return;
+    }
+
+    const cat = categories[currentPage];
+
+    let html = '<div class="links-category-section">';
+    html += '<h2 class="links-category-title">' + cat.name + '</h2>';
+    html += '<div class="links-grid">';
+
+    cat.links.forEach(link => {
+      html += '<a href="' + link.url + '" target="_blank" rel="noopener noreferrer" class="link-card">';
+      html += '<div class="link-name">' + link.name + '</div>';
+      html += '<div class="link-description">' + (link.description || '暂无描述') + '</div>';
+      html += '</a>';
+    });
+
+    html += '</div></div>';
+    container.innerHTML = html;
+
+    pageInfo.textContent = (currentPage + 1) + ' / ' + categories.length;
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = currentPage === categories.length - 1;
+  };
+
+  window.changePage = (delta) => {
+    const newPage = currentPage + delta;
+    if (newPage >= 0 && newPage < categories.length) {
+      currentPage = newPage;
+      renderPage();
+    }
+  };
+
+  // 初始化
+  parseLinks();
+  renderPage();
+})();
+</script>
+
+<style>
+/* 友链页面布局样式 */
+.links-page-content {
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.links-category-section {
+  margin-bottom: 20px;
+}
+
+.links-category-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--common-color-1);
+  color: var(--common-text);
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.link-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  border-radius: 8px;
+  border: 3px solid var(--common-color-1);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  height: 150px;
+  background-color: var(--common-bg);
+  color: var(--common-text);
+}
+
+.link-card:hover {
+  transform: translateY(-5px);
+  border-width: 4px;
+  box-shadow: 0 4px 8px var(--common-shadow);
+}
+
+.link-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--common-text);
+}
+
+.link-description {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  flex: 1;
+  color: var(--common-text);
+}
+
+.empty-message {
+  text-align: center;
+  padding: 50px 0;
+  color: var(--common-text);
+}
+
+/* 分页样式 */
+.links-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--common-color-1);
+}
+
+.page-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 2px solid var(--common-color-1);
+  background-color: var(--common-bg);
+  color: var(--common-text);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.page-btn:hover:not(:disabled) {
+  background-color: var(--common-color-1);
+  color: white;
+}
+
+.page-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.page-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.page-info {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--common-text);
+  min-width: 60px;
+  text-align: center;
+}
+</style>
+
+<style>
+/* 友链页面响应式 */
+@media (max-width: 575px) {
+  .links-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  .link-card {
+    height: 120px;
+    padding: 12px;
+  }
+
+  .link-name {
+    font-size: 1rem;
+  }
+
+  .link-description {
+    font-size: 0.8rem;
+  }
+
+  .page-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .links-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+  }
+
+  .link-card {
+    height: 130px;
+    padding: 15px;
+  }
+
+  .link-name {
+    font-size: 1.1rem;
+  }
+
+  .link-description {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .links-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .links-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1440px) {
+  .links-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+</style>
+{{ end }}

@@ -1,0 +1,64 @@
+{{ if .Site.Params.sidebar.links.enabled }}
+<div class="page-list-card">
+  <ul>
+    {{ range .Site.Menus.sidebar_links }}
+    <li><a href="{{ .URL | relLangURL }}" class="page-card" {{ if hasPrefix .URL "index.xml" }}target="_blank" rel="noopener noreferrer" {{ end }}><span data-i18n="{{ .Name }}">{{ T .Name }}</span></a></li>
+    {{ end }}
+  </ul>
+</div>
+
+<style>
+.page-list-card {
+  width:100%;
+  height: 180px;
+  padding: 8px;
+  margin-bottom: 5px;
+  text-align: center;
+  overflow-y: auto;
+}
+
+.page-list-card ul {
+  width: 100%;
+  height: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.page-list-card ul li {
+  width: 100%;
+  height: fit-content;
+}
+
+.page-card {
+  display: block;
+  width: 100%;
+  height: fit-content;
+  padding: 6px;
+  margin-bottom: 4px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.page-card:hover {
+  transform: translateY(-5px);
+  border-left-width: 6px;
+}
+</style>
+
+<style>
+.page-card {
+  background-color: var(--common-color-1);
+  border: 2px solid var(--common-color-2);
+  box-shadow: var(--common-shadow);
+  color: var(--common-content);
+}
+
+.page-card:hover {
+  box-shadow: var(--common-shadow);
+  background-color: var(--common-hover);
+  color: var(--common-content);
+}
+</style>
+{{ end }}

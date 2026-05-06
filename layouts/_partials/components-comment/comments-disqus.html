@@ -1,0 +1,74 @@
+{{- if .Site.Params.comments.enabled -}}
+{{- if eq .Site.Params.comments.provider "disqus" -}}
+<div class="comment-section">
+  <div class="comment-header">
+    <h3>评论</h3>
+  </div>
+  <div id="disqus_thread" class="comment-container"></div>
+</div>
+
+<style>
+.comment-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comment-section:hover {
+  transform: translateY(-2px);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.comment-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, var(--common-color-1), var(--common-color-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.comment-container {
+  width: 100%;
+  min-height: 300px;
+}
+
+@media (max-width: 576px) {
+  .comment-section {
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+
+  .comment-header h3 {
+    font-size: 1.1rem;
+  }
+}
+</style>
+
+<script>
+  var disqus_config = function () {
+    this.page.url = "{{ .Permalink }}";
+    this.page.identifier = "{{ .RelPermalink }}";
+  };
+  (function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://{{ .Site.Params.comments.disqus.shortname }}.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+{{- end -}}
+{{- end -}}

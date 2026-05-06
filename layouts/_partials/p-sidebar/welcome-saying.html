@@ -1,0 +1,46 @@
+{{ if .Site.Params.sidebar.welcome.enabled }}
+{{- $subtitle := .Site.Params.sidebar.welcome.subtitle | default "欢迎来到我的个人博客" -}}
+<div class="welcome-saying-card">
+  <a href="{{ absLangURL "/" }}" class="welcome-link">
+    <p data-i18n="welcome">{{ $subtitle }}</p>
+  </a>
+</div>
+{{ end }}
+<style>
+.welcome-saying-card {
+  width: 90%;
+  height: fit-content;
+  margin: 4px auto;
+  text-align: center;
+}
+
+.welcome-saying-card p {
+  font-size: 14px;
+  font-style: italic;
+  font-family: "Microsoft YaHei", sans-serif;
+  line-height: normal;
+}
+
+.welcome-link {
+  cursor: pointer;
+  user-select: none;
+}
+
+.welcome-link:active {
+  transform: none;
+}
+</style>
+
+<style>
+.welcome-saying-card p {
+  color: var(--common-color-1);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .welcome-saying-card p {
+    font-size: 14px;
+  }
+}
+</style>

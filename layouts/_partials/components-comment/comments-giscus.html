@@ -1,0 +1,104 @@
+{{- if .Site.Params.comments.enabled -}}
+{{- if eq .Site.Params.comments.provider "giscus" -}}
+<div class="comment-section">
+  <div class="comment-header">
+    <h3>评论</h3>
+  </div>
+  <div class="comment-container">
+    <script src="https://giscus.app/client.js"
+      data-repo="{{ .Site.Params.comments.giscus.repo }}"
+      data-repo-id="{{ .Site.Params.comments.giscus.repoID }}"
+      data-category="{{ .Site.Params.comments.giscus.category }}"
+      data-category-id="{{ .Site.Params.comments.giscus.categoryID }}"
+      data-mapping="{{ .Site.Params.comments.giscus.mapping | default "pathname" }}"
+      data-strict="{{ .Site.Params.comments.giscus.strict | default "0" }}"
+      data-reactions-enabled="{{ .Site.Params.comments.giscus.reactionsEnabled | default "1" }}"
+      data-emit-metadata="{{ .Site.Params.comments.giscus.emitMetadata | default "0" }}"
+      data-input-position="{{ .Site.Params.comments.giscus.inputPosition | default "bottom" }}"
+      data-theme="preferred_color_scheme"
+      data-lang="{{ .Site.Params.comments.giscus.lang | default "zh-CN" }}"
+      crossorigin="anonymous"
+      async>
+    </script>
+  </div>
+</div>
+
+<script>
+  function updateGiscusTheme() {
+    const scheme = document.documentElement.getAttribute('data-scheme');
+    const isDark = (scheme === 'dark');
+    const message = {
+      setConfig: {
+        theme: isDark ? 'https://giscus.app/themes/preferred_color_scheme.css' : 'https://giscus.app/themes/preferred_color_scheme.css'
+      }
+    };
+    const iframe = document.querySelector('iframe.giscus-frame');
+    if (iframe) {
+      iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+    }
+  }
+
+  // 初始化时设置主题
+  document.addEventListener('DOMContentLoaded', updateGiscusTheme);
+
+  // 监听主题切换
+  const observer = new MutationObserver(function() {
+    updateGiscusTheme();
+  });
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-scheme']
+  });
+</script>
+
+<style>
+.comment-section {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: var(--common-bg);
+  border: 1px solid var(--common-color-1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.comment-section:hover {
+  transform: translateY(-2px);
+}
+
+.comment-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--common-color-1);
+}
+
+.comment-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+  background: linear-gradient(45deg, var(--common-color-1), var(--common-color-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.comment-container {
+  width: 100%;
+  min-height: 300px;
+}
+
+@media (max-width: 576px) {
+  .comment-section {
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+
+  .comment-header h3 {
+    font-size: 1.1rem;
+  }
+}
+</style>
+{{- end -}}
+{{- end -}}

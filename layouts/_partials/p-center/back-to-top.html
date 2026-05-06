@@ -1,0 +1,113 @@
+{{ if .Site.Params.article.backToTop.enabled }}
+<button class="back-to-top-btn" onclick="scrollToTop()" id="back-to-top-btn">
+  <img src="{{ or .Site.Params.article.backToTop.icon "/images/svg/arrow-up.svg" }}" alt="返回顶部">
+</button>
+{{ end }}
+
+<script>
+const backToTopBtn = document.getElementById('back-to-top-btn');
+
+const scrollToTop = () => {
+  if (document.body.classList.contains('immersive-reading')) {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  } else {
+    const container = document.querySelector('.center-card-content');
+    if (container) {
+      container.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  }
+};
+
+const checkImmersiveMode = () => {
+  if (document.body.classList.contains('immersive-reading')) {
+    backToTopBtn.classList.add('immersive');
+  } else {
+    backToTopBtn.classList.remove('immersive');
+  }
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  checkImmersiveMode();
+
+  const observer = new MutationObserver(() => {
+    checkImmersiveMode();
+  });
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
+
+<style>
+.back-to-top-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  flex-shrink: 0;
+}
+
+.back-to-top-btn:hover {
+  transform: scale(1.1);
+}
+
+.back-to-top-btn img {
+  width: 20px;
+  height: 20px;
+  transition: filter 0.3s ease;
+}
+
+.back-to-top-btn.immersive {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  z-index: 9998;
+}
+</style>
+
+<style>
+.back-to-top-btn {
+  background-color: var(--common-color-1);
+  border-color: var(--common-color-1);
+}
+
+.back-to-top-btn img {
+  filter: invert(1);
+}
+
+body.dark-theme .back-to-top-btn img {
+  filter: invert(0);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .back-to-top-btn.immersive {
+    bottom: 70px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .back-to-top-btn.immersive img {
+    width: 18px;
+    height: 18px;
+  }
+}
+</style>

@@ -1,0 +1,102 @@
+<footer class="footer-flex">
+  <div class="footer-S">
+    <nav class="footer-container">
+      <div class="footer-card">
+        {{ if .Site.Params.footer.showWebsiteAge }}
+          {{ partial "p-footer/website-age.html" . }}
+        {{ end }}
+        {{ partial "p-footer/copyright.html" . }}
+      </div>
+    </nav>
+  </div>
+</footer>
+
+<style>
+.footer-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.footer-S {
+  width: 95%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.footer-container {
+  width: 100%;
+}
+
+.footer-card {
+  width: 100%;
+  padding: 15px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column !important;
+  gap: 10px;
+  align-items: center;
+}
+
+.footer-element-card {
+  width: 80% !important;
+  margin-bottom: 5px !important;;
+  border-radius: 8px;
+  padding: 10px;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+</style>
+
+<style>
+.footer-card {
+  background-color: var(--common-bg);
+  border: 2px solid var(--common-color-1);
+}
+
+.footer-element-card {
+  background-color: var(--common-color-1);
+}
+</style>
+
+<style>
+@media (max-width: 768px) {
+  .footer-S {
+    height: auto;
+    padding: 20px 0;
+  }
+
+  .footer-card {
+    padding: 10px;
+  }
+
+  .footer-element-card {
+    width: 90%;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .footer-S {
+    height: 190px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .footer-S {
+    height: 200px;
+  }
+}
+
+@media (max-width: 1440px) {
+  .footer-S {
+    max-width: 1400px;
+    height: 210px;
+  }
+}
+</style>

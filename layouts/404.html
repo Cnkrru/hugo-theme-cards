@@ -1,0 +1,239 @@
+{{ define "main" }}
+<!-- 中心卡片头部区域 -->
+<div class="center-head-card">
+  <h2>404 - 页面未找到</h2>
+  <div class="center-head-card-tools">
+    {{ partial "p-center/back-to-top.html" . }}
+  </div>
+</div>
+
+<hr>
+
+<!-- 404 内容区域 -->
+<div class="center-card-content">
+  <div class="error-404-container">
+    <div class="error-404-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 15s1.5-2 4-2 4 2 4 2"></path>
+        <line x1="9" y1="9" x2="9.01" y2="9"></line>
+        <line x1="15" y1="9" x2="15.01" y2="9"></line>
+      </svg>
+    </div>
+    <h1 class="error-404-title">404</h1>
+    <p class="error-404-subtitle">哎呀，页面找不到了</p>
+    <p class="error-404-description">
+      您访问的页面可能已被删除、移动或暂时不可用。
+    </p>
+    <div class="error-404-actions">
+      <a href="{{ "/" | relURL }}" class="error-404-button primary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        返回首页
+      </a>
+      <a href="{{ "/posts" | relURL }}" class="error-404-button secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        浏览文章
+      </a>
+    </div>
+    <div class="error-404-search">
+      <p>或者尝试搜索：</p>
+      <div class="search-wrapper">
+        <div class="search-card search-container">
+          <input type="text" placeholder="搜索文章..." id="error-search-input">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.error-404-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  min-height: 400px;
+}
+
+.error-404-icon {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  color: var(--common-color-1);
+  opacity: 0.8;
+}
+
+.error-404-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.error-404-title {
+  font-size: 72px;
+  font-weight: bold;
+  margin: 0 0 10px 0;
+  background: linear-gradient(45deg, var(--common-color-1), var(--common-color-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+
+.error-404-subtitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  color: var(--common-text);
+}
+
+.error-404-description {
+  font-size: 14px;
+  color: var(--common-text);
+  opacity: 0.7;
+  margin: 0 0 30px 0;
+  max-width: 400px;
+}
+
+.error-404-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.error-404-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: 2px solid var(--common-color-1);
+}
+
+.error-404-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.error-404-button.primary {
+  background-color: var(--common-color-1);
+  color: white;
+}
+
+.error-404-button.primary:hover {
+  background-color: var(--common-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--common-shadow);
+}
+
+.error-404-button.secondary {
+  background-color: var(--common-bg);
+  color: var(--common-text);
+}
+
+.error-404-button.secondary:hover {
+  background-color: var(--common-hover);
+  transform: translateY(-2px);
+}
+
+.error-404-search {
+  width: 100%;
+  max-width: 400px;
+}
+
+.error-404-search p {
+  font-size: 14px;
+  color: var(--common-text);
+  opacity: 0.7;
+  margin-bottom: 10px;
+}
+
+.error-404-search .search-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.error-404-search .search-card {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin: 0;
+  padding: 0 16px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid var(--common-color-1);
+  background-color: var(--common-bg);
+}
+
+.error-404-search .search-card input {
+  width: 100%;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: color 0.3s ease;
+  color: var(--common-text);
+  background-color: transparent;
+  border: none;
+}
+
+@media (max-width: 576px) {
+  .error-404-title {
+    font-size: 56px;
+  }
+
+  .error-404-subtitle {
+    font-size: 18px;
+  }
+
+  .error-404-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .error-404-actions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .error-404-button {
+    justify-content: center;
+  }
+}
+</style>
+
+<script>
+// 404 页面搜索功能
+document.addEventListener('DOMContentLoaded', () => {
+  const searchInput = document.getElementById('error-search-input');
+  if (searchInput) {
+    searchInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const keyword = searchInput.value.trim();
+        if (keyword) {
+          window.location.href = '/?keyword=' + encodeURIComponent(keyword);
+        }
+      }
+    });
+  }
+});
+</script>
+{{ end }}

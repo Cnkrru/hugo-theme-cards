@@ -1,0 +1,17 @@
+{{- if .Site.Params.comments.enabled -}}
+{{- $provider := .Site.Params.comments.provider | default "giscus" -}}
+
+{{- if eq $provider "giscus" -}}
+  {{ partial "components-comment/comments-giscus.html" . }}
+{{- else if eq $provider "disqus" -}}
+  {{ partial "components-comment/comments-disqus.html" . }}
+{{- else if eq $provider "utterances" -}}
+  {{ partial "components-comment/comments-utterances.html" . }}
+{{- else if eq $provider "gitalk" -}}
+  {{ partial "components-comment/comments-gitalk.html" . }}
+{{- else if eq $provider "waline" -}}
+  {{ partial "components-comment/comments-waline.html" . }}
+{{- else if eq $provider "twikoo" -}}
+  {{ partial "components-comment/comments-twikoo.html" . }}
+{{- end -}}
+{{- end -}}

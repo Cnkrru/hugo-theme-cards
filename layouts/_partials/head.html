@@ -1,0 +1,69 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<meta name="generator" content="Hugo {{ hugo.Version }}">
+<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+<title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+
+{{/* RSS Feed 链接 */}}
+{{- with .OutputFormats.Get "RSS" -}}
+<link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }} RSS Feed" href="{{ .Permalink }}">
+{{- end -}}
+
+{{/* 搜索数据 - 内嵌到页面中 */}}
+{{ partial "components-search/search-data.html" . }}
+{{/* Sitemap 链接 */}}
+<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ "sitemap.xml" | absURL }}">
+
+{{/* 主题切换防闪烁脚本 */}}
+<script>
+(function() {
+  const STORAGE_KEY = 'CardsColorScheme';
+  const getSavedScheme = function() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved === 'light' || saved === 'dark' || saved === 'auto') return saved;
+    return 'auto';
+  };
+  const getSystemScheme = function() {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+    return 'light';
+  };
+  const isDark = function(scheme, systemScheme) {
+    return scheme === 'dark' || (scheme === 'auto' && systemScheme === 'dark');
+  };
+  const scheme = getSavedScheme();
+  const systemScheme = getSystemScheme();
+  const actualScheme = isDark(scheme, systemScheme) ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-scheme', actualScheme);
+})();
+</script>
+
+{{/* 颜色变量 - 使用printf和safeCSS */}}
+<style>
+:root,
+[data-scheme="light"] {
+  --common-color-1: {{ .Site.Params.colors.light.color1 | safeCSS }};
+  --common-color-2: {{ .Site.Params.colors.light.color2 | safeCSS }};
+  --common-bg: {{ .Site.Params.colors.light.bg | safeCSS }};
+  --common-text: {{ .Site.Params.colors.light.text | safeCSS }};
+  --common-content: {{ .Site.Params.colors.light.content | safeCSS }};
+  --common-hover: {{ .Site.Params.colors.light.hover | safeCSS }};
+  --common-shadow: {{ .Site.Params.colors.light.shadow | safeCSS }};
+  --common-cursor: {{ .Site.Params.colors.light.cursor | safeCSS }};
+  --common-gradient: {{ .Site.Params.colors.light.gradient | safeCSS }};
+}
+
+body.dark-theme,
+[data-scheme="dark"] {
+  --common-color-1: {{ .Site.Params.colors.dark.color1 | safeCSS }};
+  --common-color-2: {{ .Site.Params.colors.dark.color2 | safeCSS }};
+  --common-bg: {{ .Site.Params.colors.dark.bg | safeCSS }};
+  --common-text: {{ .Site.Params.colors.dark.text | safeCSS }};
+  --common-content: {{ .Site.Params.colors.dark.content | safeCSS }};
+  --common-hover: {{ .Site.Params.colors.dark.hover | safeCSS }};
+  --common-shadow: {{ .Site.Params.colors.dark.shadow | safeCSS }};
+  --common-cursor: {{ .Site.Params.colors.dark.cursor | safeCSS }};
+  --common-gradient: {{ .Site.Params.colors.dark.gradient | safeCSS }};
+}
+</style>
+
+<link rel="stylesheet" href="/css/style.css">
